@@ -31,11 +31,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
-
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 /**
  * @author Kirill Afonin
+ * @author Alexey Malev
  */
 @ContextConfiguration(locations = {"classpath:/org/jtalks/common/model/entity/applicationContext-dao.xml"})
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
@@ -47,18 +47,20 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
     private SessionFactory sessionFactory;
     private Session session;
 
+    private User user;
+
     @BeforeMethod
     public void setUp() throws Exception {
         session = sessionFactory.getCurrentSession();
         ObjectsFactory.setSession(session);
+
+        this.user = ObjectsFactory.getDefaultUser();
     }
 
     /*===== Common methods =====*/
 
     @Test
     public void testSave() {
-        User user = ObjectsFactory.getDefaultUser();
-
         dao.saveOrUpdate(user);
 
         assertNotSame(user.getId(), 0, "Id not created");
@@ -71,7 +73,6 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test(expectedExceptions = DataIntegrityViolationException.class)
     public void testSaveUserWithUniqueViolation() {
-        User user = ObjectsFactory.getDefaultUser();
         User user2 = ObjectsFactory.getDefaultUser();
 
         dao.saveOrUpdate(user);
@@ -80,7 +81,6 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testGet() {
-        User user = ObjectsFactory.getDefaultUser();
         session.save(user);
 
         User result = dao.get(user.getId());
@@ -91,15 +91,12 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testGetInvalidId() {
-        User result = dao.get(-567890L);
-
-        assertNull(result);
+        assertNull(dao.get(-567890L));
     }
 
     @Test
     public void testUpdate() {
         String newName = "new name";
-        User user = ObjectsFactory.getDefaultUser();
         session.save(user);
         user.setFirstName(newName);
 
@@ -112,7 +109,6 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test(expectedExceptions = DataIntegrityViolationException.class)
     public void testUpdateNotNullViolation() {
-        User user = ObjectsFactory.getDefaultUser();
         session.save(user);
         user.setUsername(null);
 
@@ -121,7 +117,6 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testDelete() {
-        User user = ObjectsFactory.getDefaultUser();
         session.save(user);
 
         boolean result = dao.delete(user.getId());
@@ -133,16 +128,14 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testDeleteInvalidId() {
-        boolean result = dao.delete(-100500L);
 
-        assertFalse(result, "Entity deleted");
+        assertFalse(dao.delete(-100500L), "Entity deleted");
     }
 
     /*===== UserDao specific methods =====*/
 
     @Test
     public void testGetByUsername() {
-        User user = ObjectsFactory.getDefaultUser();
         session.save(user);
 
         User result = dao.getByUsername(user.getUsername());
@@ -153,7 +146,6 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testGetByUsernameNotExist() {
-        User user = ObjectsFactory.getDefaultUser();
         session.save(user);
 
         User result = dao.getByUsername("Name");
@@ -163,7 +155,6 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testIsUserWithEmailExist() {
-        User user = ObjectsFactory.getDefaultUser();
         session.save(user);
 
         boolean result = dao.isUserWithEmailExist(user.getEmail());
@@ -173,7 +164,6 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testIsUserWithEmailNotExist() {
-        User user = ObjectsFactory.getDefaultUser();
         session.save(user);
 
         boolean result = dao.isUserWithEmailExist("dick@head.com");
@@ -183,7 +173,6 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testIsUserWithUsernameExist() {
-        User user = ObjectsFactory.getDefaultUser();
         session.save(user);
 
         boolean result = dao.isUserWithUsernameExist(user.getUsername());
@@ -193,12 +182,42 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testIsUserWithUsernameNotExist() {
-        User user = ObjectsFactory.getDefaultUser();
         session.save(user);
 
         boolean result = dao.isUserWithUsernameExist("qwertyuio");
 
         assertFalse(result, "User exist");
+    }
+
+    @Test
+    public void testIsExistPositiveScenario() {
+        session.save(user);
+        assertTrue(dao.isExist(user.getId()));
+    }
+
+    @Test
+    public void testIsExistNegativeScenario() {
+        assertFalse(dao.isExist(34827897345340L));
+    }
+
+    @Test
+    public void testUserNotLocked() {
+        assertTrue(user.isAccountNonLocked());
+    }
+
+    @Test
+    public void testUserAccountNotExpired() {
+        assertTrue(user.isAccountNonExpired());
+    }
+
+    @Test
+    public void testUserCredentialsAreNotExpired() {
+        assertTrue(user.isCredentialsNonExpired());
+    }
+
+    @Test
+    public void testUserEnabled() {
+        assertTrue(user.isEnabled());
     }
 
     private int getCount() {

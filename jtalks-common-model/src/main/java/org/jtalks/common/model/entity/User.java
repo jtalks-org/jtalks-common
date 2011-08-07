@@ -155,7 +155,7 @@ public class User extends Persistent implements UserDetails {
 
     //methods from UserDetails inteface, indicating that
     //user can or can't authenticate.
-    //we don't need this functional now and users always enabled
+    //we don't need this functionality now and users are always enabled
 
     /**
      * {@inheritDoc}
