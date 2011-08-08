@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jtalks</artifactId>
         <groupId>org.jtalks</groupId>
-        <version>0.4</version>
+        <version>0.5.1</version>
     </parent>
     <packaging>pom</packaging>
     <groupId>org.jtalks.common</groupId>
