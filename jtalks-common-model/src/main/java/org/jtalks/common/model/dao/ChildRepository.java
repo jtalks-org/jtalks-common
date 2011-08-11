@@ -15,39 +15,38 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.service;
+package org.jtalks.common.model.dao;
 
-import org.jtalks.common.service.exceptions.NotFoundException;
-import org.testng.annotations.Test;
-
-import static org.testng.Assert.assertEquals;
+import org.jtalks.common.model.entity.Entity;
 
 /**
- * This class contains unit tests for NotFoundException.
- * Date: 07.08.11<br />
- * Time: 19:58<br />
  *
- * @author Alexey Malev
+ * @author Pavel Vervenko
+ * @author Kirill Afonin
  */
-public class NotFoundExceptionTest {
+public interface ChildRepository<T extends Entity> {
 
-    @Test
-    public void testConstructorWithoutArguments() {
-        try {
-            throw new NotFoundException();
-        } catch (NotFoundException e) {
-            assertEquals(null, e.getLocalizedMessage());
-        }
-    }
+    /**
+     * Update entity.
+     * You should not try to save entity using this method.
+     *
+     * @param entity object to save
+     */
+    void update(T entity);
 
-    @Test
-    public void testConstructorWithMessage() {
-        String message = "this is a sample exception message";
+    /**
+     * Get entity by id.
+     *
+     * @param id the id
+     * @return loaded Persistence instance
+     */
+    T get(Long id);
 
-        try {
-            throw new NotFoundException(message);
-        } catch (NotFoundException e) {
-            assertEquals(message, e.getLocalizedMessage());
-        }
-    }
+    /**
+     * Check entity existance by id.
+     *
+     * @param id entity id
+     * @return {@code true} if entity exist
+     */
+    boolean isExist(Long id);
 }

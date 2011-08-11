@@ -17,8 +17,8 @@
  */
 package org.jtalks.common.service.transactional;
 
-import org.jtalks.common.model.dao.Dao;
-import org.jtalks.common.model.entity.Persistent;
+import org.jtalks.common.model.dao.ChildRepository;
+import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.service.EntityService;
 import org.jtalks.common.service.exceptions.NotFoundException;
 
@@ -31,7 +31,7 @@ import org.jtalks.common.service.exceptions.NotFoundException;
  * @author Osadchuck Eugeny
  * @author Kirill Afonin
  */
-public abstract class AbstractTransactionalEntityService<T extends Persistent, Y extends Dao<T>>
+public abstract class AbstractTransactionalEntityService<T extends Entity, Y extends ChildRepository<T>>
         implements EntityService<T> {
     /**
      * Dao object implementation.

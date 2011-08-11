@@ -17,7 +17,7 @@
  */
 package org.jtalks.common.service;
 
-import org.jtalks.common.model.entity.Persistent;
+import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.service.exceptions.NotFoundException;
 
 
@@ -28,7 +28,7 @@ import org.jtalks.common.service.exceptions.NotFoundException;
  * @author Osadchuck Eugeny
  * @author Kirill Afonin
  */
-public interface EntityService<T extends Persistent> {
+public interface EntityService<T extends Entity> {
 
     /**
      * Get persistent object by id. Method is trying to find persistent object with current primary id and return it.
@@ -36,9 +36,7 @@ public interface EntityService<T extends Persistent> {
      * @param id primary id of persistent object to find, id could not be negative.
      *           If negative id value will be put IllegalAgrumentEception will be thrown.
      * @return persistent object T or null if row with primary id = id is absent.
-     * @throws NotFoundException
-     *          when entity not found
+     * @throws NotFoundException when entity not found
      */
     T get(Long id) throws NotFoundException;
-
 }

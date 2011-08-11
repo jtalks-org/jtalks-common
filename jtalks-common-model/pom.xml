@@ -6,11 +6,11 @@
     <parent>
         <artifactId>jtalks-common</artifactId>
         <groupId>org.jtalks.common</groupId>
-        <version>0.5.1</version>
+        <version>0.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>jtalks-common-model</artifactId>
-    <version>0.5.1</version>
+    <version>0.5-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <url>http://maven.apache.org</url>
 
@@ -50,10 +50,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hsqldb</groupId>
@@ -90,8 +92,6 @@
     </dependencies>
 
     <properties>
-        <jdbc.user>${env.JTALKS_DB_USER}</jdbc.user>
-        <jdbc.pass>${env.JTALKS_DB_PASSWORD}</jdbc.pass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <headerBaseDir>${basedir}/../..</headerBaseDir>
     </properties>

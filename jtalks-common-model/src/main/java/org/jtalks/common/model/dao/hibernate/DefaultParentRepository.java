@@ -15,50 +15,39 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.model.dao;
+package org.jtalks.common.model.dao.hibernate;
 
-import org.jtalks.common.model.entity.Persistent;
-
+import org.hibernate.classic.Session;
+import org.jtalks.common.model.dao.ParentRepository;
+import org.jtalks.common.model.entity.Entity;
 
 /**
- * Basic Data Access Object interface.
- * Provides CRUD operations with {@link Persistent} objects.
- *
- * @author Pavel Vervenko
- * @see PostDao
- * @see TopicDao
- * @see UserDao
+ * @author Kirill Afonin
  */
-public interface Dao<T extends Persistent> {
+public class DefaultParentRepository<T extends Entity>
+        extends AbstractHibernateChildRepository<T> implements ParentRepository<T> {
+
+
+    private final String deleteQuery = "delete " + getType().getSimpleName() + " e where e.id= :id";
 
     /**
-     * Save or update the persistent object.
-     *
-     * @param persistent object to save
+     * {@inheritDoc}
      */
-    void saveOrUpdate(T persistent);
+    @Override
+    public void saveOrUpdate(T entity) {
+        Session session = getSession();
+        session.saveOrUpdate(entity);
+        session.flush();
+    }
 
     /**
-     * Delete the object by it's id.
-     *
-     * @param id the id
-     * @return {@code true} if entity deleted successfully
+     * {@inheritDoc}
      */
-    boolean delete(Long id);
-
-    /**
-     * Get the object by id.
-     *
-     * @param id the id
-     * @return loaded Persistence instance
-     */
-    T get(Long id);
-
-    /**
-     * Check entity existance by id.
-     *
-     * @param id entity id
-     * @return {@code true} if entity exist
-     */
-    boolean isExist(Long id);
+    @Override
+    public boolean delete(Long id) {
+        return getSession().createQuery(deleteQuery)
+                .setCacheable(true)
+                .setLong("id", id)
+                .executeUpdate() != 0;
+    }
 }

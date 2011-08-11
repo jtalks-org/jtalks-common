@@ -17,10 +17,13 @@
  */
 package org.jtalks.common.model.entity;
 
+import org.joda.time.DateTime;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,29 +33,36 @@ import java.util.Collection;
  *
  * @author Pavel Vervenko
  * @author Kirill Afonin
+ * @author Alexandre Teterin
  */
-public class User extends Persistent implements UserDetails {
-
-//    // temp user role to be used until authorization by role is not implemented
-//    private static GrantedAuthority roleUser = new GrantedAuthority() {
-//        @Override
-//        public String getAuthority() {
-//            return "ROLE_USER";
-//        }
-//    };
-//    // list of user roles. used by spring security
-//    private static Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-//
-//    static {
-//        authorities.add(roleUser);
-//    }
-
+public class User extends Entity implements UserDetails {
     private String lastName;
     private String firstName;
     private String username;
     private String email;
     private String password;
+    private DateTime lastLogin;
     private String role = "ROLE_USER";
+    private String encodedUsername;
+
+    /**
+     * Only for hibernate usage.
+     */
+    protected User() {
+    }
+
+    /**
+     * Create instance with requiered fields.
+     *
+     * @param username username
+     * @param email    email
+     * @param password password
+     */
+    public User(String username, String email, String password) {
+        this.setUsername(username);
+        this.email = email;
+        this.password = password;
+    }
 
     /**
      * Get the user's Last Name.
@@ -107,10 +117,17 @@ public class User extends Persistent implements UserDetails {
     }
 
     /**
+     * Set the username and encoded username (based on username)
+     *
      * @param username the username to set
      */
-    public void setUsername(String username) {
+    public final void setUsername(String username) {
         this.username = username;
+        try {
+            setEncodedUsername(URLEncoder.encode(username, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("Could not encode username", e);
+        }
     }
 
     /**
@@ -155,7 +172,7 @@ public class User extends Persistent implements UserDetails {
 
     //methods from UserDetails inteface, indicating that
     //user can or can't authenticate.
-    //we don't need this functionality now and users are always enabled
+    //we don't need this functional now and users always enabled
 
     /**
      * {@inheritDoc}
@@ -189,5 +206,42 @@ public class User extends Persistent implements UserDetails {
         return true;
     }
 
+    /**
+     * @return last login time  and date
+     */
+    public DateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    /**
+     * Set last login time and date.
+     *
+     * @param lastLogin last login time
+     */
+    public void setLastLogin(DateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
     private static final long serialVersionUID = 19981017L;
+
+    /**
+     * Updates login time to current time
+     */
+    public void updateLastLoginTime() {
+        this.lastLogin = new DateTime();
+    }
+
+    /**
+     * @return encoded username
+     */
+    public String getEncodedUsername() {
+        return encodedUsername;
+    }
+
+    /**
+     * @param encodedUsername encoded username to set
+     */
+    protected void setEncodedUsername(String encodedUsername) {
+        this.encodedUsername = encodedUsername;
+    }
 }
