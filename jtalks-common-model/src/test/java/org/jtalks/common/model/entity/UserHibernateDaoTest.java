@@ -126,6 +126,15 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
         assertEquals(userCount, 0);
     }
 
+	@Test
+	public void testDeleteUserByEntity() {
+		session.save(user);
+
+		dao.delete(user);
+
+		assertEquals(getCount(), 0);
+	}
+
     @Test
     public void testDeleteInvalidId() {
 

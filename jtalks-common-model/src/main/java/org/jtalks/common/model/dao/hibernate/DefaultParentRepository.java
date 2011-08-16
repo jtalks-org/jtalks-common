@@ -50,4 +50,13 @@ public class DefaultParentRepository<T extends Entity>
                 .setLong("id", id)
                 .executeUpdate() != 0;
     }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void delete(T entity)
+	{
+		getSession().delete(entity);
+	}
 }
