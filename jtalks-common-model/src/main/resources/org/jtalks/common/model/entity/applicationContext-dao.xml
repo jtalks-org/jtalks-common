@@ -16,12 +16,12 @@
     </aop:config>
 
     <!--Declaration of DAO beans -->
-    <bean id="userDAO"
-          class="org.jtalks.common.model.dao.hibernate.UserHibernateDAO"
-          parent="abstractHibernateDAO"/>
+    <bean id="userDao"
+          class="org.jtalks.common.model.dao.hibernate.UserHibernateDao"
+          parent="abstractHibernateDao"/>
     <!--Injecting sessionFactory bean to class AbstractHibernateChildRepository, this way
 resolves a problem of multiple DAO beans definition -->
-    <bean id="abstractHibernateDAO"
+    <bean id="abstractHibernateDao"
           class="org.jtalks.common.model.dao.hibernate.AbstractHibernateChildRepository"
           abstract="true">
         <property name="sessionFactory" ref="sessionFactory"/>
