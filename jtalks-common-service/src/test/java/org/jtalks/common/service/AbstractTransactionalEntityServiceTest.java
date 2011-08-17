@@ -15,22 +15,22 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-
 package org.jtalks.common.service;
 
-import org.jtalks.common.model.dao.Dao;
-import org.jtalks.common.model.entity.Persistent;
+import org.jtalks.common.model.dao.ChildRepository;
+import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.service.exceptions.NotFoundException;
 import org.jtalks.common.service.transactional.AbstractTransactionalEntityService;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class AbstractTransactionalEntityServiceTest {
     private class AbstractTransactionalEntityServiceObject extends AbstractTransactionalEntityService {
-        private AbstractTransactionalEntityServiceObject(Dao dao) {
+        private AbstractTransactionalEntityServiceObject(ChildRepository dao) {
             this.dao = dao;
         }
     }
@@ -38,14 +38,14 @@ public class AbstractTransactionalEntityServiceTest {
     private long ID = 1L;
 
     private AbstractTransactionalEntityService abstractTransactionalEntityService;
-    private Dao abstractDao;
-    private Persistent persistent;
+    private ChildRepository abstractDao;
+    private Entity entity;
 
     @BeforeMethod
     public void setUp() throws Exception {
-          abstractDao = mock(Dao.class);
-          persistent = mock(Persistent.class);
-          abstractTransactionalEntityService = new AbstractTransactionalEntityServiceObject(abstractDao);
+        abstractDao = mock(ChildRepository.class);
+        entity = mock(Entity.class);
+        abstractTransactionalEntityService = new AbstractTransactionalEntityServiceObject(abstractDao);
     }
 
 
@@ -55,16 +55,29 @@ public class AbstractTransactionalEntityServiceTest {
 
         abstractTransactionalEntityService.get(ID);
     }
-    
+
     @Test
     public void testGetCorrectId() throws NotFoundException {
         when(abstractDao.isExist(ID)).thenReturn(true);
-        when(abstractDao.get(ID)).thenReturn(persistent);
+        when(abstractDao.get(ID)).thenReturn(entity);
 
         abstractTransactionalEntityService.get(ID);
-                                         
+
         verify(abstractDao).isExist(ID);
         verify(abstractDao).get(ID);
     }
 
+    @Test
+    public void testIsExist() {
+        when(abstractDao.isExist(ID)).thenReturn(true);
+
+        assertTrue(abstractTransactionalEntityService.isExist(ID));
+    }
+
+    @Test
+    public void testIsNotExist() {
+        when(abstractDao.isExist(ID)).thenReturn(false);
+
+        assertFalse(abstractTransactionalEntityService.isExist(ID));
+    }
 }

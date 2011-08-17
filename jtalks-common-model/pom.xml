@@ -6,11 +6,11 @@
     <parent>
         <artifactId>jtalks-common</artifactId>
         <groupId>org.jtalks.common</groupId>
-        <version>0.5.1</version>
+        <version>0.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>jtalks-common-model</artifactId>
-    <version>0.5.1</version>
+    <version>0.5-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <url>http://maven.apache.org</url>
 
@@ -50,14 +50,17 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -83,9 +86,9 @@
         </dependency>
         <!-- EhCache -->
         <dependency>
-          <groupId>net.sf.ehcache</groupId>
-          <artifactId>ehcache-core</artifactId>
-          <version>2.4.0</version>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>2.4.0</version>
         </dependency>
     </dependencies>
 

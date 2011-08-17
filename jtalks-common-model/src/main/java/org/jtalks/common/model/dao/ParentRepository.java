@@ -17,29 +17,23 @@
  */
 package org.jtalks.common.model.dao;
 
-import org.jtalks.common.model.entity.Persistent;
-
+import org.jtalks.common.model.entity.Entity;
 
 /**
- * Basic Data Access Object interface.
- * Provides CRUD operations with {@link Persistent} objects.
- *
- * @author Pavel Vervenko
- * @see PostDao
- * @see TopicDao
- * @see UserDao
+ * @author Kirill Afonin
  */
-public interface Dao<T extends Persistent> {
+public interface ParentRepository<T extends Entity> extends ChildRepository<T> {
 
     /**
-     * Save or update the persistent object.
+     * Save or update entity.
      *
-     * @param persistent object to save
+     * @param entity object to save
      */
-    void saveOrUpdate(T persistent);
+    void saveOrUpdate(T entity);
 
     /**
-     * Delete the object by it's id.
+     * <p>Delete the entity by id.</p>
+     * <b>Please note - this method doesn't delete cascaded entities.</b>
      *
      * @param id the id
      * @return {@code true} if entity deleted successfully
@@ -47,18 +41,10 @@ public interface Dao<T extends Persistent> {
     boolean delete(Long id);
 
     /**
-     * Get the object by id.
+     * <p>Delete the entity by object reference.</p>
+     * <p>This method deletes all cascaded references.</p>
      *
-     * @param id the id
-     * @return loaded Persistence instance
+     * @param entity Entity to be deleted.
      */
-    T get(Long id);
-
-    /**
-     * Check entity existance by id.
-     *
-     * @param id entity id
-     * @return {@code true} if entity exist
-     */
-    boolean isExist(Long id);
+    void delete(T entity);
 }

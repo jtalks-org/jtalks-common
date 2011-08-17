@@ -15,13 +15,13 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.model.dao.hibernate;
+package org.jtalks.common.model.entity;
 
 import org.hibernate.Session;
-import org.jtalks.common.model.entity.User;
 
 /**
  * @author Kirill Afonin
+ * @author Alexandre Teterin
  */
 //TODO: split this class on 2: objects factory and persisted objects factory
 public final class ObjectsFactory {
@@ -39,12 +39,9 @@ public final class ObjectsFactory {
     }
 
     public static User getUser(String username, String email) {
-        User newUser = new User();
-        newUser.setEmail(email);
+        User newUser = new User(username, email, "password");
         newUser.setFirstName("first name");
         newUser.setLastName("last name");
-        newUser.setUsername(username);
-        newUser.setPassword("password");
         return newUser;
     }
 
