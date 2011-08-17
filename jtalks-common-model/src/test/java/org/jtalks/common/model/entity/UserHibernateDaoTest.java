@@ -126,14 +126,14 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
         assertEquals(userCount, 0);
     }
 
-	@Test
-	public void testDeleteUserByEntity() {
-		session.save(user);
+    @Test
+    public void testDeleteUserByEntity() {
+        session.save(user);
 
-		dao.delete(user);
+        dao.delete(user);
 
-		assertEquals(getCount(), 0);
-	}
+        assertEquals(getCount(), 0);
+    }
 
     @Test
     public void testDeleteInvalidId() {
@@ -230,8 +230,7 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
     }
 
     @Test
-    public void testUpdateLastLogin()
-    {
+    public void testUpdateLastLogin() {
         DateTime currentLastLogin = user.getLastLogin();
         user.updateLastLoginTime();
 
@@ -239,8 +238,7 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
     }
 
     @Test
-    public void testUpdateUser()
-    {
+    public void testUpdateUser() {
         DateTime currentLastLoginTime = user.getLastLogin();
         session.save(user);
         user.updateLastLoginTime();

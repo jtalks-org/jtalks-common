@@ -33,18 +33,18 @@ public interface ParentRepository<T extends Entity> extends ChildRepository<T> {
 
     /**
      * <p>Delete the entity by id.</p>
-	 * <b>Please note - this method doesn't delete cascaded entities.</b>
+     * <b>Please note - this method doesn't delete cascaded entities.</b>
      *
      * @param id the id
      * @return {@code true} if entity deleted successfully
      */
     boolean delete(Long id);
 
-	/**
-	 * <p>Delete the entity by object reference.</p>
-	 * <p>This method deletes all cascaded references.</p>
-	 *
-	 * @param entity Entity to be deleted.
-	 */
-	void delete(T entity);
+    /**
+     * <p>Delete the entity by object reference.</p>
+     * <p>This method deletes all cascaded references.</p>
+     *
+     * @param entity Entity to be deleted.
+     */
+    void delete(T entity);
 }

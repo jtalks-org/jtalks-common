@@ -20,7 +20,6 @@ package org.jtalks.common.model.dao;
 import org.jtalks.common.model.entity.Entity;
 
 /**
- *
  * @author Pavel Vervenko
  * @author Kirill Afonin
  */

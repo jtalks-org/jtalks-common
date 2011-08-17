@@ -33,9 +33,9 @@ public class UserHibernateDao extends DefaultParentRepository<User> implements U
     @Override
     public User getByUsername(String username) {
         return (User) getSession()
-                .createQuery("from User u where u.username = ?")
-                .setString(0, username)
-                .uniqueResult();
+              .createQuery("from User u where u.username = ?")
+              .setString(0, username)
+              .uniqueResult();
     }
 
     /**
@@ -44,9 +44,9 @@ public class UserHibernateDao extends DefaultParentRepository<User> implements U
     @Override
     public boolean isUserWithUsernameExist(String username) {
         return ((Number) getSession()
-                .createQuery("select count(*) from User u where u.username = ?")
-                .setString(0, username)
-                .uniqueResult()).intValue() != 0;
+              .createQuery("select count(*) from User u where u.username = ?")
+              .setString(0, username)
+              .uniqueResult()).intValue() != 0;
     }
 
     /**
@@ -55,8 +55,8 @@ public class UserHibernateDao extends DefaultParentRepository<User> implements U
     @Override
     public boolean isUserWithEmailExist(String email) {
         return ((Number) getSession()
-                .createQuery("select count(*) from User u where u.email = ?")
-                .setString(0, email)
-                .uniqueResult()).intValue() != 0;
+              .createQuery("select count(*) from User u where u.email = ?")
+              .setString(0, email)
+              .uniqueResult()).intValue() != 0;
     }
 }

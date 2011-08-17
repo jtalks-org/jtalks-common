@@ -35,7 +35,8 @@ public class NotFoundExceptionTest {
     public void testConstructorWithoutArguments() {
         try {
             throw new NotFoundException();
-        } catch (NotFoundException e) {
+        }
+        catch (NotFoundException e) {
             assertEquals(null, e.getLocalizedMessage());
         }
     }
@@ -46,7 +47,8 @@ public class NotFoundExceptionTest {
 
         try {
             throw new NotFoundException(message);
-        } catch (NotFoundException e) {
+        }
+        catch (NotFoundException e) {
             assertEquals(message, e.getLocalizedMessage());
         }
     }
