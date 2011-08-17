@@ -15,12 +15,12 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.model.dao.hibernate;
+package org.jtalks.common.model.entity;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.joda.time.DateTime;
 import org.jtalks.common.model.dao.UserDao;
-import org.jtalks.common.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
@@ -107,7 +107,7 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
         assertEquals(result.getFirstName(), newName);
     }
 
-    @Test(expectedExceptions = DataIntegrityViolationException.class)
+    @Test(expectedExceptions = Exception.class)
     public void testUpdateNotNullViolation() {
         session.save(user);
         user.setUsername(null);
@@ -124,6 +124,15 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
         assertTrue(result, "Entity is not deleted");
         assertEquals(userCount, 0);
+    }
+
+    @Test
+    public void testDeleteUserByEntity() {
+        session.save(user);
+
+        dao.delete(user);
+
+        assertEquals(getCount(), 0);
     }
 
     @Test
@@ -218,6 +227,24 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
     @Test
     public void testUserEnabled() {
         assertTrue(user.isEnabled());
+    }
+
+    @Test
+    public void testUpdateLastLogin() {
+        DateTime currentLastLogin = user.getLastLogin();
+        user.updateLastLoginTime();
+
+        assertNotSame(user.getLastLogin(), currentLastLogin);
+    }
+
+    @Test
+    public void testUpdateUser() {
+        DateTime currentLastLoginTime = user.getLastLogin();
+        session.save(user);
+        user.updateLastLoginTime();
+        dao.update(user);
+
+        assertNotSame(user.getLastLogin(), currentLastLoginTime);
     }
 
     private int getCount() {

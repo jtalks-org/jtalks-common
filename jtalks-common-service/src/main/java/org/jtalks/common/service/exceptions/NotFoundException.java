@@ -35,7 +35,7 @@ public class NotFoundException extends Exception {
 
     /**
      * Create exception with specific message.
-     *
+     * <p/>
      * {@link Exception}
      */
     public NotFoundException() {

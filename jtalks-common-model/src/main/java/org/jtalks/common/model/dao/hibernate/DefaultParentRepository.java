@@ -17,46 +17,45 @@
  */
 package org.jtalks.common.model.dao.hibernate;
 
-import org.jtalks.common.model.dao.UserDao;
-import org.jtalks.common.model.entity.User;
+import org.hibernate.classic.Session;
+import org.jtalks.common.model.dao.ParentRepository;
+import org.jtalks.common.model.entity.Entity;
 
 /**
- * Hibernate implementation of UserDao.
- *
- * @author Pavel Vervenko
  * @author Kirill Afonin
  */
-public class UserHibernateDao extends DefaultParentRepository<User> implements UserDao {
+public class DefaultParentRepository<T extends Entity>
+      extends AbstractHibernateChildRepository<T> implements ParentRepository<T> {
+
+
+    private final String deleteQuery = "delete " + getType().getSimpleName() + " e where e.id= :id";
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public User getByUsername(String username) {
-        return (User) getSession()
-              .createQuery("from User u where u.username = ?")
-              .setString(0, username)
-              .uniqueResult();
+    public void saveOrUpdate(T entity) {
+        Session session = getSession();
+        session.saveOrUpdate(entity);
+        session.flush();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isUserWithUsernameExist(String username) {
-        return ((Number) getSession()
-              .createQuery("select count(*) from User u where u.username = ?")
-              .setString(0, username)
-              .uniqueResult()).intValue() != 0;
+    public boolean delete(Long id) {
+        return getSession().createQuery(deleteQuery)
+              .setCacheable(true)
+              .setLong("id", id)
+              .executeUpdate() != 0;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isUserWithEmailExist(String email) {
-        return ((Number) getSession()
-              .createQuery("select count(*) from User u where u.email = ?")
-              .setString(0, email)
-              .uniqueResult()).intValue() != 0;
+    public void delete(T entity) {
+        getSession().delete(entity);
     }
 }

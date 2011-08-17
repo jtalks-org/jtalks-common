@@ -19,13 +19,13 @@ package org.jtalks.common.model.dao.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
-import org.jtalks.common.model.dao.Dao;
-import org.jtalks.common.model.entity.Persistent;
+import org.jtalks.common.model.dao.ChildRepository;
+import org.jtalks.common.model.entity.Entity;
 
 import java.lang.reflect.ParameterizedType;
 
 /**
- * Basic class for access to the {@link Persistent} objects.
+ * Basic class for access to the {@link Entity} objects.
  * Uses to load objects from database, save, update or delete them.
  * The implementation is based on the Hibernate.
  * Has the implementation of some commonly used methods.
@@ -33,7 +33,7 @@ import java.lang.reflect.ParameterizedType;
  * @author Pavel Vervenko
  * @author Kirill Afonin
  */
-public abstract class AbstractHibernateDao<T extends Persistent> implements Dao<T> {
+public abstract class AbstractHibernateChildRepository<T extends Entity> implements ChildRepository<T> {
 
     /**
      * Hibernate SessionFactory
@@ -51,12 +51,11 @@ public abstract class AbstractHibernateDao<T extends Persistent> implements Dao<
      * @return type of entity
      */
     @SuppressWarnings("unchecked")
-    private Class<T> getType() {
+    protected Class<T> getType() {
         return (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[0];
+              .getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    private final String deleteQuery = "delete " + type.getSimpleName() + " e where e.id= :id";
 
     /**
      * Get current Hibernate session.
@@ -80,20 +79,10 @@ public abstract class AbstractHibernateDao<T extends Persistent> implements Dao<
      * {@inheritDoc}
      */
     @Override
-    public void saveOrUpdate(T entity) {
+    public void update(T entity) {
         Session session = getSession();
         session.saveOrUpdate(entity);
         session.flush();   //TODO: WOW, this shouldn't be here, it's related only to tests,
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean delete(Long id) {
-        return getSession().createQuery(deleteQuery)
-                .setLong("id", id)
-                .executeUpdate() != 0;
     }
 
     /**

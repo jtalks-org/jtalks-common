@@ -15,45 +15,37 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.service.transactional;
+package org.jtalks.common.model.dao;
 
-import org.jtalks.common.model.dao.ChildRepository;
 import org.jtalks.common.model.entity.Entity;
-import org.jtalks.common.service.EntityService;
-import org.jtalks.common.service.exceptions.NotFoundException;
-
 
 /**
- * Generic implementation of all entity based services.
- * Most of the implementations of the methods are basing on straightforward calls
- * of the same named method from DAO interface.
- *
- * @author Osadchuck Eugeny
+ * @author Pavel Vervenko
  * @author Kirill Afonin
  */
-public abstract class AbstractTransactionalEntityService<T extends Entity, Y extends ChildRepository<T>>
-      implements EntityService<T> {
-    /**
-     * Dao object implementation.
-     */
-    protected Y dao;
+public interface ChildRepository<T extends Entity> {
 
     /**
-     * {@inheritDoc}
+     * Update entity.
+     * You should not try to save entity using this method.
+     *
+     * @param entity object to save
      */
-    @Override
-    public T get(Long id) throws NotFoundException {
-        if (!dao.isExist(id)) {
-            throw new NotFoundException("Entity with id: " + id + " not found");
-        }
-        return dao.get(id);
-    }
+    void update(T entity);
 
     /**
-     * {@inheritDoc}
+     * Get entity by id.
+     *
+     * @param id the id
+     * @return loaded Persistence instance
      */
-    @Override
-    public boolean isExist(long id) {
-        return dao.isExist(id);
-    }
+    T get(Long id);
+
+    /**
+     * Check entity existance by id.
+     *
+     * @param id entity id
+     * @return {@code true} if entity exist
+     */
+    boolean isExist(Long id);
 }
