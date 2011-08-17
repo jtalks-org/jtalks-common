@@ -39,4 +39,12 @@ public interface EntityService<T extends Entity> {
      * @throws NotFoundException when entity not found
      */
     T get(Long id) throws NotFoundException;
+
+    /**
+     * This method checks if such article exists.
+     *
+     * @param id Id of the article
+     * @return <code>true</code> if such article exists;<br /><code>false</code> otherwise.
+     */
+    boolean isExist(long id);
 }

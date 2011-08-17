@@ -48,4 +48,12 @@ public abstract class AbstractTransactionalEntityService<T extends Entity, Y ext
         }
         return dao.get(id);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isExist(long id) {
+        return dao.isExist(id);
+    }
 }

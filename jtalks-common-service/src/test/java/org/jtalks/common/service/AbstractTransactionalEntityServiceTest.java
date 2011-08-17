@@ -25,7 +25,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class AbstractTransactionalEntityServiceTest {
     private class AbstractTransactionalEntityServiceObject extends AbstractTransactionalEntityService {
@@ -42,9 +43,9 @@ public class AbstractTransactionalEntityServiceTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-          abstractDao = mock(ChildRepository.class);
-          entity = mock(Entity.class);
-          abstractTransactionalEntityService = new AbstractTransactionalEntityServiceObject(abstractDao);
+        abstractDao = mock(ChildRepository.class);
+        entity = mock(Entity.class);
+        abstractTransactionalEntityService = new AbstractTransactionalEntityServiceObject(abstractDao);
     }
 
 
@@ -66,4 +67,17 @@ public class AbstractTransactionalEntityServiceTest {
         verify(abstractDao).get(ID);
     }
 
+    @Test
+    public void testIsExist() {
+        when(abstractDao.isExist(ID)).thenReturn(true);
+
+        assertTrue(abstractTransactionalEntityService.isExist(ID));
+    }
+
+    @Test
+    public void testIsNotExist() {
+        when(abstractDao.isExist(ID)).thenReturn(false);
+
+        assertFalse(abstractTransactionalEntityService.isExist(ID));
+    }
 }
