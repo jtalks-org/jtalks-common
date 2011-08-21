@@ -6,11 +6,11 @@
     <parent>
         <artifactId>jtalks-common</artifactId>
         <groupId>org.jtalks.common</groupId>
-        <version>0.5.2</version>
+        <version>0.5.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>jtalks-common-model</artifactId>
-    <version>0.5.2</version>
+    <version>0.5.3-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <url>http://maven.apache.org</url>
 
@@ -89,6 +89,11 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
             <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.flyway</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>1.4.2</version>
         </dependency>
     </dependencies>
 
