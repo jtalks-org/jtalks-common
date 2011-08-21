@@ -25,7 +25,7 @@ import org.jtalks.common.model.entity.Entity;
  * @author Kirill Afonin
  */
 public class DefaultParentRepository<T extends Entity>
-      extends AbstractHibernateChildRepository<T> implements ParentRepository<T> {
+    extends AbstractHibernateChildRepository<T> implements ParentRepository<T> {
 
 
     private final String deleteQuery = "delete " + getType().getSimpleName() + " e where e.id= :id";
@@ -46,9 +46,9 @@ public class DefaultParentRepository<T extends Entity>
     @Override
     public boolean delete(Long id) {
         return getSession().createQuery(deleteQuery)
-              .setCacheable(true)
-              .setLong("id", id)
-              .executeUpdate() != 0;
+            .setCacheable(true)
+            .setLong("id", id)
+            .executeUpdate() != 0;
     }
 
     /**

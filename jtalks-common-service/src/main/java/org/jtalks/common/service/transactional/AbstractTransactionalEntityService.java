@@ -32,7 +32,7 @@ import org.jtalks.common.service.exceptions.NotFoundException;
  * @author Kirill Afonin
  */
 public abstract class AbstractTransactionalEntityService<T extends Entity, Y extends ChildRepository<T>>
-      implements EntityService<T> {
+    implements EntityService<T> {
     /**
      * Dao object implementation.
      */

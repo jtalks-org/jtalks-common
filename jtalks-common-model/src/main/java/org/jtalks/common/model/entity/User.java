@@ -125,8 +125,7 @@ public class User extends Entity implements UserDetails {
         this.username = username;
         try {
             setEncodedUsername(URLEncoder.encode(username, "UTF-8"));
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("Could not encode username", e);
         }
     }
@@ -242,7 +241,7 @@ public class User extends Entity implements UserDetails {
     /**
      * @param encodedUsername encoded username to set
      */
-    protected void setEncodedUsername(String encodedUsername) {
+    private void setEncodedUsername(String encodedUsername) {
         this.encodedUsername = encodedUsername;
     }
 }
