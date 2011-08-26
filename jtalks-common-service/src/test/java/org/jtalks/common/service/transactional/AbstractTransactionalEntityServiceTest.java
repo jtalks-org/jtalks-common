@@ -15,7 +15,7 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.service;
+package org.jtalks.common.service.transactional;
 
 import org.jtalks.common.model.dao.ChildRepository;
 import org.jtalks.common.model.entity.Entity;
