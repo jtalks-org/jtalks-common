@@ -44,6 +44,7 @@ public class User extends Entity implements UserDetails {
     private DateTime lastLogin;
     private String role = "ROLE_USER";
     private String encodedUsername;
+    private byte[] avatar;
 
     /**
      * Only for hibernate usage.
@@ -125,7 +126,8 @@ public class User extends Entity implements UserDetails {
         this.username = username;
         try {
             setEncodedUsername(URLEncoder.encode(username, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
+        }
+        catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("Could not encode username", e);
         }
     }
@@ -144,6 +146,19 @@ public class User extends Entity implements UserDetails {
         this.role = role;
     }
 
+    /**
+     * @return user avatar
+     */
+    public byte[] getAvatar() {
+        return (avatar != null) ? avatar.clone() : avatar;
+    }
+
+    /**
+     * @param avatar user avatar
+     */
+    public void setAvatar(byte[] avatar) {
+        this.avatar = (avatar != null) ? avatar.clone() : null;
+    }
 
     /**
      * @return collection of user roles
@@ -218,7 +233,7 @@ public class User extends Entity implements UserDetails {
      *
      * @param lastLogin last login time
      */
-    public void setLastLogin(DateTime lastLogin) {
+    protected void setLastLogin(DateTime lastLogin) {
         this.lastLogin = lastLogin;
     }
 
@@ -241,7 +256,7 @@ public class User extends Entity implements UserDetails {
     /**
      * @param encodedUsername encoded username to set
      */
-    private void setEncodedUsername(String encodedUsername) {
+    protected void setEncodedUsername(String encodedUsername) {
         this.encodedUsername = encodedUsername;
     }
 }
