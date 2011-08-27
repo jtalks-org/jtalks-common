@@ -25,12 +25,12 @@
             <dependency>
                 <groupId>org.jtalks.common</groupId>
                 <artifactId>jtalks-common-model</artifactId>
-                <version>${common.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jtalks.common</groupId>
                 <artifactId>jtalks-common-service</artifactId>
-                <version>${common.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <!-- Hibernate -->
@@ -270,8 +270,26 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <scm>
+        <connection>scm:git:git@jtalks.org:jtalks-common</connection>
+        <developerConnection>scm:git:git@jtalks.org:jtalks-common</developerConnection>
+        <url>scm:git:git@jtalks.org:jtalks-common</url>
+    </scm>
+
     <properties>
-        <common.version>${project.version}</common.version>
+        <project.version>${project.version}</project.version>
         <hibernateVersion>3.3.2.GA</hibernateVersion>
         <springVersion>3.0.5.RELEASE</springVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

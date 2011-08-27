@@ -17,7 +17,7 @@
         <dependency>
             <groupId>org.jtalks.common</groupId>
             <artifactId>jtalks-common-model</artifactId>
-            <version>${common.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
