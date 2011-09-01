@@ -20,3 +20,7 @@ nbproject
 # Always ignore these directories/files
 target
 logs
+
+# Maven release plugin files
+release.properties
+pom.xml.releaseBackup
