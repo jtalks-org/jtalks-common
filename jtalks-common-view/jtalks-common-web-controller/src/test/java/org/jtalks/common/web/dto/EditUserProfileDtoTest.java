@@ -15,6 +15,7 @@ public class EditUserProfileDtoTest {
 
     @Test
     public void testGetNewPasswordConfirmation() {
+
         String confirmation = "password confirmation";
         EditUserProfileDto sut = new EditUserProfileDto();
         sut.setNewUserPasswordConfirm(confirmation);
