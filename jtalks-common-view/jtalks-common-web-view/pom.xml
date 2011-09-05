@@ -11,4 +11,7 @@
     <packaging>war</packaging>
 
 
+    <properties>
+        <headerBaseDir>${basedir}/../../..</headerBaseDir>
+    </properties>
 </project>
