@@ -32,12 +32,12 @@
         <!--<security:intercept-url pattern="/branch/*/topic/*/answer.html" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>-->
         <!--<security:intercept-url pattern="/branch/*/topic/*/post/*/delete.html"-->
         <!--access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>-->
-        <security:intercept-url pattern="*" access="permitAll"/>
+        <security:intercept-url pattern="/**" access="permitAll"/>
         <security:form-login login-page="/login.html" login-processing-url="/j_spring_security_check"
                              authentication-failure-url="/login.html?login_error=1" default-target-url="/"
                              authentication-success-handler-ref="successAuthHandler"/>
         <security:logout logout-url="/logout.html" logout-success-url="/"/>
-        <security:remember-me user-service-ref="securityService" key="JTalks"/>
+        <security:remember-me user-service-ref="securityService" key="Antarcticle"/>
     </security:http>
 
     <bean id="successAuthHandler" class="org.jtalks.common.web.util.SuccessfulAuthenticationHandler">
