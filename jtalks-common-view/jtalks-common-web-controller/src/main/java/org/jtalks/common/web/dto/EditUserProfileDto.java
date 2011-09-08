@@ -29,7 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author Osadchuck Eugeny
  */
-@Matches(field = "newUserPassword", verifyField = "newUserPasswordConfirm", message = "{password_not_matches}")
+@Matches(field = "newUserPassword", verifyField = "newUserPasswordConfirm",
+         message = "{validation.password.not_matches}")
 public class EditUserProfileDto extends UserDto {
 
     private String currentUserPassword;
