@@ -18,11 +18,13 @@
 package org.jtalks.common.util;
 
 import com.googlecode.flyway.core.Flyway;
+import com.googlecode.flyway.core.exception.FlywayException;
 
 /**
- * Wrapper that allows disabling flyway migrations.
+ * Wrapper that allows disabling flyway migrations, schema cleanup and initialization.
  *
  * @author Kirill Afonin
+ * @author Alexey Malev
  */
 public class FlywayWrapper extends Flyway {
     private boolean enabled = true;
@@ -46,5 +48,25 @@ public class FlywayWrapper extends Flyway {
             return super.migrate();
         }
         return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clean() {
+        if (this.enabled) {
+            super.clean();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void init() throws FlywayException {
+        if (this.enabled) {
+            super.init();
+        }
     }
 }
