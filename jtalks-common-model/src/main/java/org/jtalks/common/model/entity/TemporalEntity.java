@@ -31,18 +31,28 @@ public abstract class TemporalEntity extends Entity {
     private DateTime creationDate;
     private DateTime modificationDate;
 
-    public TemporalEntity() {
-        DateTime entityCreationDate = new DateTime();
+    /**
+     * Protected constructor for Hibernate.
+     */
+    protected TemporalEntity() {
 
-        this.creationDate = entityCreationDate;
-        this.modificationDate = entityCreationDate;
+    }
+
+    /**
+     * This constructor creates an entity using provided date as creation and modification date.
+     *
+     * @param creationDate Creation/modification date of an entity.
+     */
+    public TemporalEntity(DateTime creationDate) {
+        this.creationDate = creationDate;
+        this.modificationDate = creationDate;
     }
 
     /**
      * This method updates entity modification date to current date.
      */
     public final void updateModificationDate() {
-        this.modificationDate = new DateTime();
+        this.setModificationDate(new DateTime());
     }
 
     /**
@@ -51,7 +61,7 @@ public abstract class TemporalEntity extends Entity {
      * @return Date when entity was created.
      */
     public DateTime getCreationDate() {
-        return this.creationDate;
+        return creationDate;
     }
 
     /**
@@ -70,7 +80,7 @@ public abstract class TemporalEntity extends Entity {
      * @return Last modification date of the entity.
      */
     public DateTime getModificationDate() {
-        return this.modificationDate;
+        return modificationDate;
     }
 
     /**

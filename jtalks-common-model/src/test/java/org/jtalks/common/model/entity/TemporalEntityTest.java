@@ -33,7 +33,9 @@ import static org.testng.Assert.*;
 public class TemporalEntityTest {
 
     private class SomeEntity extends TemporalEntity {
-
+        public SomeEntity() {
+            super(new DateTime());
+        }
     }
 
     private SomeEntity sut;
