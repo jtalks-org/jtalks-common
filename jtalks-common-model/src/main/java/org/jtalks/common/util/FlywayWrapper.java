@@ -20,6 +20,10 @@ package org.jtalks.common.util;
 import com.googlecode.flyway.core.Flyway;
 import com.googlecode.flyway.core.exception.FlywayException;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Wrapper that allows disabling flyway migrations, schema cleanup and initialization.
  *
@@ -27,11 +31,11 @@ import com.googlecode.flyway.core.exception.FlywayException;
  * @author Alexey Malev
  */
 public class FlywayWrapper extends Flyway {
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     /**
-     * Can be used for disabling/enabling migrations.
-     * Migrations enabled by default.
+     * Can be used for disabling/enabling migrations and init.
+     * They are disabled by default.
      *
      * @param enabled is migrations enabled
      */
@@ -51,22 +55,38 @@ public class FlywayWrapper extends Flyway {
     }
 
     /**
-     * {@inheritDoc}
+     * <p>This method performs {@link Flyway#init()} if there is no metadata table in the specified schema and if
+     * smartInit()
+     * is enabled.</p>
+     * <p><b>It is strongly recommended to disable this in production usage.</b></p>
+     *
+     * @throws FlywayException Any {@link SQLException} thrown inside the method is wrapped into {@link FlywayException}
      */
-    @Override
-    public void clean() {
+    public void smartInit() throws FlywayException {
         if (this.enabled) {
-            super.clean();
-        }
-    }
+            String query = "select 1 from " + this.getTable();
+            try {
+                Connection connection = this.getDataSource().getConnection();
+                try {
+                    Statement checkTableExistenceStatement = connection.createStatement();
+                    try {
+                        checkTableExistenceStatement.executeQuery(query);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void init() throws FlywayException {
-        if (this.enabled) {
-            super.init();
+                    } catch (SQLException e) {
+                        //exception handling used as a fork - there is no other way to unify table existence check for
+                        //different DMBS.
+
+                        //if the query has thrown an exception - there is no table in schema
+                        super.init();
+                    } finally {
+                        checkTableExistenceStatement.close();
+                    }
+                } finally {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new FlywayException(e.getLocalizedMessage(), e);
+            }
         }
     }
 }
