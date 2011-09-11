@@ -10,13 +10,14 @@
     <packaging>pom</packaging>
     <groupId>org.jtalks.common</groupId>
     <artifactId>jtalks-common</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.6-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <url>http://maven.apache.org</url>
 
     <modules>
         <module>jtalks-common-model</module>
         <module>jtalks-common-service</module>
+        <module>jtalks-common-view</module>
     </modules>
 
     <dependencyManagement>
@@ -25,12 +26,17 @@
             <dependency>
                 <groupId>org.jtalks.common</groupId>
                 <artifactId>jtalks-common-model</artifactId>
-                <version>${common.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jtalks.common</groupId>
                 <artifactId>jtalks-common-service</artifactId>
-                <version>${common.version}</version>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jtalks.common</groupId>
+                <artifactId>jtalks-common-view</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <!-- Hibernate -->
@@ -58,7 +64,7 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>4.0.2.GA</version>
+                <version>4.1.0.Final</version>
                 <type>jar</type>
                 <scope>compile</scope>
             </dependency>
@@ -134,8 +140,6 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>${springVersion}</version>
-                <type>jar</type>
-                <scope>compile</scope>
             </dependency>
             <!-- Spring Security -->
             <dependency>
@@ -208,7 +212,7 @@
             <dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
-                <version>1.8.0.10</version>
+                <version>2.2.4</version>
                 <scope>test</scope>
             </dependency>
             <!--Servlet & JSP-->
@@ -248,6 +252,17 @@
                 <type>jar</type>
                 <scope>compile</scope>
             </dependency>
+
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>1.2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.0.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -270,8 +285,27 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <scm>
+        <connection>scm:git:git@jtalks.org:jtalks-common</connection>
+        <developerConnection>scm:git:git@jtalks.org:jtalks-common</developerConnection>
+        <url>scm:git:git@jtalks.org:jtalks-common</url>
+    </scm>
+
     <properties>
-        <common.version>${project.version}</common.version>
+        <project.version>${project.version}</project.version>
         <hibernateVersion>3.3.2.GA</hibernateVersion>
         <springVersion>3.0.5.RELEASE</springVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

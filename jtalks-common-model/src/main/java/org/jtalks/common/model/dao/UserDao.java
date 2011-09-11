@@ -48,6 +48,15 @@ public interface UserDao extends ParentRepository<User> {
     boolean isUserWithUsernameExist(String username);
 
     /**
+     * Get {@link User} with corresponding encodedUsername.
+     *
+     * @param encodedUsername encoded name of requested user.
+     * @return {@link User} with given encodedUsername.
+     * @see User
+     */
+    User getByEncodedUsername(String encodedUsername);
+
+    /**
      * Check if {@link User} with given email exist.
      *
      * @param email email
