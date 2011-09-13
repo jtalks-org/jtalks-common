@@ -21,6 +21,7 @@ import com.googlecode.flyway.core.Flyway;
 import com.googlecode.flyway.core.exception.FlywayException;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -56,35 +57,38 @@ public class FlywayWrapper extends Flyway {
 
     /**
      * <p>This method performs {@link Flyway#init()} if there is no metadata table in the specified schema and if
-     * smartInit()
-     * is enabled.</p>
+     * <code>smartInit()</code> is enabled.</p>
      * <p><b>It is strongly recommended to disable this in production usage.</b></p>
      *
      * @throws FlywayException Any {@link SQLException} thrown inside the method is wrapped into {@link FlywayException}
      */
     public void smartInit() throws FlywayException {
         if (this.enabled) {
-            String query = "select 1 from " + this.getTable();
+            String query = "show tables like '" + this.getTable() + "'";
             try {
                 Connection connection = this.getDataSource().getConnection();
                 try {
                     Statement checkTableExistenceStatement = connection.createStatement();
                     try {
-                        checkTableExistenceStatement.executeQuery(query);
-
-                    } catch (SQLException e) {
-                        //exception handling used as a fork - there is no other way to unify table existence check for
-                        //different DMBS.
-
-                        //if the query has thrown an exception - there is no table in schema
-                        super.init();
-                    } finally {
+                        ResultSet fetchedTableNames = checkTableExistenceStatement.executeQuery(query);
+                        try {
+                            if (!fetchedTableNames.next()) {
+                                super.init();
+                            }
+                        }
+                        finally {
+                            fetchedTableNames.close();
+                        }
+                    }
+                    finally {
                         checkTableExistenceStatement.close();
                     }
-                } finally {
+                }
+                finally {
                     connection.close();
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
                 throw new FlywayException(e.getLocalizedMessage(), e);
             }
         }
