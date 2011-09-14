@@ -19,19 +19,16 @@ package org.jtalks.common.util;
 
 import com.googlecode.flyway.core.Flyway;
 import com.googlecode.flyway.core.exception.FlywayException;
-import org.mockito.Matchers;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 
@@ -81,7 +78,8 @@ public class FlywayWrapperTest {
             sut.smartInit();
 
             verify(dataSource, times(0)).getConnection();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
         }
     }
@@ -94,11 +92,10 @@ public class FlywayWrapperTest {
             Connection connection = mock(Connection.class);
             when(dataSource.getConnection()).thenReturn(connection);
             Statement statement = mock(Statement.class);
-
-            when(statement.executeQuery(any(String.class))).thenReturn(null);
+            ResultSet resultSet = mock(ResultSet.class);
+            when(resultSet.next()).thenReturn(true);
+            when(statement.executeQuery(any(String.class))).thenReturn(resultSet);
             when(connection.createStatement()).thenReturn(statement);
-
-            doNothing().when(sut).init();
 
             sut.setDataSource(dataSource);
             sut.setTable("table");
@@ -108,7 +105,8 @@ public class FlywayWrapperTest {
 
             verify(dataSource, times(1)).getConnection();
             verify((Flyway) sut, times(0)).init();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
         }
     }
@@ -120,8 +118,9 @@ public class FlywayWrapperTest {
             Connection connection = mock(Connection.class);
             when(dataSource.getConnection()).thenReturn(connection);
             Statement statement = mock(Statement.class);
-
-            when(statement.executeQuery(any(String.class))).thenThrow(new SQLException("thrown as no table found"));
+            ResultSet resultSet = mock(ResultSet.class);
+            when(resultSet.next()).thenReturn(false);
+            when(statement.executeQuery(any(String.class))).thenReturn(resultSet);
             when(connection.createStatement()).thenReturn(statement);
 
             sut.setDataSource(dataSource);
@@ -129,7 +128,9 @@ public class FlywayWrapperTest {
             sut.setEnabled(true);
 
             sut.smartInit();
-        } catch (SQLException e) {
+            verify((Flyway) sut, times(1)).init();
+        }
+        catch (SQLException e) {
             throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
         }
     }
@@ -145,7 +146,8 @@ public class FlywayWrapperTest {
             sut.setEnabled(true);
 
             sut.smartInit();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
         }
     }
