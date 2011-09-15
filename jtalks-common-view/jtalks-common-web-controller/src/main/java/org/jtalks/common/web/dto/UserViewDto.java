@@ -94,7 +94,7 @@ public class UserViewDto {
      * Get last login date
      * @return
      */
-    public DateTime gelLastLogin() {
+    public DateTime getLastLogin() {
         return lastLogin;
     }
 }

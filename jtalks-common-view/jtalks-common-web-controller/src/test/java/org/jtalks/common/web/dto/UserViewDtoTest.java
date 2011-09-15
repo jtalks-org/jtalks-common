@@ -99,6 +99,6 @@ public class UserViewDtoTest {
 
         userViewDto = new UserViewDto(user);
 
-        assertEquals(userViewDto.gelLastLogin(), lastLoginDate);
+        assertEquals(userViewDto.getLastLogin(), lastLoginDate);
     }
 }
