@@ -35,6 +35,7 @@ public class UserViewDto {
     private String encodedUsername;
     private String email;
     private DateTime lastLogin;
+    private byte[] avatar;
 
     public UserViewDto(User user) {
         firstName = user.getFirstName();
@@ -43,6 +44,7 @@ public class UserViewDto {
         encodedUsername = user.getEncodedUsername();
         email = user.getEmail();
         lastLogin = user.getLastLogin();
+        avatar = user.getAvatar();
     }
 
     /**
@@ -96,5 +98,13 @@ public class UserViewDto {
      */
     public DateTime getLastLogin() {
         return lastLogin;
+    }
+
+    /**
+     * Get user's avatar
+     * @return
+     */
+    public byte[] getAvatar() {
+        return avatar;
     }
 }

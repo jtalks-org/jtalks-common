@@ -101,4 +101,14 @@ public class UserViewDtoTest {
 
         assertEquals(userViewDto.getLastLogin(), lastLoginDate);
     }
+
+    @Test
+    public void testGetUserAvatar() {
+        byte[] avatar = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        when(user.getAvatar()).thenReturn(avatar);
+
+        userViewDto = new UserViewDto(user);
+
+        assertTrue(userViewDto.getAvatar() == avatar);
+    }
 }
