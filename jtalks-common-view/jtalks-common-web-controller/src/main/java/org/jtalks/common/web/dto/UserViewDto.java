@@ -109,6 +109,6 @@ public class UserViewDto {
      * @return user's avatar
      */
     public byte[] getAvatar() {
-        return (avatar != null) ? avatar.clone() : avatar;
+        return (avatar != null) ? avatar.clone() : null;
     }
 }
