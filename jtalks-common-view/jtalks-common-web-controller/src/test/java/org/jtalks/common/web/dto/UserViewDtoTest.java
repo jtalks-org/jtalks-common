@@ -22,6 +22,8 @@ import org.jtalks.common.model.entity.User;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
@@ -109,6 +111,6 @@ public class UserViewDtoTest {
 
         userViewDto = new UserViewDto(user);
 
-        assertTrue(userViewDto.getAvatar() == avatar);
+        assertTrue(Arrays.equals(userViewDto.getAvatar(), avatar));
     }
 }

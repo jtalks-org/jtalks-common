@@ -37,6 +37,10 @@ public class UserViewDto {
     private DateTime lastLogin;
     private byte[] avatar;
 
+    /**
+     * Constructor which fill DTO fields from User entity
+     * @param user User entity
+     */
     public UserViewDto(User user) {
         firstName = user.getFirstName();
         lastName = user.getLastName();
@@ -49,7 +53,7 @@ public class UserViewDto {
 
     /**
      * Get user's first name
-     * @return
+     * @return First name of user
      */
     public String getFirstName()
     {
@@ -58,7 +62,7 @@ public class UserViewDto {
 
     /**
      * Get user's last name
-     * @return
+     * @return Last name of user
      */
     public String getLastName()
     {
@@ -67,7 +71,7 @@ public class UserViewDto {
 
     /**
      * Get username
-     * @return
+     * @return username of user
      */
     public String getUsername()
     {
@@ -76,7 +80,7 @@ public class UserViewDto {
 
     /**
      * Get encoded username
-     * @return
+     * @return encoded username of user
      */
     public String getEncodedUsername()
     {
@@ -85,7 +89,7 @@ public class UserViewDto {
 
     /**
      * Get email
-     * @return
+     * @return user's email
      */
     public String getEmail()
     {
@@ -94,7 +98,7 @@ public class UserViewDto {
 
     /**
      * Get last login date
-     * @return
+     * @return user's date of last login
      */
     public DateTime getLastLogin() {
         return lastLogin;
@@ -102,9 +106,9 @@ public class UserViewDto {
 
     /**
      * Get user's avatar
-     * @return
+     * @return user's avatar
      */
     public byte[] getAvatar() {
-        return avatar;
+        return (avatar != null) ? avatar.clone() : avatar;
     }
 }
