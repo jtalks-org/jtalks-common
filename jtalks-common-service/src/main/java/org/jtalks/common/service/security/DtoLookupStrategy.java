@@ -25,8 +25,11 @@ import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.acls.model.Sid;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>This implementation of the {@link LookupStrategy} is very similar to {@link BasicLookupStrategy},
@@ -64,23 +67,61 @@ public class DtoLookupStrategy implements LookupStrategy {
     @Override
     public Map<ObjectIdentity, Acl> readAclsById(List<ObjectIdentity> objects, List<Sid> sids) {
 
+        //first, we create an empty list for the identities possibly mapped to DTOs
         List<ObjectIdentity> mappedObjects = new ArrayList<ObjectIdentity>(objects.size());
+        //reverse mapping: model entity-related identities -> set of DTO-related identities
+        Map<ObjectIdentity, Set<ObjectIdentity>> usedMapping = new HashMap<ObjectIdentity, Set<ObjectIdentity>>();
         try {
             for (ObjectIdentity objectIdentity : objects) {
-                String identityClass = objectIdentity.getType();
-                Class identityMappedTo = mapper.getMapping(identityClass);
-                if (identityClass.equals(identityMappedTo.getCanonicalName())) {
-                    mappedObjects.add(objectIdentity);
-                } else {
-                    mappedObjects.add(
-                          new ObjectIdentityImpl(identityMappedTo.getCanonicalName(), objectIdentity.getIdentifier()));
+                ObjectIdentity mappedIdentity = getMappedIdentity(objectIdentity);
+
+                //save original mapping - set of all classes that is mapped to this model entity class
+                Set<ObjectIdentity> mappedToModelClasses = usedMapping.get(mappedIdentity);
+                if (mappedToModelClasses == null) {
+                    mappedToModelClasses = new HashSet<ObjectIdentity>();
                 }
+                mappedToModelClasses.add(objectIdentity);
+                usedMapping.put(mappedIdentity, mappedToModelClasses);
+
+                mappedObjects.add(mappedIdentity);
             }
 
-            return this.lookupStrategy.readAclsById(mappedObjects, sids);
-        }
-        catch (ClassNotFoundException e) {
+            //get a map [mapped_identity -> acl] from BaseLookupStrategy
+            Map<ObjectIdentity, Acl> mappedIdentities = this.lookupStrategy.readAclsById(mappedObjects, sids);
+            Map<ObjectIdentity, Acl> acls = new HashMap<ObjectIdentity, Acl>();
+            //restore original identities - cast to implementation and use mapped from
+            for (ObjectIdentity mappedIdentity : mappedIdentities.keySet()) {
+                for (ObjectIdentity mappedToThisIdentity : usedMapping.get(mappedIdentity)) {
+                    acls.put(mappedToThisIdentity, mappedIdentities.get(mappedIdentity));
+                }
+            }
+            return acls;
+        } catch (ClassNotFoundException e) {
             throw new IllegalStateException("Unknown class received from ObjectIdentity.", e);
         }
+    }
+
+    /**
+     * This method returns {@link ObjectIdentity} mapped to provided one using the following logic:
+     * <ul>
+     * <li>If no mapping found for the identity type, same object is returned;</li>
+     * <li>Instead, a new {@link ObjectIdentity} is created with the type mapped to the type of the original
+     * identity and with the same identifier.</li>
+     * </ul>
+     *
+     * @param identity Original identity
+     * @return Mapped identity as described above.
+     * @throws ClassNotFoundException Any {@link ClassNotFoundException} thrown inside the method.
+     */
+    private ObjectIdentity getMappedIdentity(ObjectIdentity identity) throws ClassNotFoundException {
+        ObjectIdentity result = identity;
+
+        String identityClass = identity.getType();
+        Class identityMappedTo = mapper.getMapping(identityClass);
+        if (!identityClass.equals(identityMappedTo.getCanonicalName())) {
+            result = new ObjectIdentityImpl(identityMappedTo.getCanonicalName(), identity.getIdentifier());
+        }
+
+        return result;
     }
 }

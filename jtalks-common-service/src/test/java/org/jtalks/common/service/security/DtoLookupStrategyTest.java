@@ -31,7 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyListOf;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -45,6 +48,7 @@ public class DtoLookupStrategyTest {
 
     private DtoMapper mapper;
     private LookupStrategy strategy;
+    private List<ObjectIdentity> stragegyCallArgument;
 
     private DtoLookupStrategy sut;
 
@@ -64,9 +68,9 @@ public class DtoLookupStrategyTest {
               new Answer<Map<ObjectIdentity, Acl>>() {
                   @Override
                   public Map<ObjectIdentity, Acl> answer(InvocationOnMock invocation) throws Throwable {
-                      List<ObjectIdentity> firstArgument = (List<ObjectIdentity>) invocation.getArguments()[0];
+                      stragegyCallArgument = (List<ObjectIdentity>) invocation.getArguments()[0];
                       Map<ObjectIdentity, Acl> result = new HashMap<ObjectIdentity, Acl>();
-                      result.put(firstArgument.get(0), null);
+                      result.put(stragegyCallArgument.get(0), null);
 
                       return result;
                   }
@@ -87,12 +91,20 @@ public class DtoLookupStrategyTest {
             List<ObjectIdentity> objects = new ArrayList<ObjectIdentity>();
             objects.add(identity);
 
+            ObjectIdentity mappedIdentity = mock(ObjectIdentity.class);
+            when(mappedIdentity.getType()).thenReturn(c2.class.getCanonicalName());
+            when(mappedIdentity.getIdentifier()).thenReturn(1L);
+            List<ObjectIdentity> mappedObjects = new ArrayList<ObjectIdentity>();
+            mappedObjects.add(mappedIdentity);
+
             List<Sid> sids = new ArrayList<Sid>();
 
             Map<ObjectIdentity, Acl> result = sut.readAclsById(objects, sids);
 
-            verify(strategy).readAclsById(anyListOf(ObjectIdentity.class), anyListOf(Sid.class));
-            assertEquals(result.keySet().iterator().next().getType(), c2.class.getCanonicalName());
+            ObjectIdentity actualArgument = stragegyCallArgument.get(0);
+            assertEquals(actualArgument.getType(), mappedIdentity.getType());
+            assertEquals(actualArgument.getIdentifier(), mappedIdentity.getIdentifier());
+            assertEquals(result.keySet().iterator().next().getType(), c1.class.getCanonicalName());
         }
         catch (ClassNotFoundException e) {
             throw new IllegalStateException("ClassNotFoundException shouldn't be thrown here", e);
