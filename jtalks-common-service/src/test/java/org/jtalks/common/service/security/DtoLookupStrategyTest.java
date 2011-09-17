@@ -49,7 +49,8 @@ public class DtoLookupStrategyTest {
     private DtoMapper mapper;
     private LookupStrategy strategy;
     private List<ObjectIdentity> stragegyCallArgument;
-
+    private List<ObjectIdentity> objects;
+    List<Sid> sids;
     private DtoLookupStrategy sut;
 
     private class c1 {
@@ -65,94 +66,52 @@ public class DtoLookupStrategyTest {
         mapper = mock(DtoMapper.class);
         strategy = mock(LookupStrategy.class);
         when(strategy.readAclsById(anyListOf(ObjectIdentity.class), anyListOf(Sid.class))).thenAnswer(
-              new Answer<Map<ObjectIdentity, Acl>>() {
-                  @Override
-                  public Map<ObjectIdentity, Acl> answer(InvocationOnMock invocation) throws Throwable {
-                      stragegyCallArgument = (List<ObjectIdentity>) invocation.getArguments()[0];
-                      Map<ObjectIdentity, Acl> result = new HashMap<ObjectIdentity, Acl>();
-                      result.put(stragegyCallArgument.get(0), null);
+            new Answer<Map<ObjectIdentity, Acl>>() {
+                @Override
+                public Map<ObjectIdentity, Acl> answer(InvocationOnMock invocation) throws Throwable {
+                    stragegyCallArgument = (List<ObjectIdentity>) invocation.getArguments()[0];
+                    Map<ObjectIdentity, Acl> result = new HashMap<ObjectIdentity, Acl>();
+                    result.put(stragegyCallArgument.get(0), null);
 
-                      return result;
-                  }
-              });
+                    return result;
+                }
+            });
+
+        ObjectIdentity identity = mock(ObjectIdentity.class);
+        when(identity.getType()).thenReturn(c1.class.getCanonicalName());
+        when(identity.getIdentifier()).thenReturn(1L);
+
+        objects = new ArrayList<ObjectIdentity>();
+        objects.add(identity);
+
+        sids = new ArrayList<Sid>();
 
         sut = new DtoLookupStrategy(strategy, mapper);
     }
 
     @Test
     public void testReadAclsByIdUsingMapping() {
-        try {
-            when(mapper.getMapping(c1.class.getCanonicalName())).thenReturn(c2.class);
+        when(mapper.getMapping(c1.class.getCanonicalName())).thenReturn(c2.class);
 
-            ObjectIdentity identity = mock(ObjectIdentity.class);
-            when(identity.getType()).thenReturn(c1.class.getCanonicalName());
-            when(identity.getIdentifier()).thenReturn(1L);
+        ObjectIdentity mappedIdentity = mock(ObjectIdentity.class);
+        when(mappedIdentity.getType()).thenReturn(c2.class.getCanonicalName());
+        when(mappedIdentity.getIdentifier()).thenReturn(1L);
+        List<ObjectIdentity> mappedObjects = new ArrayList<ObjectIdentity>();
+        mappedObjects.add(mappedIdentity);
 
-            List<ObjectIdentity> objects = new ArrayList<ObjectIdentity>();
-            objects.add(identity);
+        Map<ObjectIdentity, Acl> result = sut.readAclsById(objects, sids);
 
-            ObjectIdentity mappedIdentity = mock(ObjectIdentity.class);
-            when(mappedIdentity.getType()).thenReturn(c2.class.getCanonicalName());
-            when(mappedIdentity.getIdentifier()).thenReturn(1L);
-            List<ObjectIdentity> mappedObjects = new ArrayList<ObjectIdentity>();
-            mappedObjects.add(mappedIdentity);
-
-            List<Sid> sids = new ArrayList<Sid>();
-
-            Map<ObjectIdentity, Acl> result = sut.readAclsById(objects, sids);
-
-            ObjectIdentity actualArgument = stragegyCallArgument.get(0);
-            assertEquals(actualArgument.getType(), mappedIdentity.getType());
-            assertEquals(actualArgument.getIdentifier(), mappedIdentity.getIdentifier());
-            assertEquals(result.keySet().iterator().next().getType(), c1.class.getCanonicalName());
-        }
-        catch (ClassNotFoundException e) {
-            throw new IllegalStateException("ClassNotFoundException shouldn't be thrown here", e);
-        }
+        ObjectIdentity actualArgument = stragegyCallArgument.get(0);
+        assertEquals(actualArgument.getType(), mappedIdentity.getType());
+        assertEquals(actualArgument.getIdentifier(), mappedIdentity.getIdentifier());
+        assertEquals(result.keySet().iterator().next().getType(), c1.class.getCanonicalName());
     }
 
     @Test
     public void testReadAclsByIdWithoutMapping() {
-        try {
-            when(mapper.getMapping(c1.class.getCanonicalName())).thenReturn(c1.class);
+        Map<ObjectIdentity, Acl> result = sut.readAclsById(objects, sids);
 
-
-            ObjectIdentity identity = mock(ObjectIdentity.class);
-            when(identity.getType()).thenReturn(c1.class.getCanonicalName());
-
-            List<ObjectIdentity> objects = new ArrayList<ObjectIdentity>();
-            objects.add(identity);
-
-            List<Sid> sids = new ArrayList<Sid>();
-
-            Map<ObjectIdentity, Acl> result = sut.readAclsById(objects, sids);
-
-            verify(strategy).readAclsById(anyListOf(ObjectIdentity.class), anyListOf(Sid.class));
-            assertEquals(result.keySet().iterator().next().getType(), c1.class.getCanonicalName());
-        }
-        catch (ClassNotFoundException e) {
-            throw new IllegalStateException("ClassNotFoundException shouldn't be thrown here", e);
-        }
-    }
-
-    @Test(expectedExceptions = IllegalStateException.class)
-    public void testReadAclByIdWithBadIdentity() {
-        try {
-            when(mapper.getMapping(c1.class.getCanonicalName())).thenThrow(
-                  new ClassNotFoundException("Class not found"));
-
-            ObjectIdentity identity = mock(ObjectIdentity.class);
-            when(identity.getType()).thenReturn(c1.class.getCanonicalName());
-
-            List<ObjectIdentity> objects = new ArrayList<ObjectIdentity>();
-            objects.add(identity);
-
-            List<Sid> sids = new ArrayList<Sid>();
-
-            Map<ObjectIdentity, Acl> result = sut.readAclsById(objects, sids);
-        }
-        catch (ClassNotFoundException e) {
-            throw new IllegalStateException("ClassNotFoundException shouldn't be thrown here", e);
-        }
+        verify(strategy).readAclsById(anyListOf(ObjectIdentity.class), anyListOf(Sid.class));
+        assertEquals(result.keySet().iterator().next().getType(), c1.class.getCanonicalName());
     }
 }

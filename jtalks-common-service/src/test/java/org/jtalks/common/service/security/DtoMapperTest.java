@@ -21,6 +21,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 /**
  * This class contains unit tests for {@link DtoMapper}
@@ -40,22 +41,16 @@ public class DtoMapperTest {
 
     @Test
     public void testGetMappingWithAnnotation() {
-        try {
-            assertEquals(sut.getMapping(TestDtoWithAnnotation.class.getCanonicalName()), String.class);
-        }
-        catch (ClassNotFoundException e) {
-            throw new IllegalStateException("ClassNotFoundException shouldn't be thrown here", e);
-        }
+        assertEquals(sut.getMapping(TestDtoWithAnnotation.class.getCanonicalName()), String.class);
     }
 
     @Test
     public void testGetMappingWithoutAnnotation() {
-        try {
-            assertEquals(sut.getMapping(TestDtoWithoutAnnotation.class.getCanonicalName()),
-                         TestDtoWithoutAnnotation.class);
-        }
-        catch (ClassNotFoundException e) {
-            throw new IllegalStateException("ClassNotFoundException shouldn't be thrown here", e);
-        }
+        assertNull(sut.getMapping(TestDtoWithoutAnnotation.class.getCanonicalName()));
+    }
+
+    @Test(expectedExceptions = IllegalStateException.class)
+    public void testGetMappingForNonExistentClass() {
+        sut.getMapping("ya.class");
     }
 }

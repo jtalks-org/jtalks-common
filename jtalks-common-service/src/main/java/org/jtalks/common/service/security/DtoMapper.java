@@ -31,14 +31,19 @@ public class DtoMapper {
      * This method resolves the mapping of the specified class.
      *
      * @param classname Fully-qualified classname, mapping of which needs to be resolved.
-     * @return Class, represented by <code>classname</code>, if there is no mapping for the specified clazz;<br />
+     * @return Mapped class, if there is mapping for the class corresponds to the specified argument;
+     *         <code>null</code> if there is no such class.
      *         appropriate mapping otherwise.
-     * @throws ClassNotFoundException If there is no class with <code>classname</code> can be resolved/
+     * @throws IllegalStateException If there is no class with <code>classname</code> can be resolved/
      */
-    public Class getMapping(String classname) throws ClassNotFoundException {
-        Class providedClass = Class.forName(classname);
-        ModelEntity annotation = (ModelEntity) providedClass.getAnnotation(ModelEntity.class);
+    public Class getMapping(String classname) {
+        try {
+            Class providedClass = Class.forName(classname);
+            ModelEntity annotation = (ModelEntity) providedClass.getAnnotation(ModelEntity.class);
 
-        return annotation == null ? providedClass : annotation.value();
+            return annotation == null ? null : annotation.value();
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException("Class [" + classname + "] not found.", e);
+        }
     }
 }

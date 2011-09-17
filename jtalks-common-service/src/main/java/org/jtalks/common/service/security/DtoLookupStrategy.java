@@ -34,6 +34,11 @@ import java.util.Set;
 /**
  * <p>This implementation of the {@link LookupStrategy} is very similar to {@link BasicLookupStrategy},
  * except for object identity classes are being replaced with their mappings, if any.</p>
+ * <p>During the processing of the list of object identities, we check, if class, stored in the {@code type} field
+ * of the identity, is mapped to another class, and if it does, replaces the identity with the new one with same
+ * identifier and mapped class.</p>
+ * <p>This is used in order to apply security records created for model classes
+ * to the DTOs related to these classes.</p>
  * See {@link DtoLookupStrategy#readAclsById(List, List)} for details.
  * <p/>
  * Date: 16.09.2011<br />
@@ -45,7 +50,6 @@ public class DtoLookupStrategy implements LookupStrategy {
 
     private DtoMapper mapper;
     private LookupStrategy lookupStrategy;
-
 
     /**
      * Default constructor for the strategy.
@@ -59,46 +63,51 @@ public class DtoLookupStrategy implements LookupStrategy {
     }
 
     /**
-     * <p>This method passes over all provided objects and replace them with their mappings, if ones exists,
+     * <p>This method looks through all provided objects and replace them with their mappings, if ones exists,
      * before further processing performed by BasicLookupStrategy.</p>
      * <p/>
      * {@inheritDoc}
      */
     @Override
     public Map<ObjectIdentity, Acl> readAclsById(List<ObjectIdentity> objects, List<Sid> sids) {
-
         //first, we create an empty list for the identities possibly mapped to DTOs
         List<ObjectIdentity> mappedObjects = new ArrayList<ObjectIdentity>(objects.size());
         //reverse mapping: model entity-related identities -> set of DTO-related identities
         Map<ObjectIdentity, Set<ObjectIdentity>> usedMapping = new HashMap<ObjectIdentity, Set<ObjectIdentity>>();
-        try {
-            for (ObjectIdentity objectIdentity : objects) {
-                ObjectIdentity mappedIdentity = getMappedIdentity(objectIdentity);
+        for (ObjectIdentity objectIdentity : objects) {
+            ObjectIdentity mappedIdentity = getMappedIdentity(objectIdentity);
 
-                //save original mapping - set of all classes that is mapped to this model entity class
-                Set<ObjectIdentity> mappedToModelClasses = usedMapping.get(mappedIdentity);
-                if (mappedToModelClasses == null) {
-                    mappedToModelClasses = new HashSet<ObjectIdentity>();
-                }
-                mappedToModelClasses.add(objectIdentity);
-                usedMapping.put(mappedIdentity, mappedToModelClasses);
-
-                mappedObjects.add(mappedIdentity);
+            //save original mapping - set of all classes that is mapped to this model entity class
+            Set<ObjectIdentity> mappedToModelClasses = usedMapping.get(mappedIdentity);
+            if (mappedToModelClasses == null) {
+                mappedToModelClasses = new HashSet<ObjectIdentity>();
             }
+            mappedToModelClasses.add(objectIdentity);
+            usedMapping.put(mappedIdentity, mappedToModelClasses);
 
-            //get a map [mapped_identity -> acl] from BaseLookupStrategy
-            Map<ObjectIdentity, Acl> mappedIdentities = this.lookupStrategy.readAclsById(mappedObjects, sids);
-            Map<ObjectIdentity, Acl> acls = new HashMap<ObjectIdentity, Acl>();
-            //restore original identities - cast to implementation and use mapped from
-            for (ObjectIdentity mappedIdentity : mappedIdentities.keySet()) {
-                for (ObjectIdentity mappedToThisIdentity : usedMapping.get(mappedIdentity)) {
-                    acls.put(mappedToThisIdentity, mappedIdentities.get(mappedIdentity));
-                }
-            }
-            return acls;
-        } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("Unknown class received from ObjectIdentity.", e);
+            mappedObjects.add(mappedIdentity);
         }
+
+        //get a map [mapped_identity -> acl] from BaseLookupStrategy
+        return restoreOriginalIdentities(usedMapping, this.lookupStrategy.readAclsById(mappedObjects, sids));
+    }
+
+    /**
+     * This method restores original identities basing on mapping of "model" identities.
+     *
+     * @param usedMapping      Mapping of "model" identities to DTO identities.
+     * @param mappedIdentities Map of identities to Acls, in which identities needs to be replaced.
+     * @return Map, similar to <code>mappedIdentities</code> - "model" identities will be replaced with DTO identities.
+     */
+    private static Map<ObjectIdentity, Acl> restoreOriginalIdentities(
+        Map<ObjectIdentity, Set<ObjectIdentity>> usedMapping, Map<ObjectIdentity, Acl> mappedIdentities) {
+        Map<ObjectIdentity, Acl> acls = new HashMap<ObjectIdentity, Acl>();
+        for (Map.Entry<ObjectIdentity, Acl> mappedIdentittiesEntry : mappedIdentities.entrySet()) {
+            for (ObjectIdentity mappedToThisIdentity : usedMapping.get(mappedIdentittiesEntry.getKey())) {
+                acls.put(mappedToThisIdentity, mappedIdentittiesEntry.getValue());
+            }
+        }
+        return acls;
     }
 
     /**
@@ -111,14 +120,13 @@ public class DtoLookupStrategy implements LookupStrategy {
      *
      * @param identity Original identity
      * @return Mapped identity as described above.
-     * @throws ClassNotFoundException Any {@link ClassNotFoundException} thrown inside the method.
      */
-    private ObjectIdentity getMappedIdentity(ObjectIdentity identity) throws ClassNotFoundException {
+    private ObjectIdentity getMappedIdentity(ObjectIdentity identity) {
         ObjectIdentity result = identity;
 
         String identityClass = identity.getType();
         Class identityMappedTo = mapper.getMapping(identityClass);
-        if (!identityClass.equals(identityMappedTo.getCanonicalName())) {
+        if (identityMappedTo != null) {
             result = new ObjectIdentityImpl(identityMappedTo.getCanonicalName(), identity.getIdentifier());
         }
 
