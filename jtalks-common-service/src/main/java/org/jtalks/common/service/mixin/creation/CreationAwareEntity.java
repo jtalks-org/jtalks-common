@@ -22,7 +22,7 @@ import org.jtalks.common.model.entity.User;
 
 /**
  * This interface contains methods that implementing class should have
- * to be aware of it's creation date and user who created an entity.
+ * to be aware of it's creation date and of user who created an entity.
  * Date: 13.09.2011<br />
  * Time: 15:41
  *

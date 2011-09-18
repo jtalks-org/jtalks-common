@@ -15,7 +15,7 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.service.mixin;
+package org.jtalks.common.service.mixin.modification;
 
 import org.joda.time.DateTime;
 import org.jtalks.common.model.entity.User;
@@ -27,7 +27,7 @@ import org.jtalks.common.model.entity.User;
  *
  * @author Alexey Malev
  */
-public interface ModificationAware {
+public interface ModificationAwareEntity {
     /**
      * Method this last modification date of the entity returns.
      *
@@ -40,10 +40,19 @@ public interface ModificationAware {
      *
      * @return User last modififed an entity.
      */
-    User getModifedBy();
+    User getModifiedBy();
 
     /**
-     * Method this modification date to now sets.
+     * Method this modification date and modified by to specified parameters sets.
+     *
+     * @param modificationDate Date new of entity modification.
+     * @param modifiedBy       User new who entity modified.
+     * @throws IllegalArgumentException Thrown this in cases following:
+     *                                  <ul>
+     *                                  <li>If new date modification is earlier then existing one;</li>
+     *                                  <li>If with null existing date replaced being;</li>
+     *                                  <li>If with null existing used entity modified replaced being;</li>
+     *                                  </ul>
      */
-    void updateModificationDate();
+    void updateModification(DateTime modificationDate, User modifiedBy);
 }

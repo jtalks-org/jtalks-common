@@ -21,7 +21,7 @@ import org.joda.time.DateTime;
 import org.jtalks.common.model.entity.User;
 
 /**
- * This interface extends {@link CreationAwareEntity} by adding setter for creation date and the creator.
+ * <p>This interface extends {@link CreationAwareEntity} by adding setter for creation date and the creator.</p>
  * Date: 13.09.2011<br />
  * Time: 17:49
  *

@@ -21,7 +21,7 @@ import org.joda.time.DateTime;
 import org.jtalks.common.model.entity.User;
 
 /**
- * This class is responsible for storing entity creation date and user who created an entity.
+ * <p>This class is responsible for storing entity creation date and user who created an entity.</p>
  * Date: 13.09.2011<br />
  * Time: 16:05
  *
