@@ -17,10 +17,19 @@
  */
 package org.jtalks.common.util;
 
+import com.googlecode.flyway.core.Flyway;
 import com.googlecode.flyway.core.exception.FlywayException;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -53,4 +62,93 @@ public class FlywayWrapperTest {
         assertEquals(sut.migrate(), 0);
     }
 
+    @Test
+    public void testSmartInitDisabled() {
+        try {
+            DataSource dataSource = mock(DataSource.class);
+            Connection connection = mock(Connection.class);
+            when(dataSource.getConnection()).thenReturn(connection);
+            Statement statement = mock(Statement.class);
+            when(connection.createStatement()).thenReturn(statement);
+
+            sut.setDataSource(dataSource);
+            sut.setTable("table");
+            sut.setEnabled(false);
+
+            sut.smartInit();
+
+            verify(dataSource, times(0)).getConnection();
+        }
+        catch (SQLException e) {
+            throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
+        }
+    }
+
+    @Test
+    public void testSmartInitWithExistentTable() {
+        try {
+            FlywayWrapper sut = spy(new FlywayWrapper());
+            DataSource dataSource = mock(DataSource.class);
+            Connection connection = mock(Connection.class);
+            when(dataSource.getConnection()).thenReturn(connection);
+            Statement statement = mock(Statement.class);
+            ResultSet resultSet = mock(ResultSet.class);
+            when(resultSet.next()).thenReturn(true);
+            when(statement.executeQuery(any(String.class))).thenReturn(resultSet);
+            when(connection.createStatement()).thenReturn(statement);
+
+            sut.setDataSource(dataSource);
+            sut.setTable("table");
+            sut.setEnabled(true);
+
+            sut.smartInit();
+
+            verify(dataSource, times(1)).getConnection();
+            verify((Flyway) sut, times(0)).init();
+        }
+        catch (SQLException e) {
+            throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
+        }
+    }
+
+    @Test(expectedExceptions = FlywayException.class)
+    public void testSmartInitWithNonExistentTable() {
+        try {
+            DataSource dataSource = mock(DataSource.class);
+            Connection connection = mock(Connection.class);
+            when(dataSource.getConnection()).thenReturn(connection);
+            Statement statement = mock(Statement.class);
+            ResultSet resultSet = mock(ResultSet.class);
+            when(resultSet.next()).thenReturn(false);
+            when(statement.executeQuery(any(String.class))).thenReturn(resultSet);
+            when(connection.createStatement()).thenReturn(statement);
+
+            sut.setDataSource(dataSource);
+            sut.setTable("table");
+            sut.setEnabled(true);
+
+            sut.smartInit();
+            verify((Flyway) sut, times(1)).init();
+        }
+        catch (SQLException e) {
+            throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
+        }
+    }
+
+    @Test(expectedExceptions = FlywayException.class)
+    public void testSmartInitOnMiscFail() {
+        try {
+            DataSource dataSource = mock(DataSource.class);
+            when(dataSource.getConnection()).thenThrow(new SQLException());
+
+            sut.setDataSource(dataSource);
+            sut.setTable("table");
+            sut.setEnabled(true);
+
+            sut.smartInit();
+        }
+        catch (SQLException e) {
+            throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
+        }
+    }
 }

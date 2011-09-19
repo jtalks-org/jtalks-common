@@ -26,6 +26,7 @@ import org.jtalks.common.service.exceptions.NotFoundException;
 import org.jtalks.common.service.exceptions.WrongPasswordException;
 import org.jtalks.common.web.dto.EditUserProfileDto;
 import org.jtalks.common.web.dto.RegisterUserDto;
+import org.jtalks.common.web.dto.UserViewDto;
 import org.jtalks.common.web.validation.ImageFormats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -49,6 +50,7 @@ import java.io.IOException;
  * @author Alexandre Teterin
  * @author Max Malakhov
  * @author Eugeny Batov
+ * @author Dmitriy Butakov
  */
 @Controller
 public class UserController {
@@ -135,9 +137,10 @@ public class UserController {
      */
     @RequestMapping(value = "/user/{encodedUsername}", method = RequestMethod.GET)
     public ModelAndView show(@PathVariable("encodedUsername") String encodedUsername) throws NotFoundException {
-        User user = userService.getByEncodedUsername(encodedUsername);
+        UserViewDto userViewDto = new UserViewDto(userService.getByEncodedUsername(encodedUsername));
+
         return new ModelAndView("userDetails")
-              .addObject("user", user);
+              .addObject("user", userViewDto);
         //.addObject("breadcrumbList", breadcrumbBuilder.getForumBreadcrumb());
     }
 

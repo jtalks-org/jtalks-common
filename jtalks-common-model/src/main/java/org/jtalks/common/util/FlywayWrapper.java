@@ -18,18 +18,25 @@
 package org.jtalks.common.util;
 
 import com.googlecode.flyway.core.Flyway;
+import com.googlecode.flyway.core.exception.FlywayException;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
- * Wrapper that allows disabling flyway migrations.
+ * Wrapper that allows disabling flyway migrations, schema cleanup and initialization.
  *
  * @author Kirill Afonin
+ * @author Alexey Malev
  */
 public class FlywayWrapper extends Flyway {
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     /**
-     * Can be used for disabling/enabling migrations.
-     * Migrations enabled by default.
+     * Can be used for disabling/enabling migrations and init.
+     * They are disabled by default.
      *
      * @param enabled is migrations enabled
      */
@@ -46,5 +53,44 @@ public class FlywayWrapper extends Flyway {
             return super.migrate();
         }
         return 0;
+    }
+
+    /**
+     * <p>This method performs {@link Flyway#init()} if there is no metadata table in the specified schema and if
+     * <code>smartInit()</code> is enabled.</p>
+     * <p><b>It is strongly recommended to disable this in production usage.</b></p>
+     *
+     * @throws FlywayException Any {@link SQLException} thrown inside the method is wrapped into {@link FlywayException}
+     */
+    public void smartInit() throws FlywayException {
+        if (this.enabled) {
+            String query = "show tables like '" + this.getTable() + "'";
+            try {
+                Connection connection = this.getDataSource().getConnection();
+                try {
+                    Statement checkTableExistenceStatement = connection.createStatement();
+                    try {
+                        ResultSet fetchedTableNames = checkTableExistenceStatement.executeQuery(query);
+                        try {
+                            if (!fetchedTableNames.next()) {
+                                super.init();
+                            }
+                        }
+                        finally {
+                            fetchedTableNames.close();
+                        }
+                    }
+                    finally {
+                        checkTableExistenceStatement.close();
+                    }
+                }
+                finally {
+                    connection.close();
+                }
+            }
+            catch (SQLException e) {
+                throw new FlywayException(e.getLocalizedMessage(), e);
+            }
+        }
     }
 }

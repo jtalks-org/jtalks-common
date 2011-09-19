@@ -58,8 +58,9 @@
         <property name="sidIdentityQuery" value="SELECT @@IDENTITY"/>
     </bean>
 
-    <!-- Responsible for efficient retrieval of ACLs from database -->
-    <bean id="lookupStrategy" class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
+    <bean id="dtoMapper" class="org.jtalks.common.service.security.DtoMapper"/>
+
+    <bean id="baseLookupStrategy" class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
         <constructor-arg ref="dataSource"/>
         <constructor-arg ref="aclCache"/>
         <constructor-arg ref="aclAuthorizationStrategy"/>
@@ -67,6 +68,12 @@
             <bean class="org.springframework.security.acls.domain.ConsoleAuditLogger"/>
         </constructor-arg>
         <property name="permissionFactory" ref="permissionFactory"/>
+    </bean>
+
+    <!-- Responsible for efficient retrieval of ACLs from database -->
+    <bean id="lookupStrategy" class="org.jtalks.common.service.security.DtoLookupStrategy">
+        <constructor-arg ref="baseLookupStrategy"/>
+        <constructor-arg ref="dtoMapper"/>
     </bean>
 
     <!-- ACL permission factory -->
