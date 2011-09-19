@@ -60,9 +60,9 @@ public class FlywayWrapper extends Flyway {
      * <code>smartInit()</code> is enabled.</p>
      * <p><b>It is strongly recommended to disable this in production usage.</b></p>
      *
-     * @throws FlywayException Any {@link SQLException} thrown inside the method is wrapped into {@link FlywayException}
+     * @exception FlywayException Any {@link SQLException} thrown inside the method is wrapped into {@link FlywayException}
      */
-    public void smartInit() throws FlywayException {
+    public void smartInit() {
         if (this.enabled) {
             try {
                 Connection connection = this.getDataSource().getConnection();

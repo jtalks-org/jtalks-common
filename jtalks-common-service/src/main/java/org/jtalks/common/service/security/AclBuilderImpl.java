@@ -155,12 +155,12 @@ public class AclBuilderImpl implements AclBuilder {
                 if (((PrincipalSid) sid).getPrincipal().equals(name)) {
                     return true;
                 }
-            } else if (sid instanceof GrantedAuthoritySid) {
-                if (((GrantedAuthoritySid) sid).getGrantedAuthority().equals(name)) {
-                    return true;
-                }
+            } else if ((sid instanceof GrantedAuthoritySid) &&
+                  ((GrantedAuthoritySid) sid).getGrantedAuthority().equals(name)) {
+                return true;
             }
         }
+
         return false;
     }
 
