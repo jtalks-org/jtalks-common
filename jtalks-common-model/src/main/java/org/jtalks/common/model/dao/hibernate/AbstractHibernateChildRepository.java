@@ -52,8 +52,7 @@ public abstract class AbstractHibernateChildRepository<T extends Entity> impleme
      */
     @SuppressWarnings("unchecked")
     protected Class<T> getType() {
-        return (Class<T>) ((ParameterizedType) getClass()
-              .getGenericSuperclass()).getActualTypeArguments()[0];
+        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
 

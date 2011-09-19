@@ -17,6 +17,8 @@
  */
 package org.jtalks.common.web.validation;
 
+import org.jtalks.common.model.entity.User;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;
@@ -51,7 +53,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @ImageSize(size = 65)
 @ImageFormat(format = {ImageFormats.JPG, ImageFormats.PNG, ImageFormats.GIF}, message = "{avatar.wrong.format}")
-@ImageDimension(width = 100, height = 100)
+@ImageDimension(width = User.AVATAR_MAX_WIDTH, height = User.AVATAR_MAX_HEIGHT)
 @Target({FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})

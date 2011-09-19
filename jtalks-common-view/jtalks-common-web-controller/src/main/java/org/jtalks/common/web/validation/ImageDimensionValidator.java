@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.awt.*;
+import java.awt.Image;
 
 /**
  * Validator for {@link ImageDimension}. Checks that image has allowable dimension.
@@ -63,11 +63,9 @@ public class ImageDimensionValidator implements ConstraintValidator<ImageDimensi
         Image image;
         try {
             image = ImageIO.read(multipartFile.getInputStream());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
-        return (image == null) ? false : image.getWidth(null) == imageWidth &&
-              image.getHeight(null) == imageHeight;
+        return (image == null) ? false : image.getWidth(null) == imageWidth && image.getHeight(null) == imageHeight;
     }
 }

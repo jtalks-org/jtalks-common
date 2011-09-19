@@ -47,6 +47,36 @@ public class User extends Entity implements UserDetails {
     private byte[] avatar;
 
     /**
+     * Minimum length of the username.
+     */
+    public static final int USERNAME_MIN_LENGTH = 3;
+    /**
+     * Maximum length of the username.
+     */
+    public static final int USERNAME_MAX_LENGTH = 20;
+    /**
+     * Minimum length of the password.
+     */
+    public static final int PASSWORD_MIN_LENGTH = 4;
+    /**
+     * Maximum length of the password.
+     */
+    public static final int PASSWORD_MAX_LENGTH = 20;
+    /**
+     * Maximum avatar width in pixels.
+     */
+    public static final int AVATAR_MAX_WIDTH = 100;
+    /**
+     * Maximum avatar height in pixels.
+     */
+    public static final int AVATAR_MAX_HEIGHT = 100;
+    /**
+     * Maximum avatar size in kilobytes.
+     */
+    public static final int AVATAR_MAX_SIZE = 65;
+
+
+    /**
      * Only for hibernate usage.
      */
     protected User() {
@@ -127,8 +157,7 @@ public class User extends Entity implements UserDetails {
         this.username = username;
         try {
             setEncodedUsername(URLEncoder.encode(username, "UTF-8"));
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("Could not encode username", e);
         }
     }

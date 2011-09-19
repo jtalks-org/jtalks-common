@@ -60,7 +60,8 @@ public class FlywayWrapper extends Flyway {
      * <code>smartInit()</code> is enabled.</p>
      * <p><b>It is strongly recommended to disable this in production usage.</b></p>
      *
-     * @exception FlywayException Any {@link SQLException} thrown inside the method is wrapped into {@link FlywayException}
+     * @throws FlywayException Any {@link SQLException} thrown inside the method
+     *                         is wrapped into {@link FlywayException}
      */
     public void smartInit() {
         if (this.enabled) {
@@ -75,20 +76,16 @@ public class FlywayWrapper extends Flyway {
                             if (!fetchedTableNames.next()) {
                                 super.init();
                             }
-                        }
-                        finally {
+                        } finally {
                             fetchedTableNames.close();
                         }
-                    }
-                    finally {
+                    } finally {
                         checkTableExistenceStatement.close();
                     }
-                }
-                finally {
+                } finally {
                     connection.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 throw new FlywayException(e.getLocalizedMessage(), e);
             }
         }

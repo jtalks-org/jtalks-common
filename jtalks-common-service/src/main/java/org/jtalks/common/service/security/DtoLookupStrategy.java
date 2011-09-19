@@ -18,7 +18,6 @@
 package org.jtalks.common.service.security;
 
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
-import org.springframework.security.acls.jdbc.BasicLookupStrategy;
 import org.springframework.security.acls.jdbc.LookupStrategy;
 import org.springframework.security.acls.model.Acl;
 import org.springframework.security.acls.model.ObjectIdentity;
@@ -32,7 +31,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>This implementation of the {@link LookupStrategy} is very similar to {@link BasicLookupStrategy},
+ * <p>This implementation of the {@link LookupStrategy} is very similar to
+ * {@link org.springframework.security.acls.jdbc.BasicLookupStrategy},
  * except for object identity classes are being replaced with their mappings, if any.</p>
  * <p>During the processing of the list of object identities, we check, if class, stored in the {@code type} field
  * of the identity, is mapped to another class, and if it does, replaces the identity with the new one with same

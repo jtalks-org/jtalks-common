@@ -42,8 +42,7 @@ public class DtoMapper {
             ModelEntity annotation = (ModelEntity) providedClass.getAnnotation(ModelEntity.class);
 
             return annotation == null ? null : annotation.value();
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             throw new IllegalStateException("Class [" + classname + "] not found.", e);
         }
     }

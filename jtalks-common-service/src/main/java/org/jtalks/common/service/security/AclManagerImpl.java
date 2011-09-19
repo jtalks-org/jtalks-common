@@ -21,7 +21,13 @@ import org.jtalks.common.model.entity.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
-import org.springframework.security.acls.model.*;
+import org.springframework.security.acls.model.AccessControlEntry;
+import org.springframework.security.acls.model.MutableAcl;
+import org.springframework.security.acls.model.MutableAclService;
+import org.springframework.security.acls.model.NotFoundException;
+import org.springframework.security.acls.model.ObjectIdentity;
+import org.springframework.security.acls.model.Permission;
+import org.springframework.security.acls.model.Sid;
 
 import java.util.List;
 
@@ -63,16 +69,14 @@ public class AclManagerImpl implements AclManager {
      * @param target      securable object
      * @param acl         ACL of this object
      */
-    private void grantPermissionsToSids(List<Sid> sids, List<Permission> permissions, Entity target,
-                                        MutableAcl acl) {
+    private void grantPermissionsToSids(List<Sid> sids, List<Permission> permissions, Entity target, MutableAcl acl) {
         int aclIndex = acl.getEntries().size();
         for (Sid recipient : sids) {
             for (Permission permission : permissions) {
                 // add permission to acl for recipient
                 acl.insertAce(aclIndex++, permission, recipient, true);
-                logger.debug("Added permission mask {} for Sid {} securedObject {} id {}",
-                             new Object[]{permission.getMask(), recipient, target.getClass().getSimpleName(),
-                                          target.getId()});
+                logger.debug("Added permission mask {} for Sid {} securedObject {} id {}", new Object[]{permission
+                    .getMask(), recipient, target.getClass().getSimpleName(), target.getId()});
             }
         }
     }
@@ -88,8 +92,7 @@ public class AclManagerImpl implements AclManager {
         MutableAcl acl;
         try {
             acl = (MutableAcl) mutableAclService.readAclById(oid);
-        }
-        catch (NotFoundException nfe) {
+        } catch (NotFoundException nfe) {
             acl = mutableAclService.createAcl(oid);
         }
         return acl;
@@ -109,12 +112,11 @@ public class AclManagerImpl implements AclManager {
         for (AccessControlEntry entry : entries) {
             for (Sid recipient : sids) {
                 for (Permission permission : permissions) {
-                    if (entry.getSid().equals(recipient) &&
-                          entry.getPermission().equals(permission)) {
+                    if (entry.getSid().equals(recipient) && entry.getPermission().equals(permission)) {
                         acl.deleteAce(i); // delete from original list
-                        logger.debug("Deleted from object {} id {} ACL permission {} for recipient {}",
-                                     new Object[]{target.getClass().getSimpleName(), target.getId(),
-                                                  permission, recipient});
+                        logger
+                            .debug("Deleted from object {} id {} ACL permission {} for recipient {}", new Object[]{target
+                                .getClass().getSimpleName(), target.getId(), permission, recipient});
                         i--; // because list item deleted in original list
                     }
                 }
@@ -148,7 +150,6 @@ public class AclManagerImpl implements AclManager {
         if (securedObject.getId() <= 0) {
             throw new IllegalStateException("Object id must be assigned before creating acl.");
         }
-        return new ObjectIdentityImpl(securedObject.getClass(),
-                                      securedObject.getId());
+        return new ObjectIdentityImpl(securedObject.getClass(), securedObject.getId());
     }
 }

@@ -35,7 +35,7 @@ public class EditUserProfileDto extends UserDto {
 
     private String currentUserPassword;
 
-    @Length(min = 4, max = 20)
+    @Length(min = User.PASSWORD_MIN_LENGTH, max = User.PASSWORD_MAX_LENGTH)
     private String newUserPassword;
     private String newUserPasswordConfirm;
     @Avatar

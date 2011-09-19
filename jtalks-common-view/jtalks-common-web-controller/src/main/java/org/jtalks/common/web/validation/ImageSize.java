@@ -33,7 +33,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p/>
  * You must annotate your field with {@link ImageSize} annotation
  * You must fill in the parameter <code>size</code>
- * field name to test.
+ * field name to test. This parameter represents maximum image size in kilobytes (i.e. {@code size * 1024} bytes).
  * Constraint can be used with any field types that have correct
  * </code>equals()</code> method.
  * <p/>

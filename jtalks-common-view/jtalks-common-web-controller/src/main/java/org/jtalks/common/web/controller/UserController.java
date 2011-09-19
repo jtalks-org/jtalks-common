@@ -34,7 +34,11 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -80,8 +84,7 @@ public class UserController {
      * @param securityService {@link SecurityService} used for accessing to current logged in user
      */
     @Autowired
-    public UserController(UserService userService,
-                          SecurityService securityService) {
+    public UserController(UserService userService, SecurityService securityService) {
         this.userService = userService;
         this.securityService = securityService;
     }
@@ -114,11 +117,9 @@ public class UserController {
         try {
             userService.registerUser(userDto.createUser());
             return new ModelAndView("redirect:/");
-        }
-        catch (DuplicateUserException e) {
+        } catch (DuplicateUserException e) {
             result.rejectValue("username", "validation.duplicateuser");
-        }
-        catch (DuplicateEmailException e) {
+        } catch (DuplicateEmailException e) {
             result.rejectValue("email", "validation.duplicateemail");
         }
         return new ModelAndView(REGISTRATION);
@@ -135,8 +136,7 @@ public class UserController {
     public ModelAndView show(@PathVariable("encodedUsername") String encodedUsername) throws NotFoundException {
         UserViewDto userViewDto = new UserViewDto(userService.getByEncodedUsername(encodedUsername));
 
-        return new ModelAndView("userDetails")
-              .addObject("user", userViewDto);
+        return new ModelAndView("userDetails").addObject("user", userViewDto);
         //.addObject("breadcrumbList", breadcrumbBuilder.getForumBreadcrumb());
     }
 
@@ -151,9 +151,7 @@ public class UserController {
         User user = securityService.getCurrentUser();
         EditUserProfileDto editedUser = new EditUserProfileDto(user);
         editedUser.setAvatar(new MockMultipartFile("avatar", "", ImageFormats.JPG.getContentType(), user.getAvatar()));
-        return new ModelAndView(EDIT_PROFILE)
-              .addObject(EDITED_USER, editedUser);
-        //.addObject("breadcrumbList", breadcrumbBuilder.getForumBreadcrumb());
+        return new ModelAndView(EDIT_PROFILE).addObject(EDITED_USER, editedUser);
     }
 
     /**
@@ -181,24 +179,19 @@ public class UserController {
 
         User editedUser;
         try {
-            editedUser = userService.editUserProfile(userDto.getEmail(), userDto.getFirstName(),
-                                                     userDto.getLastName(), userDto.getCurrentUserPassword(),
-                                                     userDto.getNewUserPassword(),
-                                                     userDto.getAvatar().getBytes());
-        }
-        catch (DuplicateEmailException e) {
+            editedUser = userService.editUserProfile(userDto.getEmail(), userDto.getFirstName(), userDto
+                .getLastName(), userDto.getCurrentUserPassword(), userDto.getNewUserPassword(), userDto.getAvatar()
+                                                                                                       .getBytes());
+        } catch (DuplicateEmailException e) {
             result.rejectValue("email", "validation.duplicateemail");
             return new ModelAndView(EDIT_PROFILE);
-        }
-        catch (WrongPasswordException e) {
-            result.rejectValue("currentUserPassword", "label.incorrectCurrentPassword",
-                               "Password does not match to the current password");
+        } catch (WrongPasswordException e) {
+            result
+                .rejectValue("currentUserPassword", "label.incorrectCurrentPassword", "Password does not match to the current password");
             return new ModelAndView(EDIT_PROFILE);
         }
-        return new ModelAndView(new StringBuilder()
-                                      .append("redirect:/user/")
-                                      .append(editedUser.getEncodedUsername())
-                                      .append(".html").toString());
+        return new ModelAndView(new StringBuilder().append("redirect:/user/").append(editedUser.getEncodedUsername())
+                                                   .append(".html").toString());
     }
 
 
@@ -224,9 +217,8 @@ public class UserController {
      * @throws java.io.IOException - throws if an output exception occurred
      */
     @RequestMapping(value = "/show/{encodedUsername}/avatar", method = RequestMethod.GET)
-    public void renderAvatar(HttpServletResponse response,
-                             @PathVariable("encodedUsername") String encodedUsername) throws NotFoundException,
-                                                                                             IOException {
+    public void renderAvatar(HttpServletResponse response, @PathVariable("encodedUsername") String encodedUsername)
+        throws NotFoundException, IOException {
         User user = userService.getByEncodedUsername(encodedUsername);
         byte[] avatar = user.getAvatar();
         response.setContentType("image/jpeg");
