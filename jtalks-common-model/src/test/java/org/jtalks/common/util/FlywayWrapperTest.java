@@ -23,10 +23,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -91,11 +88,11 @@ public class FlywayWrapperTest {
             DataSource dataSource = mock(DataSource.class);
             Connection connection = mock(Connection.class);
             when(dataSource.getConnection()).thenReturn(connection);
-            Statement statement = mock(Statement.class);
+            PreparedStatement statement = mock(PreparedStatement.class);
             ResultSet resultSet = mock(ResultSet.class);
             when(resultSet.next()).thenReturn(true);
-            when(statement.executeQuery(any(String.class))).thenReturn(resultSet);
-            when(connection.createStatement()).thenReturn(statement);
+            when(statement.executeQuery()).thenReturn(resultSet);
+            when(connection.prepareStatement(any(String.class))).thenReturn(statement);
 
             sut.setDataSource(dataSource);
             sut.setTable("table");
@@ -117,11 +114,11 @@ public class FlywayWrapperTest {
             DataSource dataSource = mock(DataSource.class);
             Connection connection = mock(Connection.class);
             when(dataSource.getConnection()).thenReturn(connection);
-            Statement statement = mock(Statement.class);
+            PreparedStatement statement = mock(PreparedStatement.class);
             ResultSet resultSet = mock(ResultSet.class);
             when(resultSet.next()).thenReturn(false);
-            when(statement.executeQuery(any(String.class))).thenReturn(resultSet);
-            when(connection.createStatement()).thenReturn(statement);
+            when(statement.executeQuery()).thenReturn(resultSet);
+            when(connection.prepareStatement(any(String.class))).thenReturn(statement);
 
             sut.setDataSource(dataSource);
             sut.setTable("table");

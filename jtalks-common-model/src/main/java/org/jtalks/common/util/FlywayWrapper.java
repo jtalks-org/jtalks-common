@@ -21,9 +21,9 @@ import com.googlecode.flyway.core.Flyway;
 import com.googlecode.flyway.core.exception.FlywayException;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Wrapper that allows disabling flyway migrations, schema cleanup and initialization.
@@ -64,13 +64,13 @@ public class FlywayWrapper extends Flyway {
      */
     public void smartInit() throws FlywayException {
         if (this.enabled) {
-            String query = "show tables like '" + this.getTable() + "'";
             try {
                 Connection connection = this.getDataSource().getConnection();
                 try {
-                    Statement checkTableExistenceStatement = connection.createStatement();
+                    PreparedStatement checkTableExistenceStatement = connection.prepareStatement("show tables like ?");
                     try {
-                        ResultSet fetchedTableNames = checkTableExistenceStatement.executeQuery(query);
+                        checkTableExistenceStatement.setString(1, this.getTable());
+                        ResultSet fetchedTableNames = checkTableExistenceStatement.executeQuery();
                         try {
                             if (!fetchedTableNames.next()) {
                                 super.init();
