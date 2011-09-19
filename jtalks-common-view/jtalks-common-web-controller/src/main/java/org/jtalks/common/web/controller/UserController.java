@@ -45,8 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 
-//import org.jtalks.common.web.dto.BreadcrumbBuilder;
-
 /**
  * Controller for User related actions: registration.
  *
@@ -64,7 +62,6 @@ public class UserController {
 
     private final SecurityService securityService;
     private final UserService userService;
-    //private BreadcrumbBuilder breadcrumbBuilder;
 
     /**
      * This method turns the trim binder on. Trim bilder
@@ -137,7 +134,6 @@ public class UserController {
         UserViewDto userViewDto = new UserViewDto(userService.getByEncodedUsername(encodedUsername));
 
         return new ModelAndView("userDetails").addObject("user", userViewDto);
-        //.addObject("breadcrumbList", breadcrumbBuilder.getForumBreadcrumb());
     }
 
     /**
@@ -171,23 +167,26 @@ public class UserController {
         User user = securityService.getCurrentUser();
 
         if (result.hasErrors()) {
-            if (user.getAvatar().length == 0) {
-                userDto.setAvatar(new MockMultipartFile("avatar", "", ImageFormats.JPG.getContentType(), new byte[0]));
+            //we should show current user avatar (if any)
+            //if no file was uploaded, or if there were validation errors on avatar field
+            if ((userDto.getAvatar().getSize() == 0) || (result.hasFieldErrors("avatar"))) {
+                userDto.setAvatar(new MockMultipartFile("avatar", "", ImageFormats.JPG.getContentType(),
+                                                        user.getAvatar()));
             }
             return new ModelAndView(EDIT_PROFILE, EDITED_USER, userDto);
         }
 
         User editedUser;
         try {
-            editedUser = userService.editUserProfile(userDto.getEmail(), userDto.getFirstName(), userDto
-                .getLastName(), userDto.getCurrentUserPassword(), userDto.getNewUserPassword(), userDto.getAvatar()
-                                                                                                       .getBytes());
+            editedUser = userService.editUserProfile(userDto.getEmail(), userDto.getFirstName(), userDto.getLastName(),
+                                                     userDto.getCurrentUserPassword(), userDto.getNewUserPassword(),
+                                                     userDto.getAvatar().getBytes());
         } catch (DuplicateEmailException e) {
             result.rejectValue("email", "validation.duplicateemail");
             return new ModelAndView(EDIT_PROFILE);
         } catch (WrongPasswordException e) {
-            result
-                .rejectValue("currentUserPassword", "label.incorrectCurrentPassword", "Password does not match to the current password");
+            result.rejectValue("currentUserPassword", "label.incorrectCurrentPassword",
+                               "Password does not match to the current password");
             return new ModelAndView(EDIT_PROFILE);
         }
         return new ModelAndView(new StringBuilder().append("redirect:/user/").append(editedUser.getEncodedUsername())

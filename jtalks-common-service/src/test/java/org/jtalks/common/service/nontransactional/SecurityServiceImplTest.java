@@ -18,6 +18,7 @@
 package org.jtalks.common.service.nontransactional;
 
 import org.jtalks.common.model.dao.UserDao;
+import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.entity.User;
 import org.jtalks.common.service.SecurityService;
 import org.jtalks.common.service.security.AclBuilder;
@@ -34,8 +35,14 @@ import sun.security.acl.PrincipalImpl;
 
 import java.security.Principal;
 
-import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 /**
  * Test for {@link SecurityServiceImpl}.
@@ -44,6 +51,10 @@ import static org.testng.Assert.*;
  * @author Max Malakhov
  */
 public class SecurityServiceImplTest {
+
+    private static class TestEntity extends Entity {
+
+    }
 
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
@@ -171,22 +182,24 @@ public class SecurityServiceImplTest {
         securityService.loadUserByUsername(USERNAME);
     }
 
-//    @Test
-//    public void testDeleteFromAcl() throws Exception {
-//        Post object = new Post(getUser(), "content");
-//        object.setId(1L);
-//
-//        securityService.deleteFromAcl(object);
-//
-//        verify(aclManager).deleteFromAcl(Post.class, 1L);
-//    }
-//
-//    @Test
-//    public void testDeleteFromAclByClassAndId() throws Exception {
-//        securityService.deleteFromAcl(Post.class, 1L);
-//
-//        verify(aclManager).deleteFromAcl(Post.class, 1L);
-//    }
+    @Test
+    public void testDeleteFromAcl() throws Exception {
+        long entityId = 1L;
+        TestEntity object = new TestEntity();
+        object.setId(entityId);
+
+        securityService.deleteFromAcl(object);
+
+        verify(aclManager).deleteFromAcl(TestEntity.class, entityId);
+    }
+
+    @Test
+    public void testDeleteFromAclByClassAndId() throws Exception {
+        long entityId = 1L;
+        securityService.deleteFromAcl(TestEntity.class, entityId);
+
+        verify(aclManager).deleteFromAcl(TestEntity.class, entityId);
+    }
 
     @Test
     public void testGrantToCurrentUser() throws Exception {

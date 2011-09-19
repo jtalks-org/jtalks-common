@@ -34,6 +34,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 /**
  * Abstract layer for Spring Security.
  * Contains methods for authentication and authorization.
+ * This service
  *
  * @author Kirill Afonin
  * @author Max Malakhov
@@ -51,8 +52,7 @@ public class SecurityServiceImpl implements SecurityService {
      * @param securityContextFacade {@link .SecurityContextFacade} to be injected
      * @param aclManager            manager for actions with ACLs
      */
-    public SecurityServiceImpl(UserDao userDao, SecurityContextFacade securityContextFacade,
-                               AclManager aclManager) {
+    public SecurityServiceImpl(UserDao userDao, SecurityContextFacade securityContextFacade, AclManager aclManager) {
         this.userDao = userDao;
         this.securityContextFacade = securityContextFacade;
         this.aclManager = aclManager;

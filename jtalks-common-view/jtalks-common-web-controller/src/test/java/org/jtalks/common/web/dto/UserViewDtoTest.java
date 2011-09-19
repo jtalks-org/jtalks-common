@@ -23,6 +23,7 @@ import org.jtalks.common.web.dto.user.UserViewDto;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.mock;
@@ -108,11 +109,15 @@ public class UserViewDtoTest {
 
     @Test
     public void testGetUserAvatar() {
-        byte[] avatar = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        when(user.getAvatar()).thenReturn(avatar);
+        try {
+            byte[] avatar = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+            when(user.getAvatar()).thenReturn(avatar);
 
-        userViewDto = new UserViewDto(user);
+            userViewDto = new UserViewDto(user);
 
-        assertTrue(Arrays.equals(userViewDto.getAvatar(), avatar));
+            assertTrue(Arrays.equals(userViewDto.getAvatar().getBytes(), avatar));
+        } catch (IOException e) {
+            throw new IllegalStateException("IOException shouldn't be thrown here.");
+        }
     }
 }

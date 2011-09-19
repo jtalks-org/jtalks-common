@@ -19,6 +19,9 @@ package org.jtalks.common.web.dto.user;
 
 import org.joda.time.DateTime;
 import org.jtalks.common.model.entity.User;
+import org.jtalks.common.web.validation.ImageFormats;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * DTO for {@link User} object
@@ -35,7 +38,7 @@ public class UserViewDto {
     private String encodedUsername;
     private String email;
     private DateTime lastLogin;
-    private byte[] avatar;
+    private MultipartFile avatar;
 
     /**
      * Constructor which fill DTO fields from User entity
@@ -49,7 +52,7 @@ public class UserViewDto {
         encodedUsername = user.getEncodedUsername();
         email = user.getEmail();
         lastLogin = user.getLastLogin();
-        avatar = user.getAvatar();
+        avatar = new MockMultipartFile("avatar", "", ImageFormats.JPG.getContentType(), user.getAvatar());
     }
 
     /**
@@ -111,7 +114,7 @@ public class UserViewDto {
      *
      * @return user's avatar
      */
-    public byte[] getAvatar() {
-        return avatar.clone();
+    public MultipartFile getAvatar() {
+        return avatar;
     }
 }

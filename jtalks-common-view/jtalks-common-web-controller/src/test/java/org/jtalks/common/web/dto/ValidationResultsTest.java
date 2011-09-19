@@ -28,7 +28,9 @@ import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 /**
  * This class contains tests for {@link ValidationResults}
@@ -45,7 +47,6 @@ public class ValidationResultsTest {
     public void setUp() {
         bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(true);
-
     }
 
     @Test
@@ -95,5 +96,14 @@ public class ValidationResultsTest {
         assertEquals(results.getGlobalErrors().size(), 2);
         assertTrue(results.getGlobalErrors().contains(firstErrorMessage));
         assertTrue(results.getGlobalErrors().contains(secondErrorMessage));
+    }
+
+    @Test
+    public void testConstructorWithId() {
+        long entityId = 1L;
+
+        ValidationResults results = new ValidationResults(bindingResult, entityId);
+
+        assertEquals(results.getEntityId(), entityId);
     }
 }
