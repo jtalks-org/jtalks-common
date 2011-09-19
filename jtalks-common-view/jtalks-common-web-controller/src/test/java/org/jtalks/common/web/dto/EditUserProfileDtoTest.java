@@ -17,6 +17,7 @@
  */
 package org.jtalks.common.web.dto;
 
+import org.jtalks.common.web.dto.user.EditUserProfileDto;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

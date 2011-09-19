@@ -15,14 +15,14 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.web.dto;
+package org.jtalks.common.web.dto.user;
 
 import org.joda.time.DateTime;
 import org.jtalks.common.model.entity.User;
 
 /**
  * DTO for {@link User} object
- * 
+ * <p/>
  * Date: 15.09.11
  * Time: 21:44
  *
@@ -39,6 +39,7 @@ public class UserViewDto {
 
     /**
      * Constructor which fill DTO fields from User entity
+     *
      * @param user User entity
      */
     public UserViewDto(User user) {
@@ -53,51 +54,52 @@ public class UserViewDto {
 
     /**
      * Get user's first name
+     *
      * @return First name of user
      */
-    public String getFirstName()
-    {
+    public String getFirstName() {
         return firstName;
     }
 
     /**
      * Get user's last name
+     *
      * @return Last name of user
      */
-    public String getLastName()
-    {
+    public String getLastName() {
         return lastName;
     }
 
     /**
      * Get username
+     *
      * @return username of user
      */
-    public String getUsername()
-    {
+    public String getUsername() {
         return username;
     }
 
     /**
      * Get encoded username
+     *
      * @return encoded username of user
      */
-    public String getEncodedUsername()
-    {
+    public String getEncodedUsername() {
         return encodedUsername;
     }
 
     /**
      * Get email
+     *
      * @return user's email
      */
-    public String getEmail()
-    {
+    public String getEmail() {
         return email;
     }
 
     /**
      * Get last login date
+     *
      * @return user's date of last login
      */
     public DateTime getLastLogin() {
@@ -106,6 +108,7 @@ public class UserViewDto {
 
     /**
      * Get user's avatar
+     *
      * @return user's avatar
      */
     public byte[] getAvatar() {

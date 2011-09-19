@@ -15,19 +15,19 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.web.dto;
+package org.jtalks.common.web.dto.user;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Pattern;
 
 /**
- * DTO for {@link User} object. Required for validation and binding
+ * DTO for {@link org.jtalks.common.model.entity.User} object. Required for validation and binding
  * errors to form.
  *
  * @author Kirill Afonin
  * @author Osadchuck Eugeny
- * @see User
+ * @see {@link org.jtalks.common.model.entity.User}
  */
 public abstract class UserDto {
 

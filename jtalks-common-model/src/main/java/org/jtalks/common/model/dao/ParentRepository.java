@@ -20,7 +20,11 @@ package org.jtalks.common.model.dao;
 import org.jtalks.common.model.entity.Entity;
 
 /**
+ * This interface describes contract
+ * that DAO of entities responsible for managing their lifecycle themselves, must follow.
+ *
  * @author Kirill Afonin
+ * @author Alexey Malev
  */
 public interface ParentRepository<T extends Entity> extends ChildRepository<T> {
 

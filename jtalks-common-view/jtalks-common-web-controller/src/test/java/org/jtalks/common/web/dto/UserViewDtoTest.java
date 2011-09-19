@@ -19,6 +19,7 @@ package org.jtalks.common.web.dto;
 
 import org.joda.time.DateTime;
 import org.jtalks.common.model.entity.User;
+import org.jtalks.common.web.dto.user.UserViewDto;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -26,7 +27,8 @@ import java.util.Arrays;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  * <p>This class contains tests for {@link UserViewDto} class.</p>
@@ -50,7 +52,7 @@ public class UserViewDtoTest {
         when(user.getFirstName()).thenReturn(firstName);
 
         userViewDto = new UserViewDto(user);
-        
+
         assertEquals(userViewDto.getFirstName(), firstName);
     }
 

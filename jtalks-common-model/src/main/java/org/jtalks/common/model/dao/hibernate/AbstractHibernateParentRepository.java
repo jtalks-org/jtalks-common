@@ -22,11 +22,14 @@ import org.jtalks.common.model.dao.ParentRepository;
 import org.jtalks.common.model.entity.Entity;
 
 /**
+ * This class provides methods to create and delete entity
+ * in addition to methods provided by {@link AbstractHibernateChildRepository}
+ *
  * @author Kirill Afonin
+ * @author Alexey Malev
  */
-public class DefaultParentRepository<T extends Entity>
-    extends AbstractHibernateChildRepository<T> implements ParentRepository<T> {
-
+public abstract class AbstractHibernateParentRepository<T extends Entity>
+      extends AbstractHibernateChildRepository<T> implements ParentRepository<T> {
 
     private final String deleteQuery = "delete " + getType().getSimpleName() + " e where e.id= :id";
 
@@ -46,9 +49,9 @@ public class DefaultParentRepository<T extends Entity>
     @Override
     public boolean delete(Long id) {
         return getSession().createQuery(deleteQuery)
-            .setCacheable(true)
-            .setLong("id", id)
-            .executeUpdate() != 0;
+              .setCacheable(true)
+              .setLong("id", id)
+              .executeUpdate() != 0;
     }
 
     /**

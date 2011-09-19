@@ -26,7 +26,7 @@ import org.jtalks.common.model.entity.User;
  * @author Pavel Vervenko
  * @author Kirill Afonin
  */
-public class UserHibernateDao extends DefaultParentRepository<User> implements UserDao {
+public class UserHibernateDao extends AbstractHibernateParentRepository<User> implements UserDao {
     /**
      * {@inheritDoc}
      */

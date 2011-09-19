@@ -15,7 +15,7 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.web.dto;
+package org.jtalks.common.web.dto.user;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.jtalks.common.model.entity.User;
