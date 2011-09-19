@@ -1,6 +1,7 @@
-package org.jtalks.common.service.mixin.modification;
+package org.jtalks.common.mixin;
 
 import org.joda.time.DateTime;
+import org.jtalks.common.mixin.modification.ModificationAwareImpl;
 import org.jtalks.common.model.entity.User;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -10,7 +11,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
 /**
- * This class contains unit tests for {@link ModificationAwareImpl}
+ * This class contains unit tests for {@link org.jtalks.common.mixin.modification.ModificationAwareImpl}
  * Date: 18.09.2011<br />
  * Time: 14:28
  *

@@ -15,7 +15,7 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.service.mixin.creation;
+package org.jtalks.common.mixin.creation;
 
 import org.joda.time.DateTime;
 import org.jtalks.common.model.entity.User;
@@ -37,7 +37,7 @@ public class CreationAwareImpl implements CreationAware {
      * @param creationDate Date set as object creation date.
      * @param createdBy    User set as object creator.
      */
-    CreationAwareImpl(DateTime creationDate, User createdBy) {
+    public CreationAwareImpl(DateTime creationDate, User createdBy) {
         this.creationDate = creationDate;
         this.createdBy = createdBy;
     }

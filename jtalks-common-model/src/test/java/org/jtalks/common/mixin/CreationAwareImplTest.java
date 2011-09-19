@@ -1,6 +1,7 @@
-package org.jtalks.common.service.mixin.creation;
+package org.jtalks.common.mixin;
 
 import org.joda.time.DateTime;
+import org.jtalks.common.mixin.creation.CreationAwareImpl;
 import org.jtalks.common.model.entity.User;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -9,7 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.testng.Assert.assertEquals;
 
 /**
- * This class contains unit tests for {@link CreationAwareImpl}
+ * This class contains unit tests for {@link org.jtalks.common.mixin.creation.CreationAwareImpl}
  * Date: 18.09.2011<br />
  * Time: 14:28
  *

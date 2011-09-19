@@ -1,4 +1,4 @@
-package org.jtalks.common.service.mixin.modification;
+package org.jtalks.common.mixin.modification;
 
 import org.joda.time.DateTime;
 import org.jtalks.common.model.entity.User;
@@ -21,7 +21,7 @@ public class ModificationAwareImpl implements ModificationAware {
      * @param modificationDate Last modification date of an entity.
      * @param modifiedBy       Last user modified an entity.
      */
-    ModificationAwareImpl(DateTime modificationDate, User modifiedBy) {
+    public ModificationAwareImpl(DateTime modificationDate, User modifiedBy) {
         this.modificationDate = modificationDate;
         this.modifiedBy = modifiedBy;
     }

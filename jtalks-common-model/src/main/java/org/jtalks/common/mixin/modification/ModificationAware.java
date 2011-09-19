@@ -1,4 +1,4 @@
-package org.jtalks.common.service.mixin.modification;
+package org.jtalks.common.mixin.modification;
 
 import org.joda.time.DateTime;
 import org.jtalks.common.model.entity.User;

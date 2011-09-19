@@ -15,7 +15,7 @@
  * Creation date: Apr 12, 2011 / 8:05:19 PM
  * The jtalks.org Project
  */
-package org.jtalks.common.service.mixin.creation;
+package org.jtalks.common.mixin.creation;
 
 import org.joda.time.DateTime;
 import org.jtalks.common.model.entity.User;
