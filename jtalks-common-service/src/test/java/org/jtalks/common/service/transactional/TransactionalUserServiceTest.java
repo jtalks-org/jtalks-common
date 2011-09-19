@@ -27,12 +27,16 @@ import org.jtalks.common.service.exceptions.DuplicateException;
 import org.jtalks.common.service.exceptions.NotFoundException;
 import org.jtalks.common.service.exceptions.WrongPasswordException;
 import org.jtalks.common.service.security.SecurityConstants;
+import org.mockito.Matchers;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -157,8 +161,7 @@ public class TransactionalUserServiceTest {
         when(securityService.getCurrentUser()).thenReturn(user);
         when(userDao.isUserWithEmailExist(EMAIL)).thenReturn(false);
 
-        User editedUser = userService.editUserProfile(EMAIL, FIRST_NAME, LAST_NAME,
-                                                      PASSWORD, NEW_PASSWORD, avatar);
+        User editedUser = userService.editUserProfile(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, NEW_PASSWORD, avatar);
 
         verify(securityService).getCurrentUser();
         verify(userDao).saveOrUpdate(user);
@@ -168,13 +171,46 @@ public class TransactionalUserServiceTest {
         assertEquals(editedUser.getPassword(), NEW_PASSWORD, "new password was not accepted");
     }
 
+    @Test
+    public void testChangeEmail() throws Exception {
+        User user = getUser();
+        user.setEmail("some@mail.com");
+
+        when(securityService.getCurrentUser()).thenReturn(user);
+        when(userDao.isUserWithEmailExist(EMAIL)).thenReturn(false);
+
+        User editedUser = userService.editUserProfile(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, NEW_PASSWORD, avatar);
+
+        verify(securityService).getCurrentUser();
+        verify(userDao).saveOrUpdate(user);
+        assertEquals(editedUser.getEmail(), EMAIL, "Email was not changed");
+        assertEquals(editedUser.getFirstName(), FIRST_NAME, "first name was not changed");
+        assertEquals(editedUser.getLastName(), LAST_NAME, "last name was not changed");
+        assertEquals(editedUser.getPassword(), NEW_PASSWORD, "new password was not accepted");
+    }
+
+    @Test
+    public void testSetNullAvatar() throws Exception {
+        User user = mock(User.class);
+        when(user.getPassword()).thenReturn(PASSWORD);
+        when(user.getEmail()).thenReturn(EMAIL);
+
+        when(securityService.getCurrentUser()).thenReturn(user);
+        when(userDao.isUserWithEmailExist(EMAIL)).thenReturn(false);
+
+        userService.editUserProfile(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, NEW_PASSWORD, new byte[0]);
+
+        verify(securityService).getCurrentUser();
+        verify(user, never()).setAvatar(Matchers.<byte[]>any());
+        verify(userDao).saveOrUpdate(user);
+    }
+
     @Test(expectedExceptions = WrongPasswordException.class)
     public void testEditUserProfileWrongPassword() throws Exception {
         User user = getUser();
         when(securityService.getCurrentUser()).thenReturn(user);
 
-        userService.editUserProfile(EMAIL, FIRST_NAME, LAST_NAME,
-                                    WRONG_PASSWORD, NEW_PASSWORD, avatar);
+        userService.editUserProfile(EMAIL, FIRST_NAME, LAST_NAME, WRONG_PASSWORD, NEW_PASSWORD, avatar);
 
         verify(securityService).getCurrentUser();
         verify(userDao, never()).isUserWithEmailExist(anyString());
@@ -186,8 +222,7 @@ public class TransactionalUserServiceTest {
         User user = getUser();
         when(securityService.getCurrentUser()).thenReturn(user);
 
-        userService.editUserProfile(EMAIL, FIRST_NAME, LAST_NAME,
-                                    null, NEW_PASSWORD, avatar);
+        userService.editUserProfile(EMAIL, FIRST_NAME, LAST_NAME, null, NEW_PASSWORD, avatar);
 
         verify(securityService).getCurrentUser();
         verify(userDao, never()).isUserWithEmailExist(anyString());
@@ -200,8 +235,7 @@ public class TransactionalUserServiceTest {
         when(securityService.getCurrentUser()).thenReturn(user);
         when(userDao.isUserWithEmailExist(NEW_EMAIL)).thenReturn(true);
 
-        userService.editUserProfile(NEW_EMAIL, FIRST_NAME, LAST_NAME,
-                                    null, null, avatar);
+        userService.editUserProfile(NEW_EMAIL, FIRST_NAME, LAST_NAME, null, null, avatar);
 
         verify(securityService).getCurrentUser();
         verify(userDao).isUserWithEmailExist(NEW_EMAIL);

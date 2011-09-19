@@ -36,6 +36,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  * <p>This class contains unit tests for {@link DtoLookupStrategy}.</p>
@@ -58,6 +59,10 @@ public class DtoLookupStrategyTest {
     }
 
     private class c2 {
+
+    }
+
+    private class c3 {
 
     }
 
@@ -105,6 +110,30 @@ public class DtoLookupStrategyTest {
         assertEquals(actualArgument.getType(), mappedIdentity.getType());
         assertEquals(actualArgument.getIdentifier(), mappedIdentity.getIdentifier());
         assertEquals(result.keySet().iterator().next().getType(), c1.class.getCanonicalName());
+    }
+
+    @Test
+    public void testMultipleDtoOnSameEntityMappings() {
+        when(mapper.getMapping(c1.class.getCanonicalName())).thenReturn(c2.class);
+        when(mapper.getMapping(c3.class.getCanonicalName())).thenReturn(c2.class);
+
+        ObjectIdentity mappedIdentity = mock(ObjectIdentity.class);
+        when(mappedIdentity.getType()).thenReturn(c1.class.getCanonicalName());
+        when(mappedIdentity.getIdentifier()).thenReturn(1L);
+        ObjectIdentity secondMappedIdentity = mock(ObjectIdentity.class);
+        when(secondMappedIdentity.getType()).thenReturn(c3.class.getCanonicalName());
+        when(secondMappedIdentity.getIdentifier()).thenReturn(1L);
+        List<ObjectIdentity> mappedObjects = new ArrayList<ObjectIdentity>();
+        mappedObjects.add(mappedIdentity);
+        mappedObjects.add(secondMappedIdentity);
+
+        Map<ObjectIdentity, Acl> result = sut.readAclsById(mappedObjects, sids);
+
+        assertEquals(stragegyCallArgument.size(), mappedObjects.size());
+        assertEquals(stragegyCallArgument.get(0).getType(), c2.class.getCanonicalName());
+        assertEquals(stragegyCallArgument.get(1).getType(), c2.class.getCanonicalName());
+        assertTrue(result.containsKey(mappedIdentity));
+        assertTrue(result.containsKey(secondMappedIdentity));
     }
 
     @Test

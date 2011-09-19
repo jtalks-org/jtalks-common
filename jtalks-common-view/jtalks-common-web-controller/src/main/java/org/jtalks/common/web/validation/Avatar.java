@@ -51,7 +51,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * @author Eugeny Batov
  */
-@ImageSize(size = 65)
+@ImageSize(size = User.AVATAR_MAX_SIZE)
 @ImageFormat(format = {ImageFormats.JPG, ImageFormats.PNG, ImageFormats.GIF}, message = "{avatar.wrong.format}")
 @ImageDimension(width = User.AVATAR_MAX_WIDTH, height = User.AVATAR_MAX_HEIGHT)
 @Target({FIELD, ANNOTATION_TYPE})

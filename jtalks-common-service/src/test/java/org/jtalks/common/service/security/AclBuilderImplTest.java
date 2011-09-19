@@ -19,6 +19,9 @@ package org.jtalks.common.service.security;
 
 import org.jtalks.common.model.entity.Entity;
 import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.domain.GrantedAuthoritySid;
+import org.springframework.security.acls.domain.PrincipalSid;
+import org.springframework.security.acls.model.Sid;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -133,6 +136,9 @@ public class AclBuilderImplTest {
 
         assertTrue(builder.containsSid(ROLE));
         assertTrue(builder.containsSid(USERNAME));
+        for (Sid sid : builder.getSids()) {
+            assertTrue((sid instanceof GrantedAuthoritySid) || (sid instanceof PrincipalSid));
+        }
     }
 
     @Test(expectedExceptions = IllegalStateException.class)

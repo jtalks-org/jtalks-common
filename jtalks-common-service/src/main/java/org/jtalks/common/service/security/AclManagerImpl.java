@@ -75,8 +75,9 @@ public class AclManagerImpl implements AclManager {
             for (Permission permission : permissions) {
                 // add permission to acl for recipient
                 acl.insertAce(aclIndex++, permission, recipient, true);
-                logger.debug("Added permission mask {} for Sid {} securedObject {} id {}", new Object[]{permission
-                    .getMask(), recipient, target.getClass().getSimpleName(), target.getId()});
+                logger.debug("Added permission mask {} for Sid {} securedObject {} id {}",
+                             new Object[]{permission.getMask(), recipient, target.getClass().getSimpleName(), target
+                                 .getId()});
             }
         }
     }
@@ -114,9 +115,9 @@ public class AclManagerImpl implements AclManager {
                 for (Permission permission : permissions) {
                     if (entry.getSid().equals(recipient) && entry.getPermission().equals(permission)) {
                         acl.deleteAce(i); // delete from original list
-                        logger
-                            .debug("Deleted from object {} id {} ACL permission {} for recipient {}", new Object[]{target
-                                .getClass().getSimpleName(), target.getId(), permission, recipient});
+                        logger.debug("Deleted from object {} id {} ACL permission {} for recipient {}",
+                                     new Object[]{target.getClass().getSimpleName(), target
+                                         .getId(), permission, recipient});
                         i--; // because list item deleted in original list
                     }
                 }
