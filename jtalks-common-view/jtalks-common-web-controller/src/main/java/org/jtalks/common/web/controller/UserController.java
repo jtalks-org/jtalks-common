@@ -173,7 +173,7 @@ public class UserController {
         User user = securityService.getCurrentUser();
 
         if (result.hasErrors()) {
-            if (user.getAvatar() == null) {
+            if (user.getAvatar().length == 0) {
                 userDto.setAvatar(new MockMultipartFile("avatar", "", ImageFormats.JPG.getContentType(), new byte[0]));
             }
             return new ModelAndView(EDIT_PROFILE, EDITED_USER, userDto);

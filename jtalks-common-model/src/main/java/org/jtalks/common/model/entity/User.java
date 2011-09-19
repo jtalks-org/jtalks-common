@@ -63,6 +63,7 @@ public class User extends Entity implements UserDetails {
         this.setUsername(username);
         this.email = email;
         this.password = password;
+        this.avatar = new byte[0];
     }
 
     /**
@@ -150,14 +151,14 @@ public class User extends Entity implements UserDetails {
      * @return user avatar
      */
     public byte[] getAvatar() {
-        return (avatar != null) ? avatar.clone() : avatar;
+        return (avatar != null) ? avatar.clone() : new byte[0];
     }
 
     /**
      * @param avatar user avatar
      */
     public void setAvatar(byte[] avatar) {
-        this.avatar = (avatar != null) ? avatar.clone() : null;
+        this.avatar = (avatar != null) ? avatar.clone() : new byte[0];
     }
 
     /**
@@ -256,7 +257,7 @@ public class User extends Entity implements UserDetails {
     /**
      * @param encodedUsername encoded username to set
      */
-    protected void setEncodedUsername(String encodedUsername) {
+    protected final void setEncodedUsername(String encodedUsername) {
         this.encodedUsername = encodedUsername;
     }
 }

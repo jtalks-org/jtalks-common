@@ -257,6 +257,6 @@ public class TransactionalUserServiceTest {
         User user = getUser();
         when(securityService.getCurrentUser()).thenReturn(user);
         userService.removeAvatarFromCurrentUser();
-        assertEquals(user.getAvatar(), null, "Avatar after remove should be null");
+        assertEquals(user.getAvatar().length, 0, "Avatar after remove should be null");
     }
 }
