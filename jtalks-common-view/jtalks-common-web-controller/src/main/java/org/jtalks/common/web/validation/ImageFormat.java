@@ -60,31 +60,21 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface ImageFormat {
     /**
      * Message for display when validation fails.
-     *
-     * @return message when validation fails.
      */
     String message() default "{image.wrong.format}";
 
     /**
-     * Groups element that specifies the processing groups with which the
-     * constraint declaration is associated.
-     *
-     * @return array of groups
+     * Groups element that specifies the processing groups with which the constraint declaration is associated.
      */
     Class<?>[] groups() default {};
 
     /**
-     * Payload element that specifies the payload with which the the
-     * constraint declaration is associated.
-     *
-     * @return payload
+     * Payload element that specifies the payload with which the the constraint declaration is associated.
      */
     Class<? extends Payload>[] payload() default {};
 
     /**
      * Array of allowable formats for check constraint.
-     *
-     * @return enum of allowable formats
      */
     ImageFormats[] format();
 }

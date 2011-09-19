@@ -34,7 +34,7 @@ public class DtoMapper {
      * @return Mapped class, if there is mapping for the class corresponds to the specified argument;
      *         <code>null</code> if there is no such class.
      *         appropriate mapping otherwise.
-     * @throws IllegalStateException If there is no class with <code>classname</code> can be resolved/
+     * @throws IllegalStateException If there is no class with <code>classname</code> can be resolved
      */
     public Class getMapping(String classname) {
         try {
@@ -42,7 +42,8 @@ public class DtoMapper {
             ModelEntity annotation = (ModelEntity) providedClass.getAnnotation(ModelEntity.class);
 
             return annotation == null ? null : annotation.value();
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             throw new IllegalStateException("Class [" + classname + "] not found.", e);
         }
     }

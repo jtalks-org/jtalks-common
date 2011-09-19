@@ -36,8 +36,6 @@ import java.lang.annotation.Target;
 public @interface ModelEntity {
     /**
      * Entity class is mapped to with the annotation. Default is {@link Entity}
-     *
-     * @return Mapped model class.
      */
     Class<?> value() default Entity.class;
 }

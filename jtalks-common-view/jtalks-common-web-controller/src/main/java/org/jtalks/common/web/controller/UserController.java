@@ -78,16 +78,12 @@ public class UserController {
      *
      * @param userService     {@link UserService} to be injected
      * @param securityService {@link SecurityService} used for accessing to current logged in user
-     *                        //@param breadcrumbBuilder the object which provides actions on
-     *                        {@link BreadcrumbBuilder} entity
      */
     @Autowired
     public UserController(UserService userService,
-                          SecurityService securityService/*,
-                          BreadcrumbBuilder breadcrumbBuilder*/) {
+                          SecurityService securityService) {
         this.userService = userService;
         this.securityService = securityService;
-        //this.breadcrumbBuilder = breadcrumbBuilder;
     }
 
     /**

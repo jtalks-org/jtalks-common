@@ -59,31 +59,21 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface ImageSize {
     /**
      * Message for display when validation fails.
-     *
-     * @return message when validation fails.
      */
     String message() default "{image.wrong.size}";
 
     /**
-     * Groups element that specifies the processing groups with which the
-     * constraint declaration is associated.
-     *
-     * @return array of groups
+     * Groups element that specifies the processing groups with which the constraint declaration is associated.
      */
     Class<?>[] groups() default {};
 
     /**
-     * Payload element that specifies the payload with which the the
-     * constraint declaration is associated.
-     *
-     * @return payload
+     * Payload element that specifies the payload with which the the constraint declaration is associated.
      */
     Class<? extends Payload>[] payload() default {};
 
     /**
      * Size of image for check dimension.
-     *
-     * @return size of image in kilobytes
      */
     int size();
 
