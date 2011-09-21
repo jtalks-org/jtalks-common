@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011  jtalks.org Team
+ * Copyright (C) 2011  JTalks.org Team
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,22 +11,32 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * Also add information on how to contact you by electronic and paper mail.
- * Creation date: Apr 12, 2011 / 8:05:19 PM
- * The jtalks.org Project
  */
 package org.jtalks.common.service.security;
 
 import org.jtalks.common.model.entity.Entity;
-import org.springframework.security.acls.domain.*;
-import org.springframework.security.acls.model.*;
+import org.springframework.security.acls.domain.AclAuthorizationStrategy;
+import org.springframework.security.acls.domain.AclImpl;
+import org.springframework.security.acls.domain.AuditLogger;
+import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.domain.GrantedAuthoritySid;
+import org.springframework.security.acls.domain.ObjectIdentityImpl;
+import org.springframework.security.acls.domain.PrincipalSid;
+import org.springframework.security.acls.model.MutableAcl;
+import org.springframework.security.acls.model.MutableAclService;
+import org.springframework.security.acls.model.NotFoundException;
+import org.springframework.security.acls.model.ObjectIdentity;
+import org.springframework.security.acls.model.Permission;
+import org.springframework.security.acls.model.Sid;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
@@ -60,17 +70,16 @@ public class AclManagerImplTest {
     @Test
     public void testGrantOnObjectWithNotExistingAcl() throws Exception {
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(target.getClass(), ID);
-        MutableAcl objectAcl = new AclImpl(objectIdentity, 2L, mock(AclAuthorizationStrategy.class),
-                                           mock(AuditLogger.class));
+        MutableAcl objectAcl = new AclImpl(objectIdentity, 2L, mock(AclAuthorizationStrategy.class), mock(
+            AuditLogger.class));
         when(aclService.readAclById(objectIdentity)).thenThrow(new NotFoundException(""));
         when(aclService.createAcl(objectIdentity)).thenReturn(objectAcl);
 
         manager.grant(sids, permissions, target);
 
-        assertGranted(objectAcl, new PrincipalSid(USERNAME),
-                      BasePermission.READ, "Permission to user not granted");
-        assertGranted(objectAcl, new GrantedAuthoritySid(ROLE),
-                      BasePermission.READ, "Permission to ROLE_USER not granted");
+        assertGranted(objectAcl, new PrincipalSid(USERNAME), BasePermission.READ, "Permission to user not granted");
+        assertGranted(objectAcl, new GrantedAuthoritySid(ROLE), BasePermission.READ,
+                      "Permission to ROLE_USER not granted");
         verify(aclService).readAclById(objectIdentity);
         verify(aclService).createAcl(objectIdentity);
         verify(aclService).updateAcl(objectAcl);
@@ -79,16 +88,15 @@ public class AclManagerImplTest {
     @Test
     public void testGrantOnObjectWithExistingAcl() throws Exception {
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(target.getClass(), ID);
-        MutableAcl objectAcl = new AclImpl(objectIdentity, 2L, mock(AclAuthorizationStrategy.class),
-                                           mock(AuditLogger.class));
+        MutableAcl objectAcl = new AclImpl(objectIdentity, 2L, mock(AclAuthorizationStrategy.class), mock(
+            AuditLogger.class));
         when(aclService.readAclById(objectIdentity)).thenReturn(objectAcl);
 
         manager.grant(sids, permissions, target);
 
-        assertGranted(objectAcl, new PrincipalSid(USERNAME),
-                      BasePermission.READ, "Permission to user not granted");
-        assertGranted(objectAcl, new GrantedAuthoritySid(ROLE),
-                      BasePermission.READ, "Permission to ROLE_USER not granted");
+        assertGranted(objectAcl, new PrincipalSid(USERNAME), BasePermission.READ, "Permission to user not granted");
+        assertGranted(objectAcl, new GrantedAuthoritySid(ROLE), BasePermission.READ,
+                      "Permission to ROLE_USER not granted");
         verify(aclService).readAclById(objectIdentity);
         verify(aclService).updateAcl(objectAcl);
     }
@@ -96,25 +104,21 @@ public class AclManagerImplTest {
     @Test
     public void testDelete() throws Exception {
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(target.getClass(), ID);
-        MutableAcl objectAcl = new AclImpl(objectIdentity, 2L, mock(AclAuthorizationStrategy.class),
-                                           mock(AuditLogger.class));
-        objectAcl.insertAce(objectAcl.getEntries().size(), BasePermission.READ,
-                            new PrincipalSid(USERNAME), true);
-        objectAcl.insertAce(objectAcl.getEntries().size(), BasePermission.READ,
-                            new GrantedAuthoritySid(ROLE), true);
-        objectAcl.insertAce(objectAcl.getEntries().size(), BasePermission.DELETE,
-                            new GrantedAuthoritySid(ROLE), true);
+        MutableAcl objectAcl = new AclImpl(objectIdentity, 2L, mock(AclAuthorizationStrategy.class), mock(
+            AuditLogger.class));
+        objectAcl.insertAce(objectAcl.getEntries().size(), BasePermission.READ, new PrincipalSid(USERNAME), true);
+        objectAcl.insertAce(objectAcl.getEntries().size(), BasePermission.READ, new GrantedAuthoritySid(ROLE), true);
+        objectAcl.insertAce(objectAcl.getEntries().size(), BasePermission.DELETE, new GrantedAuthoritySid(ROLE), true);
         when(aclService.readAclById(objectIdentity)).thenReturn(objectAcl);
 
 
         manager.delete(sids, permissions, target);
 
-        assertNotGranted(objectAcl, new PrincipalSid(USERNAME),
-                         BasePermission.READ, "Permission to user granted");
-        assertNotGranted(objectAcl, new GrantedAuthoritySid(ROLE),
-                         BasePermission.READ, "Permission to ROLE_USER granted");
-        assertGranted(objectAcl, new GrantedAuthoritySid(ROLE),
-                      BasePermission.DELETE, "Permission to ROLE_USER not granted");
+        assertNotGranted(objectAcl, new PrincipalSid(USERNAME), BasePermission.READ, "Permission to user granted");
+        assertNotGranted(objectAcl, new GrantedAuthoritySid(ROLE), BasePermission.READ,
+                         "Permission to ROLE_USER granted");
+        assertGranted(objectAcl, new GrantedAuthoritySid(ROLE), BasePermission.DELETE,
+                      "Permission to ROLE_USER not granted");
         verify(aclService).readAclById(objectIdentity);
         verify(aclService).updateAcl(objectAcl);
     }
@@ -153,8 +157,7 @@ public class AclManagerImplTest {
         try {
             acl.isGranted(expectedPermission, expectedSid, true);
             fail(message);
-        }
-        catch (NotFoundException e) {
+        } catch (NotFoundException e) {
         }
     }
 
@@ -166,8 +169,7 @@ public class AclManagerImplTest {
         expectedSid.add(sid);
         try {
             assertTrue(acl.isGranted(expectedPermission, expectedSid, true), message);
-        }
-        catch (NotFoundException e) {
+        } catch (NotFoundException e) {
             fail(message);
         }
     }

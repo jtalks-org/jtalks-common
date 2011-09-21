@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011  jtalks.org Team
+ * Copyright (C) 2011  JTalks.org Team
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,9 +11,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * Also add information on how to contact you by electronic and paper mail.
- * Creation date: Apr 12, 2011 / 8:05:19 PM
- * The jtalks.org Project
  */
 package org.jtalks.common.model.dao.hibernate;
 
@@ -41,8 +38,8 @@ public class UserHibernateDao extends AbstractHibernateParentRepository<User> im
      */
     @Override
     public User getByEncodedUsername(String encodedUsername) {
-        return (User) getSession().createQuery("from User u where u.encodedUsername = ?").setCacheable(true)
-            .setString(0, encodedUsername).uniqueResult();
+        return (User) getSession().createQuery("from User u where u.encodedUsername = ?").setCacheable(true).setString(
+            0, encodedUsername).uniqueResult();
     }
 
     /**
@@ -50,8 +47,9 @@ public class UserHibernateDao extends AbstractHibernateParentRepository<User> im
      */
     @Override
     public boolean isUserWithUsernameExist(String username) {
-        return ((Number) getSession().createQuery("select count(*) from User u where u.username = ?")
-            .setString(0, username).uniqueResult()).intValue() != 0;
+        return ((Number) getSession().createQuery("select count(*) from User u where u.username = ?").setString(0,
+                                                                                                                username)
+            .uniqueResult()).intValue() != 0;
     }
 
     /**

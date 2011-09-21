@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011  jtalks.org Team
+ * Copyright (C) 2011  JTalks.org Team
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,9 +11,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * Also add information on how to contact you by electronic and paper mail.
- * Creation date: Apr 12, 2011 / 8:05:19 PM
- * The jtalks.org Project
  */
 package org.jtalks.common.util;
 
@@ -23,10 +20,18 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -75,8 +80,7 @@ public class FlywayWrapperTest {
             sut.smartInit();
 
             verify(dataSource, times(0)).getConnection();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
         }
     }
@@ -102,8 +106,7 @@ public class FlywayWrapperTest {
 
             verify(dataSource, times(1)).getConnection();
             verify((Flyway) sut, times(0)).init();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
         }
     }
@@ -126,8 +129,7 @@ public class FlywayWrapperTest {
 
             sut.smartInit();
             verify((Flyway) sut, times(1)).init();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
         }
     }
@@ -143,8 +145,7 @@ public class FlywayWrapperTest {
             sut.setEnabled(true);
 
             sut.smartInit();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
         }
     }

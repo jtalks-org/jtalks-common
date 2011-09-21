@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011  jtalks.org Team
+ * Copyright (C) 2011  JTalks.org Team
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,9 +11,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * Also add information on how to contact you by electronic and paper mail.
- * Creation date: Apr 12, 2011 / 8:05:19 PM
- * The jtalks.org Project
  */
 package org.jtalks.common.mixin.modification;
 
@@ -82,23 +79,22 @@ public class ModificationAwareImpl implements ModificationAware {
     public void updateModification(DateTime modificationDate, User modifiedBy) {
         if (modificationDate != null) {
             if ((this.modificationDate != null) && (modificationDate.compareTo(this.modificationDate) < 0)) {
-                throw new IllegalArgumentException("Current modification date [" +
-                                                         this.modificationDate +
-                                                         "] is after provided modification date [" +
-                                                         modificationDate + "].");
+                throw new IllegalArgumentException(
+                    "Current modification date [" + this.modificationDate + "] is after provided modification date [" +
+                    modificationDate + "].");
             } else {
                 this.modificationDate = modificationDate;
             }
         } else {
             if (this.modificationDate != null) {
-                throw new IllegalArgumentException("Cannot replace entity modification date [" +
-                                                         this.modificationDate + "] with null.");
+                throw new IllegalArgumentException(
+                    "Cannot replace entity modification date [" + this.modificationDate + "] with null.");
             }
         }
 
         if ((this.modifiedBy != null) && (modifiedBy == null)) {
-            throw new IllegalArgumentException("Cannot replace last user modified entity: [" + this.modifiedBy +
-                                                     "] with null.");
+            throw new IllegalArgumentException(
+                "Cannot replace last user modified entity: [" + this.modifiedBy + "] with null.");
         }
 
         this.modifiedBy = modifiedBy;

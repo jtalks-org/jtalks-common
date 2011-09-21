@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011  jtalks.org Team
+ * Copyright (C) 2011  JTalks.org Team
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,9 +11,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * Also add information on how to contact you by electronic and paper mail.
- * Creation date: Apr 12, 2011 / 8:05:19 PM
- * The jtalks.org Project
  */
 package org.jtalks.common.service.transactional;
 
@@ -36,8 +33,7 @@ import org.slf4j.LoggerFactory;
  * @author Kirill Afonin
  * @author Alexandre Teterin
  */
-public class TransactionalUserService extends AbstractTransactionalEntityService<User, UserDao>
-      implements UserService {
+public class TransactionalUserService extends AbstractTransactionalEntityService<User, UserDao> implements UserService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private SecurityService securityService;
@@ -119,8 +115,8 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
      * @return {@code true} if user with given username exist
      */
     private boolean isUserExist(User user) {
-        return user.getUsername().equals(SecurityConstants.ANONYMOUS_USERNAME)
-              || dao.isUserWithUsernameExist(user.getUsername());
+        return user.getUsername().equals(SecurityConstants.ANONYMOUS_USERNAME) || dao.isUserWithUsernameExist(
+            user.getUsername());
     }
 
     /**
@@ -139,13 +135,12 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
     @Override
     public User editUserProfile(String email, String firstName, String lastName, String currentPassword,
                                 String newPassword, byte[] avatar)
-          throws DuplicateEmailException, WrongPasswordException {
+        throws DuplicateEmailException, WrongPasswordException {
 
         User currentUser = securityService.getCurrentUser();
         boolean changePassword = newPassword != null;
         if (changePassword) {
-            if (currentPassword == null ||
-                  !currentUser.getPassword().equals(currentPassword)) {
+            if (currentPassword == null || !currentUser.getPassword().equals(currentPassword)) {
                 throw new WrongPasswordException();
             } else {
                 currentUser.setPassword(newPassword);

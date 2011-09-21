@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011  jtalks.org Team
+ * Copyright (C) 2011  JTalks.org Team
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -11,9 +11,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * Also add information on how to contact you by electronic and paper mail.
- * Creation date: Apr 12, 2011 / 8:05:19 PM
- * The jtalks.org Project
  */
 package org.jtalks.common.web.validation;
 
@@ -56,18 +53,16 @@ public class ImageSizeValidatorTest {
 
     @Test
     public void testValidatorSuccess() {
-        Set<ConstraintViolation<TestObject>> constraintViolations =
-              validator.validate(new TestObject(new MockMultipartFile("test_avatar", "test_avatar", "image/jpeg",
-                                                                      new byte[1024])));
+        Set<ConstraintViolation<TestObject>> constraintViolations = validator.validate(new TestObject(
+            new MockMultipartFile("test_avatar", "test_avatar", "image/jpeg", new byte[1024])));
 
         Assert.assertEquals(constraintViolations.size(), 0, "Validation errors");
     }
 
     @Test
     public void testValidatorFail() {
-        Set<ConstraintViolation<TestObject>> constraintViolations =
-              validator.validate(new TestObject(new MockMultipartFile("test_avatar", "test_avatar", "image/jpeg",
-                                                                      new byte[102400])));
+        Set<ConstraintViolation<TestObject>> constraintViolations = validator.validate(new TestObject(
+            new MockMultipartFile("test_avatar", "test_avatar", "image/jpeg", new byte[102400])));
 
         Assert.assertEquals(constraintViolations.size(), 1, "Validation without errors");
         Assert.assertNotNull(constraintViolations.iterator().next().getMessage());
@@ -75,9 +70,8 @@ public class ImageSizeValidatorTest {
 
     @Test
     public void testValidatorImageNull() {
-        Set<ConstraintViolation<TestObject>> constraintViolations =
-              validator.validate(new TestObject(new MockMultipartFile("test_avatar", "", "application/octet-stream",
-                                                                      new byte[0])));
+        Set<ConstraintViolation<TestObject>> constraintViolations = validator.validate(new TestObject(
+            new MockMultipartFile("test_avatar", "", "application/octet-stream", new byte[0])));
 
         Assert.assertEquals(constraintViolations.size(), 0, "Validation errors");
     }
