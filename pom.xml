@@ -2,11 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>jtalks</artifactId>
-        <groupId>org.jtalks</groupId>
-        <version>0.6</version>
-    </parent>
     <packaging>pom</packaging>
     <groupId>org.jtalks.common</groupId>
     <artifactId>jtalks-common</artifactId>
@@ -288,6 +283,64 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.9.0</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <header>${basedir}/header.txt</header>
+                    <aggregate>true</aggregate>
+                    <includes>
+                        <include>src/**</include>
+                        <include>**/*.java</include>
+                        <include>**/test/**</include>
+                        <include>**/main/**</include>
+                    </includes>
+                    <excludes>
+                        <exclude>target/**</exclude>
+                        <exclude>**/*.properties</exclude>
+                        <exclude>**/*.sql</exclude>
+                        <exclude>**/*.css</exclude>
+                        <exclude>**/*.zul</exclude>
+                        <exclude>**/.*</exclude>
+                        <exclude>**/empty</exclude>
+                        <exclude>**/jquery*.*</exclude>
+                    </excludes>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <strictCheck>true</strictCheck>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.2.1</version>
@@ -297,18 +350,39 @@
             </plugin>
         </plugins>
     </build>
-
     <scm>
         <connection>scm:git:git@jtalks.org:jtalks-common</connection>
         <developerConnection>scm:git:git@jtalks.org:jtalks-common</developerConnection>
         <url>scm:git:git@jtalks.org:jtalks-common</url>
     </scm>
-
+    <repositories>
+        <repository>
+            <id>jtalks-nexus</id>
+            <name>jtalks nexus</name>
+            <url>http://repo.jtalks.org/content/groups/public</url>
+            <snapshots>
+                <checksumPolicy>fail</checksumPolicy>
+                <updatePolicy>always</updatePolicy>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>jtalks-nexus</id>
+            <name>jtalks nexus</name>
+            <url>http://repo.jtalks.org/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>jtalks-nexus</id>
+            <name>jtalks nexus</name>
+            <url>http://repo.jtalks.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
     <properties>
         <project.version>${project.version}</project.version>
         <hibernateVersion>3.3.2.GA</hibernateVersion>
         <springVersion>3.0.5.RELEASE</springVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <headerBaseDir>${basedir}/..</headerBaseDir>
     </properties>
 </project>

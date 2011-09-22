@@ -15,8 +15,4 @@
         <module>jtalks-common-web-controller</module>
         <module>jtalks-common-web-view</module>
     </modules>
-
-    <properties>
-        <headerBaseDir>${basedir}/../..</headerBaseDir>
-    </properties>
 </project>

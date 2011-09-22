@@ -47,8 +47,8 @@ public class UserHibernateDao extends AbstractHibernateParentRepository<User> im
      */
     @Override
     public boolean isUserWithUsernameExist(String username) {
-        return ((Number) getSession().createQuery("select count(*) from User u where u.username = ?").setString(0,
-                                                                                                                username)
+        return ((Number) getSession().createQuery("select count(*) from User u where u.username = ?")
+            .setString(0, username)
             .uniqueResult()).intValue() != 0;
     }
 

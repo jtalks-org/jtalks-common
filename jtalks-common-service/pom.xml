@@ -44,8 +44,4 @@
             <artifactId>joda-time</artifactId>
         </dependency>
     </dependencies>
-
-    <properties>
-        <headerBaseDir>${basedir}/../..</headerBaseDir>
-    </properties>
 </project>

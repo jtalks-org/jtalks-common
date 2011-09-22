@@ -9,10 +9,6 @@
     <artifactId>jtalks-common-web-view</artifactId>
     <packaging>war</packaging>
 
-    <properties>
-        <headerBaseDir>${basedir}/../../..</headerBaseDir>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>joda-time</groupId>
@@ -27,5 +23,4 @@
             <artifactId>commons-io</artifactId>
         </dependency>
     </dependencies>
-
 </project>
