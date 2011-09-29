@@ -18,6 +18,8 @@ import org.jtalks.common.model.dao.ChildRepository;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.service.EntityService;
 import org.jtalks.common.service.exceptions.NotFoundException;
+import ru.javatalks.utils.datetime.DateTimeUtils;
+import ru.javatalks.utils.datetime.DateTimeUtilsFactory;
 
 
 /**
@@ -34,6 +36,16 @@ public abstract class AbstractTransactionalEntityService<T extends Entity, Y ext
      * Dao object implementation.
      */
     protected Y dao;
+
+    private DateTimeUtils dateTimeUtils;
+
+    /**
+     * This constructor creates abstract transactional entity service with the default implementation of {@link
+     * DateTimeUtils} returned by {@link DateTimeUtilsFactory#getDateTimeUtils()}
+     */
+    public AbstractTransactionalEntityService() {
+        this.dateTimeUtils = DateTimeUtilsFactory.getDateTimeUtils();
+    }
 
     /**
      * {@inheritDoc}
@@ -52,5 +64,24 @@ public abstract class AbstractTransactionalEntityService<T extends Entity, Y ext
     @Override
     public boolean isExist(long id) {
         return dao.isExist(id);
+    }
+
+    /**
+     * This method returns {@link DateTimeUtils} used by this service.
+     *
+     * @return {@link DateTimeUtils} used by this service.
+     */
+    public DateTimeUtils getDateTimeUtils() {
+        return dateTimeUtils;
+    }
+
+    /**
+     * This method sets {@link DateTimeUtils} that is going to be used by this service. Protected,
+     * as it should be set only for test purposes.
+     *
+     * @param dateTimeUtils New {@link DateTimeUtils} going to be used by this service.
+     */
+    protected void setDateTimeUtils(DateTimeUtils dateTimeUtils) {
+        this.dateTimeUtils = dateTimeUtils;
     }
 }

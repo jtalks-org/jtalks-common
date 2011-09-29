@@ -19,11 +19,14 @@ import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.service.exceptions.NotFoundException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import ru.javatalks.utils.datetime.DateTimeUtils;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 public class AbstractTransactionalEntityServiceTest {
@@ -77,5 +80,19 @@ public class AbstractTransactionalEntityServiceTest {
         when(abstractDao.isExist(ID)).thenReturn(false);
 
         assertFalse(abstractTransactionalEntityService.isExist(ID));
+    }
+
+    @Test
+    public void testIfDefaultConstructorSetsSomeDateTimeUtilsImplementation() {
+        assertNotNull(abstractTransactionalEntityService.getDateTimeUtils());
+    }
+
+    @Test
+    public void testSetCustomDateTimeUtils() {
+        DateTimeUtils dateTimeUtils = mock(DateTimeUtils.class);
+
+        abstractTransactionalEntityService.setDateTimeUtils(dateTimeUtils);
+
+        assertEquals(abstractTransactionalEntityService.getDateTimeUtils(), dateTimeUtils);
     }
 }
