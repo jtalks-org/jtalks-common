@@ -24,8 +24,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
@@ -116,5 +118,22 @@ public class UserViewDtoTest {
         } catch (IOException e) {
             throw new IllegalStateException("IOException shouldn't be thrown here.");
         }
+    }
+
+    @Test
+    public void testIsAvatarExistsTrue() {
+        byte[] avatar = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        when(user.getAvatar()).thenReturn(avatar);
+        userViewDto = new UserViewDto(user);
+        assertTrue(userViewDto.isAvatarExist());
+        verify(user).getAvatar();
+    }
+
+    @Test void testIsAvatarExistsFalse() {
+        byte[] avatar = new byte[] {};
+        when(user.getAvatar()).thenReturn(avatar);
+        userViewDto = new UserViewDto(user);
+        assertFalse(userViewDto.isAvatarExist());
+        verify(user).getAvatar();
     }
 }

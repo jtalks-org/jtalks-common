@@ -114,4 +114,13 @@ public class UserViewDto {
     public MultipartFile getAvatar() {
         return avatar;
     }
+
+    /**
+     * Checks does user have an avatar
+     *
+     * @return does user have an avatar
+     */
+    public boolean isAvatarExist() {
+        return avatar.getSize() > 0;
+    }
 }

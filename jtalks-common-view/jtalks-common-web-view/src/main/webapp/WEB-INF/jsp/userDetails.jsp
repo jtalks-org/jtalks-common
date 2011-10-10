@@ -62,7 +62,7 @@
                              pattern="dd MMM yyyy HH:mm"/>
             </span>
         </li>
-        <c:if test="${user.avatar.size > 0}">
+        <c:if test="${user.avatarExist}">
             <li>
                 <img src="${pageContext.request.contextPath}/show/${user.username}/avatar.html" width="100"
                      height="100"/>
