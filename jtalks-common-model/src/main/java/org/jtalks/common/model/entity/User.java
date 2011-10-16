@@ -42,6 +42,9 @@ public class User extends Entity implements UserDetails {
     private String role = "ROLE_USER";
     private String encodedUsername;
     private byte[] avatar;
+    private boolean permanentBan;
+    private DateTime banExpirationDate;
+    private String banReason;
 
     /**
      * Minimum length of the username.
@@ -91,6 +94,7 @@ public class User extends Entity implements UserDetails {
         this.email = email;
         this.password = password;
         this.avatar = new byte[0];
+        this.permanentBan = false;
     }
 
     /**
@@ -285,5 +289,63 @@ public class User extends Entity implements UserDetails {
      */
     protected final void setEncodedUsername(String encodedUsername) {
         this.encodedUsername = encodedUsername;
+    }
+
+    /**
+     * Gets the user permanent ban status.
+     * 
+     * @return the {@code true} if user is banned, {@code false} otherwise
+     */
+    public boolean isPermanentBan() {
+        return permanentBan;
+    }
+
+    /**
+     * Sets the user permanent ban status.
+     * 
+     * @param permanentBan
+     *            the status to set
+     */
+    public void setPermanentBan(boolean permanentBan) {
+        this.permanentBan = permanentBan;
+    }
+
+    /**
+     * Gets the user ban expiration date and time.
+     * 
+     * @return the {@code DateTime} object, contains date and time when user ban
+     *         status will have expired
+     */
+    public DateTime getBanExpirationDate() {
+        return banExpirationDate;
+    }
+
+    /**
+     * Sets the user ban expiration date and time.
+     * 
+     * @param banExpirationDate
+     *            the {@code DateTime} object to set, contains date and time when user
+     *            ban status will have expired
+     */
+    public void setBanExpirationDate(DateTime banExpirationDate) {
+        this.banExpirationDate = banExpirationDate;
+    }
+
+    /**
+     * This method returns the string ban reason description
+     * 
+     * @return ban reason
+     */
+    public String getBanReason() {
+        return banReason;
+    }
+
+    /**
+     * This method sets user ban reason description
+     * 
+     * @param banReason User ban reason description
+     */
+    public void setBanReason(String banReason) {
+        this.banReason = banReason;
     }
 }

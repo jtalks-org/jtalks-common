@@ -36,5 +36,9 @@
         <property name="avatar" lazy="true" not-null="false">
             <column name="AVATAR" sql-type="blob"/>
         </property>
+        <property column="PERMANENT_BAN" name="permanentBan" not-null="true"/>
+        <property column="BAN_EXPIRATION_DATE" name="banExpirationDate"
+                  type="org.joda.time.contrib.hibernate.PersistentDateTime" not-null="false"/>
+        <property column="BAN_REASON" name="banReason" type="text" not-null="false"/>
     </class>
 </hibernate-mapping>

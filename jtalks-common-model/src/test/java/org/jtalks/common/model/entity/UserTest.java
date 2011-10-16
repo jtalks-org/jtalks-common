@@ -22,7 +22,8 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 
 import static org.testng.Assert.assertTrue;
-
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 /**
  * @author Kirill Afonin
  */
@@ -63,5 +64,20 @@ public class UserTest {
         sut.setAvatar(testAvatar);
 
         assertTrue(Arrays.equals(sut.getAvatar(), testAvatar));
+    }
+
+    @Test
+    public void testSetDefaultPermanentBan() {
+        assertEquals(sut.isPermanentBan(), false);
+    }
+
+    @Test
+    public void testSetDefaultBanExpiredDate() {
+        assertNull(sut.getBanExpirationDate());
+    }
+    
+    @Test
+    public void testSetDefaultBanDescription() {
+        assertNull(sut.getBanReason());
     }
 }
