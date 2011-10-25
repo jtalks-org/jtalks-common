@@ -83,7 +83,7 @@ public class ModificationAwareImplTest {
 
         ModificationAwareImpl sut = new ModificationAwareImpl(null, null);
 
-        sut.updateModification(new DateTime(), modifiedBy);
+        sut.updateModification(newModificationDate, modifiedBy);
 
         assertEquals(sut.getModificationDate(), newModificationDate);
     }
