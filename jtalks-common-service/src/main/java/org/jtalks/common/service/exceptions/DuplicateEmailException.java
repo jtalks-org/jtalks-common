@@ -32,8 +32,22 @@ public class DuplicateEmailException extends DuplicateException {
      * Create exception with specific message.
      *
      * @param message exception message
+     * @deprecated Use {@link DuplicateEmailException#DuplicateEmailException(String,
+     * String)} instead of this.
      */
+    @Deprecated
     public DuplicateEmailException(String message) {
         super(message);
+    }
+
+    /**
+     * This constructor creates {@link DuplicateEmailException} with the specified email and error message
+     *
+     * @param email   Email
+     * @param message Error message
+     * @since 0.8
+     */
+    public DuplicateEmailException(String email, String message) {
+        super(message + " Email: [" + email + "]");
     }
 }

@@ -15,7 +15,7 @@
 package org.jtalks.common.service.exceptions;
 
 /**
- * Exception for cases when user already exists in system.
+ * Exception for cases when user with the specified username already exists in system.
  *
  * @author Eugeny Batov
  */
@@ -24,8 +24,22 @@ public class DuplicateUserException extends DuplicateException {
      * Create exception with specific message.
      *
      * @param message exception message
+     * @deprecated Use {@link DuplicateUserException#DuplicateUserException(String, String)} instead.
      */
+    @Deprecated
     public DuplicateUserException(String message) {
         super(message);
+    }
+
+    /**
+     * .
+     * This method creates an exception with the specified message and username
+     *
+     * @param message  Error message
+     * @param username Username
+     * @since 0.8
+     */
+    public DuplicateUserException(String message, String username) {
+        super(message + " Username: [" + username + "]");
     }
 }

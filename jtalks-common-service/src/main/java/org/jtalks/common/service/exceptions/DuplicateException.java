@@ -25,8 +25,6 @@ public class DuplicateException extends Exception {
 
     /**
      * Default constructor.
-     * <p/>
-     * {@link Exception}
      */
     public DuplicateException() {
     }
