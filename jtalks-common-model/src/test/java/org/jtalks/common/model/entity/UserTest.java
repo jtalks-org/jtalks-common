@@ -24,6 +24,7 @@ import java.util.Arrays;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
+
 /**
  * @author Kirill Afonin
  */
@@ -75,9 +76,19 @@ public class UserTest {
     public void testSetDefaultBanExpiredDate() {
         assertNull(sut.getBanExpirationDate());
     }
-    
+
     @Test
     public void testSetDefaultBanDescription() {
         assertNull(sut.getBanReason());
+    }
+
+    @Test
+    public void testGetAvatarClonesCurrent() {
+        class UserExtension extends User {
+
+        }
+
+        UserExtension sut = new UserExtension();
+        assertTrue(Arrays.equals(sut.getAvatar(), new byte[0]), "Returned unexpected array");
     }
 }

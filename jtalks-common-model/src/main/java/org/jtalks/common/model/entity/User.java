@@ -41,7 +41,7 @@ public class User extends Entity implements UserDetails {
     private DateTime lastLogin;
     private String role = "ROLE_USER";
     private String encodedUsername;
-    private byte[] avatar;
+    private byte[] avatar = new byte[0];
     private boolean permanentBan;
     private DateTime banExpirationDate;
     private String banReason;
@@ -80,6 +80,7 @@ public class User extends Entity implements UserDetails {
      * Only for hibernate usage.
      */
     protected User() {
+
     }
 
     /**
@@ -90,10 +91,10 @@ public class User extends Entity implements UserDetails {
      * @param password password
      */
     public User(String username, String email, String password) {
+        this();
         this.setUsername(username);
         this.email = email;
         this.password = password;
-        this.avatar = new byte[0];
         this.permanentBan = false;
     }
 
