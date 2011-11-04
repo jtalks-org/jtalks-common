@@ -252,4 +252,39 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
     private int getCount() {
         return ((Number) session.createQuery("select count(*) from User").uniqueResult()).intValue();
     }
+
+    @Test
+    public void testGetAllUsers() {
+        dao.saveOrUpdate(user);
+
+        assertEquals(dao.getAll().size(), 1);
+        assertEquals(dao.getAll().get(0), user);
+
+        User newUser = ObjectsFactory.getUser("test", "two");
+        dao.saveOrUpdate(newUser);
+
+        assertEquals(dao.getAll().size(), 2);
+        assertTrue(dao.getAll().contains(user));
+        assertTrue(dao.getAll().contains(newUser));
+    }
+
+    @Test
+    public void testGetUsersByUsernamePart() {
+        user.setUsername("somePattern");
+        dao.saveOrUpdate(user);
+
+        assertTrue(dao.getByUsernamePart("eP").contains(user));
+        assertFalse(dao.getByUsernamePart("sa").contains(user));
+        assertFalse(dao.getByUsernamePart("d").contains(user));
+        assertTrue(dao.getByUsernamePart("").contains(user));
+    }
+
+    @Test
+    public void testGetUserByEncodedUsername() {
+        user.setEncodedUsername("encUn");
+        dao.saveOrUpdate(user);
+
+        assertEquals(dao.getByEncodedUsername("encUn"), user);
+        assertNull(dao.getByEncodedUsername("test"));
+    }
 }

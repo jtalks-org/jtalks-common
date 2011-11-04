@@ -14,6 +14,8 @@
  */
 package org.jtalks.common.model.dao;
 
+import java.util.List;
+
 import org.jtalks.common.model.entity.User;
 
 /**
@@ -34,6 +36,15 @@ public interface UserDao extends ParentRepository<User> {
      * @see User
      */
     User getByUsername(String username);
+
+    /**
+     * Find all users whose username contains specified string.
+     *
+     * @param substring or symbol in user name of requested user.
+     * @return List of users with given string in username.
+     * @see User
+     */
+    List<User> getByUsernamePart(String substring);
 
     /**
      * Check if {@link User} with given username exist.
@@ -61,4 +72,11 @@ public interface UserDao extends ParentRepository<User> {
      *         <code>false</code>
      */
     boolean isUserWithEmailExist(String email);
+
+    /**
+     * Get {@link List} with all Users
+     *
+     * @return <code>List<User></code>
+     */
+    List<User> getAll();
 }

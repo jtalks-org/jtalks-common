@@ -14,6 +14,8 @@
  */
 package org.jtalks.common.model.dao.hibernate;
 
+import java.util.List;
+
 import org.jtalks.common.model.dao.UserDao;
 import org.jtalks.common.model.entity.User;
 
@@ -60,4 +62,25 @@ public class UserHibernateDao extends AbstractHibernateParentRepository<User> im
         return ((Number) getSession().createQuery("select count(*) from User u where u.email = ?").setString(0, email)
             .uniqueResult()).intValue() != 0;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> getAll() {
+		return (List<User>) getSession().createQuery("from User").list();
+	}
+
+	/**
+     * {@inheritDoc}
+     */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> getByUsernamePart(String substring) {
+		StringBuilder param = new StringBuilder("%").append(substring).append("%");
+		return (List<User>) getSession().createQuery("from User u where u.username like ?")
+				.setString(0, param.toString())
+				.list();
+	}
 }
