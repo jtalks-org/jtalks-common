@@ -36,6 +36,14 @@ public interface AclManager {
     void grant(List<Sid> sids, List<Permission> permissions, Entity target);
 
     /**
+     *
+     * @param sids        list of sids
+     * @param permissions list of permissions
+     * @param target      secured object
+     */
+    void revoke(List<Sid> sids, List<Permission> permissions, Entity target);
+
+    /**
      * Delete permissions from list for every sid in list on {@code target} object.
      *
      * @param sids        list of sids

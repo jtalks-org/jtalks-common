@@ -54,24 +54,36 @@ public class AclManagerImpl implements AclManager {
     public void grant(List<Sid> sids, List<Permission> permissions, Entity target) {
         ObjectIdentity oid = createIdentityFor(target);
         MutableAcl acl = getAclFor(oid);
-        grantPermissionsToSids(sids, permissions, target, acl);
+        applyPermissionsToSids(sids, permissions, target, acl, true);
         mutableAclService.updateAcl(acl);
     }
 
     /**
-     * Grant every permission from list to every sid from list.
+     * {@inheritDoc}
+     */
+    @Override
+    public void revoke(List<Sid> sids, List<Permission> permissions, Entity target) {
+        ObjectIdentity oid = createIdentityFor(target);
+        MutableAcl acl = getAclFor(oid);
+        applyPermissionsToSids(sids, permissions, target, acl, false);
+        mutableAclService.updateAcl(acl);
+    }
+
+    /**
+     * Apply every permission from list to every sid from list.
      *
      * @param sids        list of sids
      * @param permissions list of permissions
      * @param target      securable object
      * @param acl         ACL of this object
+     * @param granting grant if true, revoke if false
      */
-    private void grantPermissionsToSids(List<Sid> sids, List<Permission> permissions, Entity target, MutableAcl acl) {
+    private void applyPermissionsToSids(List<Sid> sids, List<Permission> permissions, Entity target, MutableAcl acl, boolean granting) {
         int aclIndex = acl.getEntries().size();
         for (Sid recipient : sids) {
             for (Permission permission : permissions) {
                 // add permission to acl for recipient
-                acl.insertAce(aclIndex++, permission, recipient, true);
+                acl.insertAce(aclIndex++, permission, recipient, granting);
                 logger.debug("Added permission mask {} for Sid {} securedObject {} id {}",
                              new Object[]{permission.getMask(), recipient, target.getClass().getSimpleName(), target
                                  .getId()});

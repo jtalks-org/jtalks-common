@@ -144,6 +144,16 @@ public class SecurityServiceImpl implements SecurityService {
         return new AclBuilderImpl(aclManager, AclBuilderImpl.Action.DELETE);
     }
 
+    @Override
+    public AclBuilder revoke() {
+        return new AclBuilderImpl(aclManager, AclBuilderImpl.Action.REVOKE);
+    }
+
+    @Override
+    public AclBuilder revokeToCurrentUser() {
+        return new AclBuilderImpl(aclManager, AclBuilderImpl.Action.REVOKE).user(getCurrentUserUsername());
+    }
+
     /**
      * {@inheritDoc}
      */

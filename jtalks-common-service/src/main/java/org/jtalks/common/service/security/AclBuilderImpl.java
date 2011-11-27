@@ -32,7 +32,7 @@ public class AclBuilderImpl implements AclBuilder {
      * Possible actions that will be performed when builder finished.
      */
     public enum Action {
-        DELETE, GRANT
+        DELETE, GRANT, REVOKE
     }
 
     private List<Sid> sids = new ArrayList<Sid>();
@@ -135,6 +135,8 @@ public class AclBuilderImpl implements AclBuilder {
     private void executeUpdate() {
         if (action == Action.GRANT) {
             aclManager.grant(sids, permissions, target);
+        } else if(action == Action.REVOKE) {
+            aclManager.revoke(sids, permissions, target);
         } else {
             aclManager.delete(sids, permissions, target);
         }

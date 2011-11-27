@@ -224,6 +224,12 @@ public class SecurityServiceImplTest {
         assertTrue(builder.getSids().isEmpty());
     }
 
+
+    @Test
+    public void testRevokePermission() {
+        //TODO make test
+    }
+
     private void mockCurrentUserPrincipal() {
         Principal user = new PrincipalImpl(USERNAME);
         Authentication auth = mock(Authentication.class);

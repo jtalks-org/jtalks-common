@@ -82,4 +82,17 @@ public interface SecurityService extends UserDetailsService {
      * @see AclBuilder
      */
     AclBuilder delete();
+
+    /**
+     * Create new builder for revoking acl permissions
+     * @return AclBuilder
+     */
+    AclBuilder revoke();
+
+    /**
+     * Create new builder for revoking acl permissions for current user
+     * @return AclBuilder
+     */
+    AclBuilder revokeToCurrentUser();
+
 }
