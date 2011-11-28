@@ -36,6 +36,9 @@
         <label for="j_password"><spring:message code="label.password"/></label>
         <input class="textbox" id="j_password" type='password' name='j_password'/>
         <br/>
+        <input class="checkbox" id="j_remember_me" name="_spring_security_remember_me" type="checkbox">
+        <label for="j_remember_me"><spring:message code="label.remember_me"/></label>
+        <br/>
         <a href='<c:url value="/registration.html" />'><spring:message code="label.register"/></a><br/>
         <br/>
         <input type="submit" value="<spring:message code="label.signin"/>"/>
