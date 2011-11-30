@@ -79,6 +79,9 @@ public class AclManagerImpl implements AclManager {
      * @param granting grant if true, revoke if false
      */
     private void applyPermissionsToSids(List<Sid> sids, List<Permission> permissions, Entity target, MutableAcl acl, boolean granting) {
+
+        deletePermissionsFromAcl(acl, sids, permissions);
+
         int aclIndex = acl.getEntries().size();
         for (Sid recipient : sids) {
             for (Permission permission : permissions) {
@@ -115,7 +118,17 @@ public class AclManagerImpl implements AclManager {
     public void delete(List<Sid> sids, List<Permission> permissions, Entity target) {
         ObjectIdentity oid = createIdentityFor(target);
         MutableAcl acl = (MutableAcl) mutableAclService.readAclById(oid);
+        deletePermissionsFromAcl(acl, sids, permissions);
+        mutableAclService.updateAcl(acl);
+    }
 
+    /**
+     * Delete permissions from {@code acl} for every sid.
+     * @param acl           provided acl
+     * @param sids          list of sids
+     * @param permissions   list of permissions
+     */
+    private void deletePermissionsFromAcl(MutableAcl acl, List<Sid> sids, List<Permission> permissions) {
         List<AccessControlEntry> entries = acl.getEntries(); // it's copy
         int i = 0;
         // search for sid-permission pair
@@ -124,17 +137,15 @@ public class AclManagerImpl implements AclManager {
                 for (Permission permission : permissions) {
                     if (entry.getSid().equals(recipient) && entry.getPermission().equals(permission)) {
                         acl.deleteAce(i); // delete from original list
-                        logger.debug("Deleted from object {} id {} ACL permission {} for recipient {}",
-                                     new Object[]{target.getClass().getSimpleName(), target
-                                         .getId(), permission, recipient});
+//                        logger.debug("Deleted from object {} id {} ACL permission {} for recipient {}",
+//                                     new Object[]{target.getClass().getSimpleName(), target
+//                                         .getId(), permission, recipient});
                         i--; // because list item deleted in original list
                     }
                 }
             }
             i++;
         }
-
-        mutableAclService.updateAcl(acl);
     }
 
     /**

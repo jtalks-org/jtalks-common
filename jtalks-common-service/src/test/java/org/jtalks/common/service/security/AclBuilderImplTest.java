@@ -26,6 +26,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 /**
  * @author Kirill Afonin
@@ -125,6 +126,15 @@ public class AclBuilderImplTest {
         assertFalse(builder.containsSid(USERNAME));
         assertFalse(builder.hasPermission(BasePermission.ADMINISTRATION));
         verify(manager).delete(builder.getSids(), builder.getPermissions(), target);
+    }
+
+    @Test
+    public void testRevokeOn() {
+        builder = new AclBuilderImpl(manager, AclBuilderImpl.Action.REVOKE);
+        builder.user(USERNAME).read().on(target);
+
+        assertFalse(builder.containsSid(USERNAME));
+        verify(manager).revoke(builder.getSids(), builder.getPermissions(), target);
     }
 
     @Test

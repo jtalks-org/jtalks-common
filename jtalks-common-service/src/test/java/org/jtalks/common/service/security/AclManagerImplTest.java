@@ -22,12 +22,8 @@ import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
-import org.springframework.security.acls.model.MutableAcl;
-import org.springframework.security.acls.model.MutableAclService;
-import org.springframework.security.acls.model.NotFoundException;
-import org.springframework.security.acls.model.ObjectIdentity;
-import org.springframework.security.acls.model.Permission;
-import org.springframework.security.acls.model.Sid;
+import org.springframework.security.acls.model.*;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -58,13 +54,17 @@ public class AclManagerImplTest {
     private AclManager manager;
     private MutableAclService aclService;
 
+    @BeforeClass
+    public void setUpClass() {
+        sids.add(new GrantedAuthoritySid(ROLE));
+        sids.add(new PrincipalSid(USERNAME));
+        permissions.add(BasePermission.READ);
+    }
+
     @BeforeMethod
     public void setUp() throws Exception {
         aclService = mock(MutableAclService.class);
         manager = new AclManagerImpl(aclService);
-        sids.add(new GrantedAuthoritySid(ROLE));
-        sids.add(new PrincipalSid(USERNAME));
-        permissions.add(BasePermission.READ);
     }
 
     @Test
@@ -97,6 +97,23 @@ public class AclManagerImplTest {
         assertGranted(objectAcl, new PrincipalSid(USERNAME), BasePermission.READ, "Permission to user not granted");
         assertGranted(objectAcl, new GrantedAuthoritySid(ROLE), BasePermission.READ,
                       "Permission to ROLE_USER not granted");
+        verify(aclService).readAclById(objectIdentity);
+        verify(aclService).updateAcl(objectAcl);
+    }
+
+    @Test
+    public void testRevoke() {
+        ObjectIdentity objectIdentity = new ObjectIdentityImpl(target.getClass(), ID);
+        MutableAcl objectAcl = new AclImpl(objectIdentity, 2L, mock(AclAuthorizationStrategy.class), mock(
+            AuditLogger.class));
+        objectAcl.insertAce(objectAcl.getEntries().size(), BasePermission.READ, new PrincipalSid(USERNAME), true);
+        objectAcl.insertAce(objectAcl.getEntries().size(), BasePermission.READ, new GrantedAuthoritySid(ROLE), true);
+        when(aclService.readAclById(objectIdentity)).thenReturn(objectAcl);
+
+        manager.revoke(sids, permissions, target);
+
+        assertNotGranted(objectAcl, new PrincipalSid(USERNAME), BasePermission.READ, "Permission to user granted");
+        assertNotGranted(objectAcl, new GrantedAuthoritySid(ROLE), BasePermission.READ, "Permission to ROLE_USER granted");
         verify(aclService).readAclById(objectIdentity);
         verify(aclService).updateAcl(objectAcl);
     }
@@ -155,7 +172,7 @@ public class AclManagerImplTest {
         List<Sid> expectedSid = new ArrayList<Sid>();
         expectedSid.add(sid);
         try {
-            acl.isGranted(expectedPermission, expectedSid, true);
+            if(!acl.isGranted(expectedPermission, expectedSid, false)) return;
             fail(message);
         } catch (NotFoundException e) {
         }

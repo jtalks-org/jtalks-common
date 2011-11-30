@@ -36,10 +36,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 /**
  * Test for {@link SecurityServiceImpl}.
@@ -226,8 +223,20 @@ public class SecurityServiceImplTest {
 
 
     @Test
-    public void testRevokePermission() {
-        //TODO make test
+    public void testRevoke() {
+        AclBuilder builder = securityService.revoke();
+
+        assertNotNull(builder);
+        assertTrue(builder.getSids().isEmpty());
+    }
+
+    @Test
+    public void testRevokeToCurrentUser() {
+        mockCurrentUserPrincipal();
+        AclBuilder builder = securityService.revokeToCurrentUser();
+
+        assertNotNull(builder);
+        assertFalse(builder.getSids().isEmpty());
     }
 
     private void mockCurrentUserPrincipal() {
