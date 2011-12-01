@@ -26,6 +26,8 @@ import org.jtalks.common.service.security.SecurityConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
+
 /**
  * User service class. This class contains method needed to manipulate with User persistent entity.
  *
@@ -173,4 +175,41 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
         user.setAvatar(null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] getDefaultAvatar() {
+        InputStream inputStream = getClass().getResourceAsStream("/org/jtalks/common/service/default_avatar.jpg");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024);
+        byte[] bytes = new byte[512];
+        int readBytes;
+        byte[] byteData = null;
+        try {
+            while ((readBytes = inputStream.read(bytes)) > 0) {
+                outputStream.write(bytes, 0, readBytes);
+            }
+            byteData = outputStream.toByteArray();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            byteData = new byte[]{};
+        }
+        finally {
+            if(inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            if(outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+        return byteData;
+    }
 }

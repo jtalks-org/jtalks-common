@@ -41,7 +41,9 @@ import org.testng.annotations.Test;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Array;
 
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;
@@ -72,6 +74,7 @@ public class UserControllerTest {
     private final String EMAIL = "mail@mail.com";
     private final String PASSWORD = "password";
     private final String NEW_PASSWORD = "newPassword";
+    private final byte[] DEFAULT_AVATAR = new byte[]{1,2,3,4,5};
     private MultipartFile avatar;
 
     @BeforeClass
@@ -350,6 +353,21 @@ public class UserControllerTest {
         verify(response).setContentLength(avatar.getBytes().length);
         verify(response).getOutputStream();
         verify(servletOutputStream).write(avatar.getBytes());
+    }
+
+    @Test
+    public void testRenderDefaultAvatar() throws Exception{
+        User user = getUser();
+        user.setAvatar(null);
+        when(userService.getByEncodedUsername(ENCODED_USER_NAME)).thenReturn(user);
+        when(userService.getDefaultAvatar()).thenReturn(DEFAULT_AVATAR);
+        ServletOutputStream servletOutputStream = mock(ServletOutputStream.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        when(response.getOutputStream()).thenReturn(servletOutputStream);
+        controller.renderAvatar(response, ENCODED_USER_NAME);
+        verify(response).setContentLength(DEFAULT_AVATAR.length);
+        verify(response).getOutputStream();
+        verify(servletOutputStream).write(DEFAULT_AVATAR);
     }
 
     @Test

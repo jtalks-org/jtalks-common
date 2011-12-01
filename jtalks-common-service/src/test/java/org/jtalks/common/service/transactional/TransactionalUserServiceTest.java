@@ -35,6 +35,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNotSame;
 
 /**
  * @author Kirill Afonin
@@ -289,5 +291,12 @@ public class TransactionalUserServiceTest {
         when(securityService.getCurrentUser()).thenReturn(user);
         userService.removeAvatarFromCurrentUser();
         assertEquals(user.getAvatar().length, 0, "Avatar after remove should be null");
+    }
+
+    @Test
+    public void testGetDefaultAvatar() {
+        byte[] avatar = userService.getDefaultAvatar();
+        assertNotNull(avatar);
+        assertNotSame(avatar.length, 0);
     }
 }

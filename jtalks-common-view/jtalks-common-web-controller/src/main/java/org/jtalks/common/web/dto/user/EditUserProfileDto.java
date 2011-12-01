@@ -127,7 +127,7 @@ public class EditUserProfileDto extends UserDto {
      * @return does user have an avatar
      */
     public boolean isAvatarExist() {
-        return avatar.getSize() > 0;
+        return avatar != null && avatar.getSize() > 0;
     }
 
 }
