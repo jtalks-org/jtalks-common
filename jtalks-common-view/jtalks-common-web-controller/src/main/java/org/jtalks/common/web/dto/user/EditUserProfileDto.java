@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
  * To get more info see {@link org.jtalks.common.web.controller.UserController#editProfile}.
  *
  * @author Osadchuck Eugeny
+ * @author Dmitry Sokolov
  */
 @Matches(field = "newUserPassword", verifyField = "newUserPasswordConfirm",
          message = "{validation.password.not_matches}")

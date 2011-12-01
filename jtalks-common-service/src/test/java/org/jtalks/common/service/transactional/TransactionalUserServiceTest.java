@@ -41,6 +41,7 @@ import static org.testng.Assert.assertNotSame;
 /**
  * @author Kirill Afonin
  * @author Osadchuck Eugeny
+ * @author Dmitry Sokolov
  */
 public class TransactionalUserServiceTest {
     private static final String USERNAME = "username";

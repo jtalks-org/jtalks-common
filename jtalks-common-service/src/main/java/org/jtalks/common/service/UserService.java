@@ -25,6 +25,7 @@ import org.jtalks.common.service.exceptions.WrongPasswordException;
  *
  * @author Osadchuck Eugeny
  * @author Kirill Afonin
+ * @author Dmitry Sokolov
  */
 public interface UserService extends EntityService<User> {
     /**

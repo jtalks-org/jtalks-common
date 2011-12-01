@@ -50,6 +50,7 @@ import java.io.IOException;
  * @author Max Malakhov
  * @author Eugeny Batov
  * @author Dmitriy Butakov
+ * @author Dmitry Sokolov
  */
 @Controller
 public class UserController {

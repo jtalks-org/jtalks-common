@@ -34,6 +34,7 @@ import java.io.*;
  * @author Osadchuck Eugeny
  * @author Kirill Afonin
  * @author Alexandre Teterin
+ * @author Dmitry Sokolov
  */
 public class TransactionalUserService extends AbstractTransactionalEntityService<User, UserDao> implements UserService {
 

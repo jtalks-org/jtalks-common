@@ -61,6 +61,7 @@ import static org.testng.Assert.assertNull;
 /**
  * @author Kirill Afonin
  * @author Osadchuck Eugeny
+ * @author Dmitry Sokolov
  */
 public class UserControllerTest {
     private UserService userService;

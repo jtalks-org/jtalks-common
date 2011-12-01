@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Time: 21:44
  *
  * @author Dmitriy Butakov
+ * @author Dmitry Sokolov
  */
 public class UserViewDto {
     private String firstName;

@@ -43,6 +43,7 @@ import static org.testng.Assert.*;
  *
  * @author Kirill Afonin
  * @author Max Malakhov
+ * @author Dmitry Sokolov
  */
 public class SecurityServiceImplTest {
 
