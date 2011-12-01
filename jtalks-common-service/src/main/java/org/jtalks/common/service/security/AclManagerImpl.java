@@ -137,9 +137,6 @@ public class AclManagerImpl implements AclManager {
                 for (Permission permission : permissions) {
                     if (entry.getSid().equals(recipient) && entry.getPermission().equals(permission)) {
                         acl.deleteAce(i); // delete from original list
-//                        logger.debug("Deleted from object {} id {} ACL permission {} for recipient {}",
-//                                     new Object[]{target.getClass().getSimpleName(), target
-//                                         .getId(), permission, recipient});
                         i--; // because list item deleted in original list
                     }
                 }

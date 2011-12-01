@@ -35,6 +35,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  *
  * @author Kirill Afonin
  * @author Max Malakhov
+ * @author Dmitry Sokolov
  */
 public class SecurityServiceImpl implements SecurityService {
 
@@ -144,13 +145,19 @@ public class SecurityServiceImpl implements SecurityService {
         return new AclBuilderImpl(aclManager, AclBuilderImpl.Action.DELETE);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AclBuilder revoke() {
         return new AclBuilderImpl(aclManager, AclBuilderImpl.Action.REVOKE);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AclBuilder revokeToCurrentUser() {
+    public AclBuilder revokeFromCurrentUser() {
         return new AclBuilderImpl(aclManager, AclBuilderImpl.Action.REVOKE).user(getCurrentUserUsername());
     }
 

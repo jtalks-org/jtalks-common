@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  *
  * @author Kirill Afonin
  * @author Max Malakhov
+ * @author Dmitry Sokolov
  */
 public interface SecurityService extends UserDetailsService {
 
@@ -93,6 +94,6 @@ public interface SecurityService extends UserDetailsService {
      * Create new builder for revoking acl permissions for current user
      * @return AclBuilder
      */
-    AclBuilder revokeToCurrentUser();
+    AclBuilder revokeFromCurrentUser();
 
 }

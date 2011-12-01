@@ -36,6 +36,7 @@ public interface AclManager {
     void grant(List<Sid> sids, List<Permission> permissions, Entity target);
 
     /**
+     * Revoke permissions from lists for every sid in list on {@code target} entity
      *
      * @param sids        list of sids
      * @param permissions list of permissions

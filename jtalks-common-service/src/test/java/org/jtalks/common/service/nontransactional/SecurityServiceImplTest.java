@@ -231,9 +231,9 @@ public class SecurityServiceImplTest {
     }
 
     @Test
-    public void testRevokeToCurrentUser() {
+    public void testRevokeFromCurrentUser() {
         mockCurrentUserPrincipal();
-        AclBuilder builder = securityService.revokeToCurrentUser();
+        AclBuilder builder = securityService.revokeFromCurrentUser();
 
         assertNotNull(builder);
         assertFalse(builder.getSids().isEmpty());
