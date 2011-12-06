@@ -31,6 +31,7 @@ import java.util.Collection;
  * @author Pavel Vervenko
  * @author Kirill Afonin
  * @author Alexandre Teterin
+ * @author Masich Ivan
  */
 public class User extends Entity implements UserDetails {
     private String lastName;
@@ -45,6 +46,7 @@ public class User extends Entity implements UserDetails {
     private boolean permanentBan;
     private DateTime banExpirationDate;
     private String banReason;
+    private String salt;
 
     /**
      * Minimum length of the username.
@@ -348,5 +350,22 @@ public class User extends Entity implements UserDetails {
      */
     public void setBanReason(String banReason) {
         this.banReason = banReason;
+    }
+
+    /**
+     * This method returns the salt for encode password
+     *
+     * @return salt string
+     */
+    public String getSalt() {
+        return salt;
+    }
+
+    /**
+     * This method sets salt for encode password
+     * @param salt salt salstring
+     */
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

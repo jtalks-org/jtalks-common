@@ -23,8 +23,10 @@ import org.jtalks.common.service.exceptions.DuplicateUserException;
 import org.jtalks.common.service.exceptions.NotFoundException;
 import org.jtalks.common.service.exceptions.WrongPasswordException;
 import org.jtalks.common.service.security.SecurityConstants;
+import org.jtalks.common.util.SaltGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 
 import java.io.*;
 
@@ -34,22 +36,34 @@ import java.io.*;
  * @author Osadchuck Eugeny
  * @author Kirill Afonin
  * @author Alexandre Teterin
+ * @author Masich Ivan
  * @author Dmitry Sokolov
  */
 public class TransactionalUserService extends AbstractTransactionalEntityService<User, UserDao> implements UserService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private SecurityService securityService;
+    private MessageDigestPasswordEncoder passwordEncoder;
+    private SaltGenerator saltGenerator;
 
     /**
      * Create an instance of User entity based service
      *
      * @param dao             for operations with data storage
      * @param securityService for security
+     * @param passwordEncoder for encode password
+     * @param saltGenerator   for generate new salt
      */
-    public TransactionalUserService(UserDao dao, SecurityService securityService) {
+    public TransactionalUserService(
+        UserDao dao,
+        SecurityService securityService,
+        MessageDigestPasswordEncoder passwordEncoder,
+        SaltGenerator saltGenerator
+    ) {
         this.dao = dao;
         this.securityService = securityService;
+        this.passwordEncoder = passwordEncoder;
+        this.saltGenerator = saltGenerator;
     }
 
     /**
@@ -95,6 +109,8 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
             logger.warn(msg);
             throw new DuplicateEmailException(msg);
         }
+
+        encodeNewUserPassword(user);
 
         dao.saveOrUpdate(user);
 
@@ -143,7 +159,9 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
         User currentUser = securityService.getCurrentUser();
         boolean changePassword = newPassword != null;
         if (changePassword) {
-            if (currentPassword == null || !currentUser.getPassword().equals(currentPassword)) {
+            String currentEncodedPassword = encodePassword(currentPassword, currentUser.getSalt());
+            
+            if (currentPassword == null || !currentUser.getPassword().equals(currentEncodedPassword)) {
                 throw new WrongPasswordException();
             } else {
                 currentUser.setPassword(newPassword);
@@ -162,6 +180,7 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
             currentUser.setAvatar(avatar);
         }
 
+        encodeNewUserPassword(currentUser);
 
         dao.saveOrUpdate(currentUser);
         return currentUser;
@@ -174,6 +193,30 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
     public void removeAvatarFromCurrentUser() {
         User user = securityService.getCurrentUser();
         user.setAvatar(null);
+    }
+
+    /**
+     * Encode password in {@link User} entity.
+     *
+     * @param user {@link User} entity with new salt and encoded password.
+     */
+    private void encodeNewUserPassword(User user) {
+        String salt = saltGenerator.generate();
+        String encodedPassword = encodePassword(user.getPassword(), salt);
+
+        user.setSalt(salt);
+        user.setPassword(encodedPassword);
+    }
+
+    /**
+     * Encode passed password with passed salt.
+     *
+     * @param password Raw password string.
+     * @param salt Salt string
+     * @return Encoded password
+     */
+    private String encodePassword(String password, String salt) {
+        return passwordEncoder.encodePassword(password, salt);
     }
 
     /**
@@ -213,4 +256,5 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
         }
         return byteData;
     }
+
 }

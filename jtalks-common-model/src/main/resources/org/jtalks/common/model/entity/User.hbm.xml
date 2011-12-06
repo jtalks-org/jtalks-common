@@ -40,5 +40,6 @@
         <property column="BAN_EXPIRATION_DATE" name="banExpirationDate"
                   type="org.joda.time.contrib.hibernate.PersistentDateTime" not-null="false"/>
         <property column="BAN_REASON" name="banReason" type="text" not-null="false"/>
+        <property column="SALT" name="salt"/>
     </class>
 </hibernate-mapping>

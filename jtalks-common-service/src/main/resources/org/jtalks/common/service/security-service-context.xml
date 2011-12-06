@@ -23,7 +23,11 @@
 
     <!-- Spring Security authentication manager -->
     <security:authentication-manager alias="authenticationManager">
-        <security:authentication-provider user-service-ref="securityService"/>
+        <security:authentication-provider user-service-ref="securityService">
+            <security:password-encoder ref="passwordEncoder">
+                <security:salt-source user-property="salt"/>
+            </security:password-encoder>
+        </security:authentication-provider>
     </security:authentication-manager>
 
     <!-- Enable security annotations using specified expression handler -->
@@ -121,4 +125,6 @@
     <bean id="aclManager" class="org.jtalks.common.service.security.AclManagerImpl">
         <constructor-arg ref="aclService"/>
     </bean>
+
+    <import resource="security-password-context.xml"/>
 </beans>

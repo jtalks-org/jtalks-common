@@ -24,7 +24,9 @@ import org.jtalks.common.service.exceptions.DuplicateException;
 import org.jtalks.common.service.exceptions.NotFoundException;
 import org.jtalks.common.service.exceptions.WrongPasswordException;
 import org.jtalks.common.service.security.SecurityConstants;
+import org.jtalks.common.util.SaltGenerator;
 import org.mockito.Matchers;
+import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -41,6 +43,7 @@ import static org.testng.Assert.assertNotSame;
 /**
  * @author Kirill Afonin
  * @author Osadchuck Eugeny
+ * @author Masich Ivan
  * @author Dmitry Sokolov
  */
 public class TransactionalUserServiceTest {
@@ -55,16 +58,28 @@ public class TransactionalUserServiceTest {
     private static final String NEW_PASSWORD = "newPassword";
     private byte[] avatar = new byte[10];
     private static final Long USER_ID = 999L;
+    private static final String SALT = "0123456789";
 
     private UserService userService;
     private UserDao userDao;
     private SecurityService securityService;
+    private MessageDigestPasswordEncoder passwordEncoder;
+    private SaltGenerator saltGenerator;
 
     @BeforeMethod
     public void setUp() throws Exception {
         securityService = mock(SecurityService.class);
         userDao = mock(UserDao.class);
-        userService = new TransactionalUserService(userDao, securityService);
+
+        saltGenerator = mock(SaltGenerator.class);
+        when(saltGenerator.generate()).thenReturn(SALT);
+
+        passwordEncoder = mock(MessageDigestPasswordEncoder.class);
+        when(passwordEncoder.encodePassword(PASSWORD, SALT)).thenReturn(PASSWORD);
+        when(passwordEncoder.encodePassword(WRONG_PASSWORD, SALT)).thenReturn(WRONG_PASSWORD);
+        when(passwordEncoder.encodePassword(NEW_PASSWORD, SALT)).thenReturn(NEW_PASSWORD);
+
+        userService = new TransactionalUserService(userDao, securityService, passwordEncoder, saltGenerator);
     }
 
     @Test
@@ -119,6 +134,9 @@ public class TransactionalUserServiceTest {
         verify(userDao).isUserWithEmailExist(EMAIL);
         verify(userDao).isUserWithUsernameExist(USERNAME);
         verify(userDao).saveOrUpdate(user);
+
+        verify(saltGenerator).generate();
+        verify(passwordEncoder).encodePassword(PASSWORD, SALT);
     }
 
     @Test(expectedExceptions = {DuplicateException.class})
@@ -169,6 +187,10 @@ public class TransactionalUserServiceTest {
         assertEquals(editedUser.getFirstName(), FIRST_NAME, "first name was not changed");
         assertEquals(editedUser.getLastName(), LAST_NAME, "last name was not changed");
         assertEquals(editedUser.getPassword(), NEW_PASSWORD, "new password was not accepted");
+
+        verify(saltGenerator).generate();
+        verify(passwordEncoder).encodePassword(PASSWORD, SALT);
+        verify(passwordEncoder).encodePassword(NEW_PASSWORD, SALT);
     }
 
     @Test
@@ -194,6 +216,7 @@ public class TransactionalUserServiceTest {
         User user = mock(User.class);
         when(user.getPassword()).thenReturn(PASSWORD);
         when(user.getEmail()).thenReturn(EMAIL);
+        when(user.getSalt()).thenReturn(SALT);
 
         when(securityService.getCurrentUser()).thenReturn(user);
         when(userDao.isUserWithEmailExist(EMAIL)).thenReturn(false);
@@ -215,6 +238,10 @@ public class TransactionalUserServiceTest {
         verify(securityService).getCurrentUser();
         verify(userDao, never()).isUserWithEmailExist(anyString());
         verify(userDao, never()).saveOrUpdate(any(User.class));
+
+        verify(saltGenerator).generate();
+        verify(passwordEncoder).encodePassword(WRONG_PASSWORD, SALT);
+        verify(passwordEncoder, never()).encodePassword(NEW_PASSWORD, SALT);
     }
 
     @Test(expectedExceptions = WrongPasswordException.class)
@@ -253,6 +280,8 @@ public class TransactionalUserServiceTest {
         user.setFirstName(FIRST_NAME);
         user.setLastName(LAST_NAME);
         user.setAvatar(avatar);
+        user.setSalt(SALT);
+
         return user;
     }
 
