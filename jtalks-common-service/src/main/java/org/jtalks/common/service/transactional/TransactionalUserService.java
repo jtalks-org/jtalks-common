@@ -180,6 +180,7 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
      * {@inheritDoc}
      */
     @Override
+    //TODO consider to change it when there is constant table
     public byte[] getDefaultAvatar() {
         InputStream inputStream = getClass().getResourceAsStream("/org/jtalks/common/service/default_avatar.jpg");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024);
@@ -203,12 +204,10 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
                     logger.error(e.getMessage(), e);
                 }
             }
-            if(outputStream != null) {
-                try {
-                    outputStream.close();
-                } catch (IOException e) {
-                    logger.error(e.getMessage(), e);
-                }
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
             }
         }
         return byteData;
