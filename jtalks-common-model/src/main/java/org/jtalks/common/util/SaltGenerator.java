@@ -15,7 +15,7 @@
 package org.jtalks.common.util;
 
 /**
- * Class for generate salt string.
+ * This interface describes the contract of the class used to generate salt.
  *
  * @author Masich Ivan
  */

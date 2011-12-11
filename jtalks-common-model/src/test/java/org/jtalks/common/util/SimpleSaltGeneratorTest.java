@@ -15,7 +15,8 @@
 package org.jtalks.common.util;
 
 import org.testng.annotations.Test;
-import static org.testng.Assert.assertTrue;
+
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author Masich Ivan
@@ -23,9 +24,11 @@ import static org.testng.Assert.assertTrue;
 public class SimpleSaltGeneratorTest {
 
     @Test
-    public void testReturnNotNull() {
-        SimpleSaltGenerator generator = new SimpleSaltGenerator();
+    public void testCustomBytesLength() {
+        SimpleSaltGenerator generator = new SimpleSaltGenerator(256);
 
-        assertTrue(generator.generate() != null);
+        String result = generator.generate();
+
+        assertEquals(result.length(), 256 / 8);
     }
 }

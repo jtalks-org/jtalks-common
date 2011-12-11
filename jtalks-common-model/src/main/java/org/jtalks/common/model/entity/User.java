@@ -91,6 +91,7 @@ public class User extends Entity implements UserDetails {
      * @param username username
      * @param email    email
      * @param password password
+     * @deprecated
      */
     public User(String username, String email, String password) {
         this();
@@ -98,6 +99,20 @@ public class User extends Entity implements UserDetails {
         this.email = email;
         this.password = password;
         this.permanentBan = false;
+        this.salt = "";
+    }
+
+    /**
+     * Create instance with requiered fields.
+     *
+     * @param username username
+     * @param email    email
+     * @param password password
+     * @param salt     salt
+     */
+    public User(String username, String email, String password, String salt) {
+        this(username, email, password);
+        this.setSalt(salt);
     }
 
     /**

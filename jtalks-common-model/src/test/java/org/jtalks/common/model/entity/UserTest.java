@@ -29,11 +29,12 @@ import static org.testng.Assert.assertNull;
  * @author Kirill Afonin
  */
 public class UserTest {
+    private static final String SALT = "salt";
     private User sut;
 
     @BeforeMethod
     public void setUp() {
-        sut = new User("username", "email@mail.com", "pass");
+        sut = new User("username", "email@mail.com", "pass", SALT);
     }
 
     @Test
@@ -80,6 +81,11 @@ public class UserTest {
     @Test
     public void testSetDefaultBanDescription() {
         assertNull(sut.getBanReason());
+    }
+
+    @Test
+    public void testGetSalt() {
+        assertEquals(sut.getSalt(), SALT);
     }
 
     @Test

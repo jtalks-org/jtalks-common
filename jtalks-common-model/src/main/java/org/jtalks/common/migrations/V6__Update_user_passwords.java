@@ -37,6 +37,10 @@ public class V6__Update_user_passwords implements JavaMigration {
     private ApplicationContext context;
 
     protected RowMapper<HashMap<String, String>> rowMapper = new RowMapper<HashMap<String, String>>() {
+        /**
+         * @inheritDoc
+         */
+        @Override
         public HashMap<String, String> mapRow(ResultSet resultSet, int i) throws SQLException {
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("id", resultSet.getString("ID"));
@@ -55,7 +59,7 @@ public class V6__Update_user_passwords implements JavaMigration {
         SaltGenerator saltGenerator = getContext().getBean(SaltGenerator.class);
 
         List<HashMap<String, String>> users = jdbcTemplate.query(
-            "SELECT `ID`, `PASSWORD` FROM `USERS` WHERE `SALT` IS NULL",
+            "SELECT `ID`, `PASSWORD` FROM `USERS` WHERE `SALT` = ''",
             rowMapper
         );
 

@@ -110,7 +110,11 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
             throw new DuplicateEmailException(msg);
         }
 
-        encodeNewUserPassword(user);
+        String salt = saltGenerator.generate();
+        user.setSalt(salt);
+
+        String encodedPassword = passwordEncoder.encodePassword(user.getPassword(), salt);
+        user.setPassword(encodedPassword);
 
         dao.saveOrUpdate(user);
 
@@ -159,7 +163,7 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
         User currentUser = securityService.getCurrentUser();
         boolean changePassword = newPassword != null;
         if (changePassword) {
-            String currentEncodedPassword = encodePassword(currentPassword, currentUser.getSalt());
+            String currentEncodedPassword = passwordEncoder.encodePassword(currentPassword, currentUser.getSalt());
             
             if (currentPassword == null || !currentUser.getPassword().equals(currentEncodedPassword)) {
                 throw new WrongPasswordException();
@@ -180,7 +184,11 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
             currentUser.setAvatar(avatar);
         }
 
-        encodeNewUserPassword(currentUser);
+        String salt = saltGenerator.generate();
+        currentUser.setSalt(salt);
+
+        String encodedPassword = passwordEncoder.encodePassword(currentUser.getPassword(), salt);
+        currentUser.setPassword(encodedPassword);
 
         dao.saveOrUpdate(currentUser);
         return currentUser;
@@ -193,30 +201,6 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
     public void removeAvatarFromCurrentUser() {
         User user = securityService.getCurrentUser();
         user.setAvatar(null);
-    }
-
-    /**
-     * Encode password in {@link User} entity.
-     *
-     * @param user {@link User} entity with new salt and encoded password.
-     */
-    private void encodeNewUserPassword(User user) {
-        String salt = saltGenerator.generate();
-        String encodedPassword = encodePassword(user.getPassword(), salt);
-
-        user.setSalt(salt);
-        user.setPassword(encodedPassword);
-    }
-
-    /**
-     * Encode passed password with passed salt.
-     *
-     * @param password Raw password string.
-     * @param salt Salt string
-     * @return Encoded password
-     */
-    private String encodePassword(String password, String salt) {
-        return passwordEncoder.encodePassword(password, salt);
     }
 
     /**

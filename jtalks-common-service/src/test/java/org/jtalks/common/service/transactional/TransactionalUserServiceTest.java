@@ -276,11 +276,10 @@ public class TransactionalUserServiceTest {
      *         first name, last name,  email and password
      */
     private User getUser(String username) {
-        User user = new User(username, EMAIL, PASSWORD);
+        User user = new User(username, EMAIL, PASSWORD, SALT);
         user.setFirstName(FIRST_NAME);
         user.setLastName(LAST_NAME);
         user.setAvatar(avatar);
-        user.setSalt(SALT);
 
         return user;
     }

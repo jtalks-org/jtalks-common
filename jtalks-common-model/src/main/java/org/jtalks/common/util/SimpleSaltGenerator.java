@@ -14,15 +14,25 @@
  */
 package org.jtalks.common.util;
 
-import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 
 /**
- * Salt generator with using {@link SecureRandom}.
+ * Salt generator that generates salt with specified length in bits using {@link SecureRandom}.
  *
  * @author Masich Ivan
  */
 public class SimpleSaltGenerator implements SaltGenerator {
+    private int bitLength;
+
+    /**
+     * Constructor with length of bits.
+     *
+     * @param bitLength Needed length in bits for result string.
+     */
+    public SimpleSaltGenerator(int bitLength) {
+        this.bitLength = bitLength;
+    }
 
     /**
      * @inheritDoc
@@ -31,8 +41,9 @@ public class SimpleSaltGenerator implements SaltGenerator {
     public String generate() {
         SecureRandom generator = new SecureRandom();
 
-        Long randomValue = ByteBuffer.wrap(generator.generateSeed(8)).getLong();
+        byte[] randomBytes = new byte[bitLength / 8];
+        generator.nextBytes(randomBytes);
 
-        return randomValue.toString();
+        return new String(randomBytes, Charset.forName("US-ASCII"));
     }
 }
