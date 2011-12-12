@@ -217,11 +217,9 @@ public class UserController {
     public void renderAvatar(HttpServletResponse response, @PathVariable("encodedUsername") String encodedUsername)
         throws NotFoundException, IOException {
         User user = userService.getByEncodedUsername(encodedUsername);
-        //TODO consider to move it to service or somewhere else
-        byte[] avatar = (user.getAvatar() != null && user.getAvatar().length > 0) ? user.getAvatar() : userService.getDefaultAvatar();
         response.setContentType("image/jpeg");
-        response.setContentLength(avatar.length);
-        response.getOutputStream().write(avatar);
+        response.setContentLength(user.getAvatar().length);
+        response.getOutputStream().write(user.getAvatar());
     }
 
 }

@@ -357,21 +357,6 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testRenderDefaultAvatar() throws Exception{
-        User user = getUser();
-        user.setAvatar(null);
-        when(userService.getByEncodedUsername(ENCODED_USER_NAME)).thenReturn(user);
-        when(userService.getDefaultAvatar()).thenReturn(DEFAULT_AVATAR);
-        ServletOutputStream servletOutputStream = mock(ServletOutputStream.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getOutputStream()).thenReturn(servletOutputStream);
-        controller.renderAvatar(response, ENCODED_USER_NAME);
-        verify(response).setContentLength(DEFAULT_AVATAR.length);
-        verify(response).getOutputStream();
-        verify(servletOutputStream).write(DEFAULT_AVATAR);
-    }
-
-    @Test
     public void testInitBinder() {
         WebDataBinder binder = mock(WebDataBinder.class);
 

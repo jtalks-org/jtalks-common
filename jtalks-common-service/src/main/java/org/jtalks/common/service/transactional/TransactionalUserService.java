@@ -63,6 +63,9 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
             logger.info(msg);
             throw new NotFoundException(msg);
         }
+        if(user.getAvatar() == null || user.getAvatar().length == 0) {
+            user.setAvatar(getDefaultAvatar());
+        }
         return user;
     }
 
@@ -76,6 +79,9 @@ public class TransactionalUserService extends AbstractTransactionalEntityService
             String msg = "User " + encodedUsername + " not found.";
             logger.info(msg);
             throw new NotFoundException(msg);
+        }
+        if(user.getAvatar() == null || user.getAvatar().length == 0) {
+            user.setAvatar(getDefaultAvatar());
         }
         return user;
     }
