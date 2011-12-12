@@ -14,21 +14,33 @@
  */
 package org.jtalks.common.util;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
 /**
  * @author Masich Ivan
+ * @author Alexey Malev
  */
 public class SimpleSaltGeneratorTest {
 
+    private static final int BIT_LENGTH = 512;
+
+    private SaltGenerator sut;
+
+    @BeforeMethod
+    public void setUp() {
+        this.sut = new SimpleSaltGenerator(BIT_LENGTH);
+    }
+
     @Test
-    public void testCustomBytesLength() {
-        SimpleSaltGenerator generator = new SimpleSaltGenerator(256);
+    public void testGeneratedStringIsAlphanumerical() {
+        assertTrue(sut.generate().matches("^[a-zA-Z0-9]+$"));
+    }
 
-        String result = generator.generate();
-
-        assertEquals(result.length(), 256 / 8);
+    @Test
+    public void testGeneratedStringLength() {
+        assertEquals(sut.generate().length(), BIT_LENGTH / 8);
     }
 }

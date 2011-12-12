@@ -14,24 +14,30 @@
  */
 package org.jtalks.common.util;
 
-import java.nio.charset.Charset;
+import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Random;
 
 /**
  * Salt generator that generates salt with specified length in bits using {@link SecureRandom}.
  *
  * @author Masich Ivan
+ * @author Alexey Malev
  */
 public class SimpleSaltGenerator implements SaltGenerator {
+
     private int bitLength;
 
+    private Random generator;
+
     /**
-     * Constructor with length of bits.
+     * This constructor creates generator that generates string with length equal to {@code bitLength / 8}.
      *
-     * @param bitLength Needed length in bits for result string.
+     * @param bitLength Required length in bits (single-byte encoding) for result string.
      */
     public SimpleSaltGenerator(int bitLength) {
         this.bitLength = bitLength;
+        this.generator = new SecureRandom();
     }
 
     /**
@@ -39,11 +45,12 @@ public class SimpleSaltGenerator implements SaltGenerator {
      */
     @Override
     public String generate() {
-        SecureRandom generator = new SecureRandom();
-
-        byte[] randomBytes = new byte[bitLength / 8];
-        generator.nextBytes(randomBytes);
-
-        return new String(randomBytes, Charset.forName("US-ASCII"));
+        int currentBitLength = bitLength;
+        String randomString = new BigInteger(bitLength, generator).toString(36);
+        while (randomString.length() < bitLength / 8) {
+            currentBitLength = currentBitLength * 2;
+            randomString = new BigInteger(bitLength, generator).toString(36);
+        }
+        return randomString.substring(0, bitLength / 8);
     }
 }
