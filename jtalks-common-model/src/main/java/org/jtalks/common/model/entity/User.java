@@ -15,9 +15,11 @@
 package org.jtalks.common.model.entity;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.javatalks.utils.datetime.DateTimeUtilsFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -160,7 +162,7 @@ public class User extends Entity implements UserDetails {
     }
 
     /**
-     * @return the username
+     * {@inheritDoc}
      */
     @Override
     public String getUsername() {
@@ -168,7 +170,7 @@ public class User extends Entity implements UserDetails {
     }
 
     /**
-     * Set the username and encoded username (based on username)
+     * Set the username and encoded username (based on username).
      *
      * @param username the username to set
      */
@@ -289,21 +291,29 @@ public class User extends Entity implements UserDetails {
     private static final long serialVersionUID = 19981017L;
 
     /**
-     * Updates login time to current time
+     * Updates last login time to current time.
      */
     public void updateLastLoginTime() {
-        this.lastLogin = new DateTime();
+        this.lastLogin = DateTimeUtilsFactory.getDateTimeUtils().getNow();
     }
 
     /**
-     * @return encoded username
+     * Sets the encoded version of the username, where all the symbols that might mean something special (like symbols
+     * {@code \;:",.}, etc are replaced with the encoding sequence of symbols. This is required for instance while
+     * constructing a URL that contains a username (let's say a link to the user profile).
+     *
+     * @return encoded version of username that doesn't contain special symbols
      */
     public String getEncodedUsername() {
         return encodedUsername;
     }
 
     /**
-     * @param encodedUsername encoded username to set
+     * Sets the encoded version of the username, where all the symbols that might mean something special (like symbols
+     * {@code \;:",.}, etc are replaced with the encoding sequence of symbols. This is required for instance while
+     * constructing a URL that contains a username (let's say a link to the user profile).
+     *
+     * @param encodedUsername encoded version of username that doesn't contain special symbols
      */
     protected final void setEncodedUsername(String encodedUsername) {
         this.encodedUsername = encodedUsername;
@@ -311,7 +321,7 @@ public class User extends Entity implements UserDetails {
 
     /**
      * Gets the user permanent ban status.
-     * 
+     *
      * @return the {@code true} if user is banned, {@code false} otherwise
      */
     public boolean isPermanentBan() {
@@ -320,9 +330,8 @@ public class User extends Entity implements UserDetails {
 
     /**
      * Sets the user permanent ban status.
-     * 
-     * @param permanentBan
-     *            the status to set
+     *
+     * @param permanentBan the status to set
      */
     public void setPermanentBan(boolean permanentBan) {
         this.permanentBan = permanentBan;
@@ -330,7 +339,7 @@ public class User extends Entity implements UserDetails {
 
     /**
      * Gets the user ban expiration date and time.
-     * 
+     *
      * @return the {@code DateTime} object, contains date and time when user ban
      *         status will have expired
      */
@@ -340,10 +349,9 @@ public class User extends Entity implements UserDetails {
 
     /**
      * Sets the user ban expiration date and time.
-     * 
-     * @param banExpirationDate
-     *            the {@code DateTime} object to set, contains date and time when user
-     *            ban status will have expired
+     *
+     * @param banExpirationDate the {@code DateTime} object to set, contains date and time when user
+     *                          ban status will have expired
      */
     public void setBanExpirationDate(DateTime banExpirationDate) {
         this.banExpirationDate = banExpirationDate;
@@ -351,7 +359,7 @@ public class User extends Entity implements UserDetails {
 
     /**
      * This method returns the string ban reason description
-     * 
+     *
      * @return ban reason
      */
     public String getBanReason() {
@@ -360,7 +368,7 @@ public class User extends Entity implements UserDetails {
 
     /**
      * This method sets user ban reason description
-     * 
+     *
      * @param banReason User ban reason description
      */
     public void setBanReason(String banReason) {
