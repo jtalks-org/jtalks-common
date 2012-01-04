@@ -13,6 +13,5 @@
     <version>0.10-SNAPSHOT</version>
     <modules>
         <module>jtalks-common-web-controller</module>
-        <module>jtalks-common-web-view</module>
     </modules>
 </project>
