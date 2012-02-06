@@ -14,17 +14,17 @@
  */
 package org.jtalks.common.model.entity;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
-import org.springframework.security.core.userdetails.UserDetails;
-import ru.javatalks.utils.datetime.DateTimeUtilsFactory;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.joda.time.DateTime;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import ru.javatalks.utils.datetime.DateTimeUtilsFactory;
 
 /**
  * Stores information about the forum user.
