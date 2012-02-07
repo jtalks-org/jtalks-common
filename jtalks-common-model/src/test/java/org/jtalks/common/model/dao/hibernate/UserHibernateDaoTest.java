@@ -12,12 +12,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.jtalks.common.model.entity;
+package org.jtalks.common.model.dao.hibernate;
+
+import static org.testng.Assert.*;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
 import org.jtalks.common.model.dao.UserDao;
+import org.jtalks.common.model.entity.ObjectsFactory;
+import org.jtalks.common.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,14 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNotSame;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-
 /**
  * @author Kirill Afonin
  * @author Alexey Malev
@@ -43,8 +40,10 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
 public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringContextTests {
+    
     @Autowired
     private UserDao dao;
+    
     @Autowired
     private SessionFactory sessionFactory;
     private Session session;
@@ -139,7 +138,6 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testDeleteInvalidId() {
-
         assertFalse(dao.delete(-100500L), "Entity deleted");
     }
 
@@ -281,7 +279,7 @@ public class UserHibernateDaoTest extends AbstractTransactionalTestNGSpringConte
 
     @Test
     public void testGetUserByEncodedUsername() {
-        user.setEncodedUsername("encUn");
+        user.setUsername("encUn");
         dao.saveOrUpdate(user);
 
         assertEquals(dao.getByEncodedUsername("encUn"), user);

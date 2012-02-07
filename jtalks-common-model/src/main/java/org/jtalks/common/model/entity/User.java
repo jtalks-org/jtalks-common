@@ -36,6 +36,7 @@ import ru.javatalks.utils.datetime.DateTimeUtilsFactory;
  * @author Masich Ivan
  */
 public class User extends Entity implements UserDetails {
+    
     private String lastName;
     private String firstName;
     private String username;
@@ -84,7 +85,6 @@ public class User extends Entity implements UserDetails {
      * Only for hibernate usage.
      */
     protected User() {
-
     }
 
     /**

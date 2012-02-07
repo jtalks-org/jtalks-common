@@ -21,9 +21,7 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNull;
+import static org.testng.Assert.*;
 
 /**
  * @author Kirill Afonin
@@ -61,7 +59,7 @@ public class UserTest {
 
     @Test
     public void testSetNormalAvatar() {
-        byte[] testAvatar = new byte[]{0, 1, 2};
+        byte[] testAvatar = new byte[] {0, 1, 2};
 
         sut.setAvatar(testAvatar);
 
@@ -90,11 +88,6 @@ public class UserTest {
 
     @Test
     public void testGetAvatarClonesCurrent() {
-        class UserExtension extends User {
-
-        }
-
-        UserExtension sut = new UserExtension();
-        assertTrue(Arrays.equals(sut.getAvatar(), new byte[0]), "Returned unexpected array");
+        assertEquals(sut.getAvatar(), new byte[0], "Returned unexpected array");
     }
 }
