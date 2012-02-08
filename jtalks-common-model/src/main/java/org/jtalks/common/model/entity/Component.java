@@ -171,7 +171,8 @@ public class Component extends Entity {
                 return;
             }
         }
-            addProperty(name, value);
+        
+        addProperty(name, value);
     }
 
     /**
