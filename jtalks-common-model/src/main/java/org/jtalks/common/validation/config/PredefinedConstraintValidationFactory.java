@@ -44,6 +44,10 @@ public class PredefinedConstraintValidationFactory implements ConstraintValidato
      * not found, it will try to create a new instance of requested validator.
      * If failed, null will be returned (which afterwards may lead to runtime
      * exception).
+     * 
+     * @param key class of validator to be initialized
+     * @param <T> class of validator
+     * 
      */
     @Override
     public <T extends ConstraintValidator<?, ?>> T getInstance(Class<T> key) {
@@ -66,7 +70,7 @@ public class PredefinedConstraintValidationFactory implements ConstraintValidato
      * {@link PredefinedConstraintValidationFactory} and don't put in the list
      * any validators which can have any state.
      * 
-     * @param validators
+     * @param validators predefined validators for returning from {@link #getInstance(Class)}
      */
     public void setValidators(List<ConstraintValidator<?, ?>> validators) {
         Map<Class<?>, ConstraintValidator<?, ?>> index = new HashMap<Class<?>, ConstraintValidator<?, ?>>();

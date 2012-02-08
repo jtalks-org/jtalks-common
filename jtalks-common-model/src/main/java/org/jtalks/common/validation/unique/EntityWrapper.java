@@ -76,7 +76,7 @@ class EntityWrapper {
     }
 
     /**
-     * @param fieldName
+     * @param fieldName field value of which should be retrieved
      * @return field's value
      */
     public Object getValue(String fieldName) {
@@ -84,7 +84,7 @@ class EntityWrapper {
     }
 
     /**
-     * @param fieldName
+     * @param fieldName field for which error message is needed
      * @return error message for the violated field
      */
     public String getErrorMessage(String fieldName) {

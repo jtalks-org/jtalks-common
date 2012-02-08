@@ -55,9 +55,7 @@ import org.jtalks.common.validation.unique.UniqueConstraintValidator;
 @Documented
 public @interface UniqueConstraint {
     /**
-     * attribute message
-     * 
-     * @return error message
+     * error message
      */
     String message() default "field must be unique";
 

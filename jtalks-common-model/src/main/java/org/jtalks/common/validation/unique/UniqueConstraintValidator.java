@@ -61,6 +61,7 @@ public class UniqueConstraintValidator implements ConstraintValidator<UniqueCons
 
     /**
      * Does nothing
+     * @param annotation
      */
     @Override
     public void initialize(UniqueConstraint annotation) {
@@ -70,6 +71,9 @@ public class UniqueConstraintValidator implements ConstraintValidator<UniqueCons
      * Determines if there are no unique constraint violations. If there are,
      * adds to the context names of fields whose uniqueness is violated.
      * Disables the default constraint violation.
+     * 
+     * @param bean to be checked
+     * @param context
      * 
      * @return {@code true} if no duplicates are found, {@code false} otherwise
      */
@@ -94,7 +98,7 @@ public class UniqueConstraintValidator implements ConstraintValidator<UniqueCons
     }
 
     /**
-     * @param uniquenessViolatorsRetriever
+     * @param uniquenessViolatorsRetriever to set
      */
     public void setUniquenessViolatorsRetriever(UniquenessViolatorsRetriever uniquenessViolatorsRetriever) {
         this.uniquenessViolatorsRetriever = uniquenessViolatorsRetriever;

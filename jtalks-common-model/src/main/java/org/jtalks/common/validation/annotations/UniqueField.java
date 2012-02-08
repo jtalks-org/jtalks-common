@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface UniqueField {
     /**
-     * @return error message associated with this particular constraint
+     * error message associated with this particular constraint
      */
     String message();
 }

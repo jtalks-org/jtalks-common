@@ -30,8 +30,8 @@ public class ValidationError {
      * Constructs a validation error with two fields - one is field which
      * constraint is violated and its corresponding error message
      * 
-     * @param fieldName
-     * @param errorMessageCode
+     * @param fieldName name of violated field
+     * @param errorMessageCode message, associated with violation
      */
     public ValidationError(String fieldName, String errorMessageCode) {
         this.fieldName = fieldName;

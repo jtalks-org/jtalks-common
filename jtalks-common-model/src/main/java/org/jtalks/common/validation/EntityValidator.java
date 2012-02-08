@@ -28,6 +28,7 @@ public abstract class EntityValidator {
      * error messages can be obtained using {@link #getErrors()}
      * 
      * @param entity to be validated
+     * @return result of validation
      */
     public abstract ValidationResult validate(Entity entity);
 

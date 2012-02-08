@@ -34,7 +34,7 @@ public class ValidationException extends RuntimeException {
     private final Set<ValidationError> errors;
 
     /**
-     * @param errorMessage
+     * @param errorMessage error message
      * @param errors violated constraints
      */
     public ValidationException(String errorMessage, Set<ValidationError> errors) {

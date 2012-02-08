@@ -57,6 +57,7 @@ public class UniquenessViolatorsRetriever {
      * from Branch b where (b.name = :name) and b.id != :id
      * </pre>
      * 
+     * @param bean fields of which are checked for duplications
      * 
      * @return list of entities whose uniqueness is violated
      */
@@ -65,6 +66,10 @@ public class UniquenessViolatorsRetriever {
         return wrap(list);
     }
 
+    /**
+     * @param bean fields of which are checked for duplications
+     * @return list of entities which fields are duplicated
+     */
     private List<Entity> retrieveDuplicates(EntityWrapper bean) {
         Session session = sessionFactory.getCurrentSession();
 
@@ -78,6 +83,11 @@ public class UniquenessViolatorsRetriever {
         return list;
     }
 
+    /**
+     * Wraps list of {@link Entity} objects to list of {@link EntityWrapper} objects
+     * @param list to be wrapped
+     * @return wrapped list
+     */
     private static List<EntityWrapper> wrap(List<Entity> list) {
         List<EntityWrapper> wrappers = new ArrayList<EntityWrapper>();
         
@@ -103,6 +113,7 @@ public class UniquenessViolatorsRetriever {
      * where s.name = :name or s.type = :type or s.whatever = :whatever
      * </pre>
      * 
+     * @param bean fields of which are checked for duplications
      * @return {@link Criterion} ready for using via {@link Criteria}
      */
     private Criterion atLeastOneFieldViolated(EntityWrapper bean) {

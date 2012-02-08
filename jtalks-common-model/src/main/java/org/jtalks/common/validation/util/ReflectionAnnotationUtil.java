@@ -30,6 +30,9 @@ import java.util.Map;
  */
 public final class ReflectionAnnotationUtil {
 
+    /**
+     * Hidden, for not instantiating utility class
+     */
     private ReflectionAnnotationUtil() {
     }
 
@@ -40,6 +43,7 @@ public final class ReflectionAnnotationUtil {
      * 
      * @param beanClass class whose fields will be retrieved
      * @param annotation class to look for
+     * @param <A> annotation
      * 
      * @return fields marked by the given annotation
      */
@@ -51,6 +55,11 @@ public final class ReflectionAnnotationUtil {
     /**
      * Makes all fields accessible by applying
      * {@link Field#setAccessible(boolean)} with {@code true} to them.
+     * 
+     * @param fields to be made accessible
+     * @param <A> annotation
+     * 
+     * @return list of accessible fields with annotations
      */
     private static <A extends Annotation> List<AnnotatedField<A>> accessible(List<AnnotatedField<A>> fields) {
         for (AnnotatedField<A> field : fields) {
@@ -65,6 +74,7 @@ public final class ReflectionAnnotationUtil {
      * 
      * @param beanClass class whose fields will be retrieved
      * @param annotation class to look for
+     * @param <A> annotation
      * 
      * @return fields marked by the given annotation
      */
@@ -100,11 +110,9 @@ public final class ReflectionAnnotationUtil {
 
         for (Class<?> current : allClasses) {
             for (Field field : current.getDeclaredFields()) {
-                if (Modifier.isStatic(field.getModifiers())) {
-                    continue;
+                if (!Modifier.isStatic(field.getModifiers())) {
+                    fields.add(field);
                 }
-
-                fields.add(field);
             }
         }
 
@@ -157,6 +165,14 @@ public final class ReflectionAnnotationUtil {
         }
     }
 
+    /**
+     * Converts an object to map, skipping nulls
+     * 
+     * @param object to be converted
+     * @param fields to be extracted to the map
+     * @return map of String-Object pairs
+     * @throws IllegalAccessException if a field happens to be inaccessible
+     */
     private static Map<String, Object> convertFilterNulls(Object object, List<Field> fields)
             throws IllegalAccessException {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -195,6 +211,17 @@ public final class ReflectionAnnotationUtil {
         }
     }
 
+    /**
+     * 
+     * Converts an object to map, nulls are not skipped and go to the map as
+     * well
+     * 
+     * @param object to be converted
+     * @param fields to be extracted to the map
+     * @return map of String-Object pairs
+     * 
+     * @throws IllegalAccessException if a field happens to be inaccessible
+     */
     private static Map<String, Object> convert(Object object, List<Field> fields) throws IllegalAccessException {
         Map<String, Object> map = new HashMap<String, Object>();
 

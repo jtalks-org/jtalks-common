@@ -56,6 +56,7 @@ class UniquenessViolationFinder {
      * </pre>
      * 
      * @param entity the candidate for violating uniqueness
+     * @return {@link UniquenessViolationFinder} instance
      * @see UniquenessViolationFinder
      */
     public static UniquenessViolationFinder forEntity(EntityWrapper entity) {
@@ -98,8 +99,6 @@ class UniquenessViolationFinder {
      * manually added violations.
      * 
      * @param context to which constraint violation will be added
-     * @return {@code true} if it doesn't violate the uniqueness, {@code false}
-     * otherwise
      */
     public void findViolationsAndAddTo(ConstraintValidatorContext context) {
         context.disableDefaultConstraintViolation();
@@ -119,6 +118,10 @@ class UniquenessViolationFinder {
         }
     }
 
+    /**
+     * @param context to which the message will be added
+     * @param fieldName name of field which uniqueness is violated
+     */
     private void addErrorMessage(ConstraintValidatorContext context, String fieldName) {
         String errorMessage = bean.getErrorMessage(fieldName);
         ConstraintViolationBuilder builder = context.buildConstraintViolationWithTemplate(errorMessage);
