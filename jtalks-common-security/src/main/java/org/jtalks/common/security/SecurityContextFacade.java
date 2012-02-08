@@ -12,13 +12,31 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.jtalks.common.model.permissions;
+package org.jtalks.common.security;
+
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * @author stanislav bashkirtsev
- * @see <a href=http://jtalks.org/display/jtalks/Permission+Management>JTalks Permission Management Architecture</a>
- * @see <a href=http://jtalks.org/display/jtalks/Managing+Permissions>JTalks Permission Management Vision</a>
+ * Default implementation of {@link SecurityContextFacade}
+ *
+ * @author Kirill Afonin
  */
-public interface JtalksPermission extends org.springframework.security.acls.model.Permission {
-    String getName();
+public class SecurityContextFacade {
+
+    /**
+     * @return {@code SecurityContext} from {@code SecurityContextHolder}
+     */
+    public SecurityContext getContext() {
+        return SecurityContextHolder.getContext();
+    }
+
+    /**
+     * Set {@code SecurityContext} to  {@code SecurityContextHolder}
+     *
+     * @param securityContext {@code SecurityContext} to set.
+     */
+    public void setContext(SecurityContext securityContext) {
+        SecurityContextHolder.setContext(securityContext);
+    }
 }

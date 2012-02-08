@@ -12,13 +12,29 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.jtalks.common.model.permissions;
+package org.jtalks.common.security;
+
+
+import org.jtalks.common.model.entity.Entity;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * @author stanislav bashkirtsev
- * @see <a href=http://jtalks.org/display/jtalks/Permission+Management>JTalks Permission Management Architecture</a>
- * @see <a href=http://jtalks.org/display/jtalks/Managing+Permissions>JTalks Permission Management Vision</a>
+ * This annotation is used to map DTO to corresponding model class.
+ * Date: 16.09.2011<br />
+ * Time: 17:02
+ *
+ * @author Alexey Malev
  */
-public interface JtalksPermission extends org.springframework.security.acls.model.Permission {
-    String getName();
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ModelEntity {
+    /**
+     * Entity class is mapped to with the annotation. Default is {@link Entity}
+     */
+    Class<?> value() default Entity.class;
 }
+
