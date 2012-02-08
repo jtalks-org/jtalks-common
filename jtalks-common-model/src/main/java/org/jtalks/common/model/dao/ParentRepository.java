@@ -17,8 +17,14 @@ package org.jtalks.common.model.dao;
 import org.jtalks.common.model.entity.Entity;
 
 /**
- * This interface describes contract
- * that DAO of entities responsible for managing their lifecycle themselves, must follow.
+ * This interface describes DAO dor entities responsible for their deletion.
+ * To get the clue suppose we have entities with parent-child relationships.
+ *
+ * Parent entities are fine to be deleted on their own, like parentDao.delete(parentObject);
+ * Child entities, on the other hand, follow different pattern: you should remove child entity
+ * from the parent's collection and save the parent. To ensure child entity is not deleted on
+ * it's own ChildRepository simple lacks "delete(...)" mehtods, while this implemetation
+ * for parent-class entites have them.
  *
  * @author Kirill Afonin
  * @author Alexey Malev

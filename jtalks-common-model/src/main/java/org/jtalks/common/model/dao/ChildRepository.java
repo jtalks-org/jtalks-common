@@ -17,7 +17,15 @@ package org.jtalks.common.model.dao;
 import org.jtalks.common.model.entity.Entity;
 
 /**
- * This interface describes the contract of the DAO for the entities, whose lifecycle is managed by it's parent entity.
+ * Describes a DAO for typical child-type entity. Such an entity may be updated
+ * on it's own, but for deletion it should use the following pattern: remove
+ * an entity from parent's collection, save parent afterwards.
+ * To prevent misuse a dao interfece for child repository lacks "delete(...)"
+ * methods; these methods are eligible for parent-class entities and 
+ * specified by ParentRepositoryDao interface.
+ *
+ * Example: Topic has a collection of posts. Post is a child entity, 
+ * Topic is a parent one. So, PostDao should implement ChildRepository.
  *
  * @author Pavel Vervenko
  * @author Kirill Afonin
