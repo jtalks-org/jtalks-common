@@ -12,13 +12,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.jtalks.common.model.permissions;
+package org.jtalks.common.security.user;
+
+import org.jtalks.common.model.entity.User;
 
 /**
  * @author stanislav bashkirtsev
- * @see <a href=http://jtalks.org/display/jtalks/Permission+Management>JTalks Permission Management Architecture</a>
- * @see <a href=http://jtalks.org/display/jtalks/Managing+Permissions>JTalks Permission Management Vision</a>
  */
-public interface JtalksPermission extends org.springframework.security.acls.model.Permission {
-    String getName();
+public interface LastLoginTimeServiceMixin {
+    /**
+     * Updates user last login time to current time.
+     *
+     * @param user user which must be updated
+     * @see org.jtalks.common.model.entity.User
+     */
+    void updateLastLoginTime(User user);
 }

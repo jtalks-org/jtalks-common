@@ -13,6 +13,7 @@
     <module>jtalks-common-model</module>
     <module>jtalks-common-service</module>
     <module>jtalks-common-view</module>
+    <module>jtalks-common-security</module>
   </modules>
 
   <dependencyManagement>
@@ -162,11 +163,6 @@
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-taglibs</artifactId>
-        <version>${springVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-acl</artifactId>
         <version>${springVersion}</version>
       </dependency>
       
@@ -328,7 +324,7 @@
         <version>1.9.0</version>
         <inherited>false</inherited>
         <configuration>
-          <header>${basedir}/header.txt</header>
+          <header>${copyrightDir}/header.txt</header>
           <aggregate>true</aggregate>
           <includes>
             <include>src/**</include>
@@ -412,6 +408,7 @@
     </snapshotRepository>
   </distributionManagement>
   <properties>
+    <copyrightDir>${basedir}</copyrightDir>
     <project.version>${project.version}</project.version>
     <hibernateVersion>3.3.2.GA</hibernateVersion>
     <springVersion>3.0.5.RELEASE</springVersion>

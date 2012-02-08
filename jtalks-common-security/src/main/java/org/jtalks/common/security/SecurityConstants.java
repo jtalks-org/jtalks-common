@@ -12,13 +12,32 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.jtalks.common.model.permissions;
+package org.jtalks.common.security;
 
 /**
- * @author stanislav bashkirtsev
- * @see <a href=http://jtalks.org/display/jtalks/Permission+Management>JTalks Permission Management Architecture</a>
- * @see <a href=http://jtalks.org/display/jtalks/Managing+Permissions>JTalks Permission Management Vision</a>
+ * Contains constants specific to security.
+ *
+ * @author Kirill Afonin
  */
-public interface JtalksPermission extends org.springframework.security.acls.model.Permission {
-    String getName();
+public final class SecurityConstants {
+    /**
+     * Username of anonymous user (not logged in user).
+     * If you want to change it you should change it here and in security-context.xml
+     */
+    public static final String ANONYMOUS_USERNAME = "anonymousUser";
+    /**
+     * Role name of administrators.
+     */
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    /**
+     * Role name of user. Every registered user have this role by default.
+     */
+    public static final String ROLE_USER = "ROLE_USER";
+
+    /**
+     * You can't create instance of this class.
+     */
+    private SecurityConstants() {
+    }
 }
+
