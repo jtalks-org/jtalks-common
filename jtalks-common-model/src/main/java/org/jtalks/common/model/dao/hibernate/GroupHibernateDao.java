@@ -20,6 +20,7 @@ import org.hibernate.Query;
 import org.jtalks.common.model.dao.GroupDao;
 import org.jtalks.common.model.dao.hibernate.AbstractHibernateParentRepository;
 import org.jtalks.common.model.entity.Group;
+import org.jtalks.common.model.entity.User;
 
 /**
  * Hibernate implementation of {@link GroupDao}
@@ -53,5 +54,10 @@ public class GroupHibernateDao extends AbstractHibernateParentRepository<Group> 
         @SuppressWarnings("unchecked")
         List<Group> list = query.list();
         return list;
+    }
+
+    @Override
+    public List<Group> getGroupsOfUser(User user) {
+        return null;
     }
 }
