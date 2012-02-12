@@ -15,8 +15,10 @@
 package org.jtalks.common.security.acl;
 
 import com.google.common.annotations.VisibleForTesting;
+import org.jtalks.common.model.dao.GroupDao;
 import org.jtalks.common.model.entity.Branch;
 import org.jtalks.common.model.entity.Entity;
+import org.jtalks.common.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
@@ -35,6 +37,7 @@ import java.util.List;
 public class AclManager {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final MutableAclService mutableAclService;
+    private GroupDao groupDao;
     private AclUtil aclUtil;
 
     public AclManager(@Nonnull MutableAclService mutableAclService) {
@@ -50,6 +53,11 @@ public class AclManager {
             resultingAces.add(new GroupAce(entry));
         }
         return resultingAces;
+    }
+    
+    public List<Permission> getPermissions(User user, Branch branch){
+        groupDao.getGroupsOfUser(user);
+        return null;
     }
 
     /**

@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.jtalks.common.model.dao.ParentRepository;
 import org.jtalks.common.model.entity.Group;
+import org.jtalks.common.model.entity.User;
 
 /**
  * Data access object for manipulating groups
@@ -39,4 +40,6 @@ public interface GroupDao extends ParentRepository<Group> {
      * @return list of groups
      */
     List<Group> getMatchedByName(String name);
+    
+    List<Group> getGroupsOfUser(User user);
 }
