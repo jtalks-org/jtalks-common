@@ -1,3 +1,21 @@
+CREATE TABLE `sections` (
+  `SECTION_ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `UUID` varchar(255) NOT NULL,
+  `NAME` varchar(255) NOT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  `POSITION_` int(11) DEFAULT NULL,
+  PRIMARY KEY (`SECTION_ID`),
+  UNIQUE KEY `UUID` (`UUID`)
+);
+
+CREATE TABLE `groups` (
+  `GROUP_ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `UUID` varchar(255) NOT NULL,
+  `NAME` varchar(255) NOT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`GROUP_ID`),
+  UNIQUE KEY `UUID` (`UUID`)
+);
 
 CREATE TABLE `branches` (
   `BRANCH_ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -37,16 +55,6 @@ CREATE TABLE `group_user_ref` (
 );
 
 
-CREATE TABLE `groups` (
-  `GROUP_ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `UUID` varchar(255) NOT NULL,
-  `NAME` varchar(255) NOT NULL,
-  `DESCRIPTION` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`GROUP_ID`),
-  UNIQUE KEY `UUID` (`UUID`)
-);
-
-
 CREATE TABLE `properties` (
   `PROPERTY_ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `UUID` varchar(255) NOT NULL,
@@ -72,12 +80,4 @@ CREATE TABLE `ranks` (
 );
 
 
-CREATE TABLE `sections` (
-  `SECTION_ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `UUID` varchar(255) NOT NULL,
-  `NAME` varchar(255) NOT NULL,
-  `DESCRIPTION` varchar(255) DEFAULT NULL,
-  `POSITION_` int(11) DEFAULT NULL,
-  PRIMARY KEY (`SECTION_ID`),
-  UNIQUE KEY `UUID` (`UUID`),
-);
+
