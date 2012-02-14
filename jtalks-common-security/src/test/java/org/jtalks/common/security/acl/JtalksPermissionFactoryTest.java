@@ -18,8 +18,7 @@ public class JtalksPermissionFactoryTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        factory = new JtalksPermissionFactory();
-        factory.init();
+        factory = new JtalksPermissionFactory().init();
     }
 
     @Test

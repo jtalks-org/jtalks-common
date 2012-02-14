@@ -8,9 +8,10 @@ import org.springframework.security.acls.model.Permission;
 import java.util.*;
 
 /**
- * Can return {@link JtalksPermission}s by its name or mask. Internally it contains a list of permissions which it loads
- * from classes like {@link BranchPermission}, so if you need to add extra permissions, you should change this class to
- * include them. See {@link #init()} method for these purposes.
+ * Can return {@link JtalksPermission}s by its name or mask. Use {@link #init()} method to initialize the class.
+ * Internally it contains a list of permissions which it loads from classes like {@link BranchPermission}, so if you
+ * need to add extra permissions, you should change this class to include them. See {@link #init()} method for these
+ * purposes.
  *
  * @author stanislav bashkirtsev
  */
@@ -48,13 +49,15 @@ public class JtalksPermissionFactory implements PermissionFactory {
 
     /**
      * Initializes the class by loading lists of the permissions from classes like {@link BranchPermission}.
+     * @return this
      */
-    public void init() {
+    public JtalksPermissionFactory init() {
         List<? extends JtalksPermission> permissions = BranchPermission.getAllAsList();
         for (JtalksPermission permission : permissions) {
             permissionsByMask.put(permission.getMask(), permission);
             permissionsByName.put(permission.getName(), permission);
         }
+        return this;
     }
 
     /**
