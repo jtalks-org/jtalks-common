@@ -18,7 +18,9 @@ import com.google.common.collect.Lists;
 import ru.javatalks.utils.general.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -104,7 +106,7 @@ public enum BranchPermission implements JtalksPermission {
     public String getPattern() {
         return null;
     }
-
+    
     public static BranchPermission findByMask(int mask){
         for(BranchPermission nextPermission: values()){
             if(mask == nextPermission.getMask()){
