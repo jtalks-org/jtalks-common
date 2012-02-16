@@ -14,6 +14,7 @@
  */
 package org.jtalks.common.security.acl;
 
+import org.jtalks.common.model.entity.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.security.acls.domain.AccessControlEntryImpl;
@@ -85,7 +86,7 @@ public class ExtendedJdbcMutableAclService extends JdbcAclService implements Mut
 
         // Need to retrieve the current principal, in order to know who "owns" this ACL (can be changed later on)
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalSid sid = new PrincipalSid(auth);
+        PrincipalSid sid = new UserSid(((User) auth.getPrincipal()));
 
         // Create the acl_object_identity row
         createObjectIdentity(objectIdentity, sid);
