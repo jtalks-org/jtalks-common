@@ -15,11 +15,11 @@ public enum GeneralPermission implements JtalksPermission {
     /**
      * The ability of Sids to have all the rights, to perform any action on the object.
      */
-    CREATE_TOPICS("1000", "ADMIN"),
+    ADMIN("1000", "ADMIN"),
     /**
      * The ability of the Sids to change the object identity.
      */
-    VIEW_TOPICS("10", "WRITE");
+    WRITE("10", "WRITE");
 
     private final String name;
     private final int mask;
