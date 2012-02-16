@@ -2,9 +2,12 @@ package org.jtalks.common.security.acl;
 
 import com.google.common.collect.Lists;
 import org.jtalks.common.model.permissions.BranchPermission;
+import org.jtalks.common.model.permissions.GeneralPermission;
+import org.jtalks.common.model.permissions.JtalksPermission;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -42,6 +45,9 @@ public class JtalksPermissionFactoryTest {
 
     @Test
     public void testGetAllPermissions() throws Exception {
-        assertTrue(BranchPermission.getAllAsList().containsAll(factory.getAllPermissions()));
+        List<JtalksPermission> permissions = new LinkedList<JtalksPermission>();
+        permissions.addAll(BranchPermission.getAllAsList());
+        permissions.addAll(GeneralPermission.getAllAsList());
+        assertTrue(permissions.containsAll(factory.getAllPermissions()));
     }
 }

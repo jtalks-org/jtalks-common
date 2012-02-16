@@ -14,11 +14,10 @@
  */
 package org.jtalks.common.model.permissions;
 
-import org.jtalks.common.model.permissions.BranchPermission;
-import org.jtalks.common.model.permissions.JtalksPermission;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.testng.AssertJUnit.assertNotSame;
@@ -56,7 +55,9 @@ public class JtalksPermissionTest {
      */
     @DataProvider(name = "allProjectPermissions")
     protected Object[][] getAllProjectPermissions() {
-        List<? extends JtalksPermission> permissions = BranchPermission.getAllAsList();
+        List<JtalksPermission> permissions = new ArrayList<JtalksPermission>();
+        permissions.addAll(BranchPermission.getAllAsList());
+        permissions.addAll(GeneralPermission.getAllAsList());
         return new Object[][]{{permissions}};
     }
 
