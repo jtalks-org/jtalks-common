@@ -31,12 +31,21 @@ public class GroupAce {
     }
 
     public Group getGroup(GroupDao groupDao) {
-        String groupId = ((UserGroupSid) ace.getSid()).getGroupId();
-        Group group = groupDao.get(Long.parseLong(groupId));
+        long groupId = getGroupId();
+        Group group = groupDao.get(groupId);
         throwIfNull(groupId, group);
         return group;
     }
 
+    /**
+     * @return id of associated {@link UserGroupSid} and its {@link Group}
+     */
+    public long getGroupId() {
+        String groupIdString = ((UserGroupSid) ace.getSid()).getGroupId();
+        long groupId = Long.parseLong(groupIdString);
+        return groupId;
+    }
+    
     public BranchPermission getBranchPermission() {
         return BranchPermission.findByMask(getBranchPermissionMask());
     }
@@ -49,15 +58,16 @@ public class GroupAce {
         return ace.isGranting();
     }
 
-    private void throwIfNull(String groupId, Group group) {
+    private void throwIfNull(long groupId, Group group) {
         if (group == null) {
             throw new ObsoleteAclException(groupId);
         }
     }
 
+    @SuppressWarnings("serial")
     public static class ObsoleteAclException extends RuntimeException {
 
-        public ObsoleteAclException(String groupId) {
+        public ObsoleteAclException(long groupId) {
             super(new StringBuilder("A group with ID [").append(groupId).append("] was removed")
                     .append("but this ID is still registered as a Permission owner (SID) in ACL tables. ")
                     .append("To resolve this issue you should manually remove records from ACL tables ")
