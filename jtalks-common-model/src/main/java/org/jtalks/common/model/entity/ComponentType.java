@@ -29,5 +29,10 @@ public enum ComponentType {
     /**
      * Specifies that the component is Article
      */
-    ARTICLE;
+    ARTICLE,
+
+    /**
+     * Specifies that the component is Administrator Panel.
+     */
+    ADMIN_PANEL;
 }
