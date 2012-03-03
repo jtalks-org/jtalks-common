@@ -21,11 +21,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * This interface declare methods for authentication and authorization.
+ * @deprecated use new {@link org.jtalks.common.security.SecurityService} instead from jtalks-common-security module.
  *
  * @author Kirill Afonin
  * @author Max Malakhov
  * @author Dmitry Sokolov
  */
+@Deprecated
 public interface SecurityService extends UserDetailsService {
 
     /**

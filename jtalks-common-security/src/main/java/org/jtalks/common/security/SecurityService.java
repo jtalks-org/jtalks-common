@@ -19,7 +19,9 @@ import com.google.common.annotations.VisibleForTesting;
 import org.jtalks.common.model.dao.UserDao;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.entity.User;
+import org.jtalks.common.model.permissions.JtalksPermission;
 import org.jtalks.common.security.acl.AclManager;
+import org.jtalks.common.security.acl.BasicAclBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -76,6 +78,10 @@ public class SecurityService implements UserDetailsService {
             return null;
         }
         return username;
+    }
+
+    public BasicAclBuilder grantToCurrentUser(JtalksPermission ...jtalksPermissions){
+        return new BasicAclBuilder(aclManager).grant(jtalksPermissions);
     }
 
     /**
