@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 /**
  * @author stanislav bashkirstev
  */
-public class UserSid extends PrincipalSid implements IdentifiableSid {
+public class UserSid extends PrincipalSid implements UniversalSid {
     public final static String SID_PREFIX = "user";
     private final String userId;
 
@@ -65,7 +65,7 @@ public class UserSid extends PrincipalSid implements IdentifiableSid {
      */
     @Override
     public String getSidId() {
-        return SID_PREFIX + IdentifiableSid.SID_NAME_SEPARATOR + userId;
+        return SID_PREFIX + UniversalSid.SID_NAME_SEPARATOR + userId;
     }
 
     /**

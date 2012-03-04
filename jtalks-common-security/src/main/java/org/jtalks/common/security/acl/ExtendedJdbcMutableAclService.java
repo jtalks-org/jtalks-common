@@ -38,7 +38,7 @@ import java.util.List;
  * Since {@link org.springframework.security.acls.jdbc.JdbcMutableAclService} doesn't allow to use our custom
  * implementation of {@link Sid}s, we're forced to create our own class. This class is simply a copy of the mentioned
  * one, the only difference is {@link #createOrRetrieveSidPrimaryKey(Sid, boolean)} that can work with {@link
- * IdentifiableSid}.
+ * UniversalSid}.
  *
  * @author stanislav bashkirtesv
  */
@@ -183,8 +183,8 @@ public class ExtendedJdbcMutableAclService extends JdbcAclService implements Mut
         } else if (sid instanceof GrantedAuthoritySid) {
             sidName = ((GrantedAuthoritySid) sid).getGrantedAuthority();
             sidIsPrincipal = false;
-        } else if (sid instanceof IdentifiableSid) {
-            sidName = ((IdentifiableSid) sid).getSidId();
+        } else if (sid instanceof UniversalSid) {
+            sidName = ((UniversalSid) sid).getSidId();
         } else {
             throw new IllegalArgumentException("Unsupported implementation of Sid");
         }

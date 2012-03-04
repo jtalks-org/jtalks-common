@@ -16,6 +16,7 @@ package org.jtalks.common.security.acl;
 
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.PrincipalSid;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -23,60 +24,76 @@ import static org.testng.Assert.assertEquals;
 /**
  * @author stanislav bashkirtsev
  */
-public class SidFactoryTest {
+public class JtalksSidFactoryTest {
+    private JtalksSidFactory sidFactory;
+
+    @BeforeMethod
+    public void setUp() throws Exception {
+        sidFactory = new JtalksSidFactory();
+    }
+
     @Test
     public void testCreate_customSid() throws Exception {
-        UserGroupSid sid = (UserGroupSid) SidFactory.create("usergroup:2", true);
+        UserGroupSid sid = (UserGroupSid) sidFactory.create("usergroup:2", true);
         assertEquals(sid.getGroupId(), "2");
         assertEquals(sid.getSidId(), "usergroup:2");
     }
 
-    @Test(expectedExceptions = SidFactory.SidWithoutRequiredConstructorException.class)
+    @Test(expectedExceptions = JtalksSidFactory.SidWithoutRequiredConstructorException.class)
     public void testCreate_sidWithoutRequiredConstructor() throws Exception {
-        SidFactory.addMapping("without_required_constructor", SidWithoutRequiredConstructor.class);
-        SidFactory.create("without_required_constructor:2", false);
+        JtalksSidFactory.addMapping("without_required_constructor", SidWithoutRequiredConstructor.class);
+        sidFactory.create("without_required_constructor:2", false);
     }
 
-    @Test(expectedExceptions = SidFactory.SidWithoutRequiredConstructorException.class)
+    @Test(expectedExceptions = JtalksSidFactory.SidWithoutRequiredConstructorException.class)
     public void testCreate_sidWithPrivateConstructor() throws Exception {
-        SidFactory.addMapping("private_constructor", SidWithPrivateConstructor.class);
-        SidFactory.create("private_constructor:2", false);
+        JtalksSidFactory.addMapping("private_constructor", SidWithPrivateConstructor.class);
+        sidFactory.create("private_constructor:2", false);
     }
 
-    @Test(expectedExceptions = SidFactory.SidClassIsNotConcreteException.class)
+    @Test(expectedExceptions = JtalksSidFactory.SidClassIsNotConcreteException.class)
     public void testCreate_sidWithAbstractClass() throws Exception {
-        SidFactory.addMapping("abstract_class", AbstractSid.class);
-        SidFactory.create("abstract_class:2", false);
+        JtalksSidFactory.addMapping("abstract_class", AbstractSid.class);
+        sidFactory.create("abstract_class:2", false);
     }
 
-    @Test(expectedExceptions = SidFactory.SidConstructorThrewException.class)
+    @Test(expectedExceptions = JtalksSidFactory.SidConstructorThrewException.class)
     public void testCreate_sidWithConstructorThatThrowsException() throws Exception {
-        SidFactory.addMapping("constructor_throws", SidWithConstructorThatThrowsException.class);
-        SidFactory.create("constructor_throws:2", false);
+        JtalksSidFactory.addMapping("constructor_throws", SidWithConstructorThatThrowsException.class);
+        sidFactory.create("constructor_throws:2", false);
     }
 
     @Test
     public void testCreate_principalSid() throws Exception {
-        PrincipalSid sid = (PrincipalSid) SidFactory.create("uncle toby", true);
+        PrincipalSid sid = (PrincipalSid) sidFactory.create("uncle toby", true);
         assertEquals(sid.getPrincipal(), "uncle toby");
     }
 
     @Test
     public void testCreate_grantedAuthoritySid() throws Exception {
-        GrantedAuthoritySid sid = (GrantedAuthoritySid) SidFactory.create("ROLE_ADMIN", false);
+        GrantedAuthoritySid sid = (GrantedAuthoritySid) sidFactory.create("ROLE_ADMIN", false);
         assertEquals(sid.getGrantedAuthority(), "ROLE_ADMIN");
     }
 
-    private static class SidWithoutRequiredConstructor implements IdentifiableSid {
+    private static class SidWithoutRequiredConstructor implements UniversalSid {
         @Override
         public String getSidId() {
             return null;
         }
+
+        @Override
+        public boolean isPrincipal() {
+            return false;
+        }
     }
 
-    private static class SidWithPrivateConstructor implements IdentifiableSid {
+    private static class SidWithPrivateConstructor implements UniversalSid {
         private SidWithPrivateConstructor(String sidId) {
+        }
 
+        @Override
+        public boolean isPrincipal() {
+            return false;
         }
 
         @Override
@@ -85,9 +102,14 @@ public class SidFactoryTest {
         }
     }
 
-    private static class SidWithConstructorThatThrowsException implements IdentifiableSid {
+    private static class SidWithConstructorThatThrowsException implements UniversalSid {
         public SidWithConstructorThatThrowsException(String sidId) {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException(sidId);
+        }
+
+        @Override
+        public boolean isPrincipal() {
+            return false;
         }
 
         @Override
@@ -96,8 +118,9 @@ public class SidFactoryTest {
         }
     }
 
-    private static abstract class AbstractSid implements IdentifiableSid {
+    private static abstract class AbstractSid implements UniversalSid {
         public AbstractSid(String sidId) {
+            super();
         }
 
         @Override

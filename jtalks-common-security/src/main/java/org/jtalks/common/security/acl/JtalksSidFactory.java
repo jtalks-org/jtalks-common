@@ -16,12 +16,20 @@ package org.jtalks.common.security.acl;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
+import org.jtalks.common.model.entity.User;
+import org.springframework.security.acls.domain.DefaultSidFactory;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.PrincipalSid;
+import org.springframework.security.acls.domain.SidFactory;
 import org.springframework.security.acls.model.Sid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,15 +39,35 @@ import java.util.Map;
  *
  * @author stanislav bashkirtsev
  * @see Sid
- * @see IdentifiableSid
+ * @see UniversalSid
  */
-public final class SidFactory {
-    private final static Map<String, Class<? extends IdentifiableSid>> CUSTOM_SIDS = getCustomSids();
+public class JtalksSidFactory implements SidFactory {
+    private final static Map<String, Class<? extends UniversalSid>> CUSTOM_SIDS = getCustomSids();
 
     /**
      * This is a static factory, it shouldn't be instantiated.
      */
-    private SidFactory() {
+    public JtalksSidFactory() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Sid createPrincipal(Authentication authentication) {
+        if (authentication.getPrincipal() instanceof UserDetails) {
+            return new UserSid((User) authentication.getPrincipal());
+        } else {
+            return new UserSid(authentication.getPrincipal().toString());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<? extends Sid> createGrantedAuthorities(Collection<? extends GrantedAuthority> grantedAuthorities) {
+        return new DefaultSidFactory().createGrantedAuthorities(grantedAuthorities);
     }
 
     /**
@@ -48,16 +76,16 @@ public final class SidFactory {
      *
      * @return the mapping of the sid implementations to the string format of the sids
      */
-    private static Map<String, Class<? extends IdentifiableSid>> getCustomSids() {
-        Map<String, Class<? extends IdentifiableSid>> customSids = Maps.newHashMap();
+    private static Map<String, Class<? extends UniversalSid>> getCustomSids() {
+        Map<String, Class<? extends UniversalSid>> customSids = Maps.newHashMap();
         customSids.put(UserGroupSid.SID_PREFIX, UserGroupSid.class);
         return customSids;
     }
 
     /**
      * Looks at the format of the {@code sidName} and finds out what sid implementation should be created. If the
-     * specified name doesn't comply with the format of custom sids (prefix + {@link IdentifiableSid#SID_NAME_SEPARATOR}
-     * + entity id), then ordinary Spring Security implementations are used (either {@link PrincipalSid} or {@link
+     * specified name doesn't comply with the format of custom sids (prefix + {@link UniversalSid#SID_NAME_SEPARATOR} +
+     * entity id), then ordinary Spring Security implementations are used (either {@link PrincipalSid} or {@link
      * GrantedAuthoritySid} which is defined by the second parameter {@code principal}.
      *
      * @param sidName   the name of the sid (its id) to look at its format and decide what implementation of sid should
@@ -66,7 +94,7 @@ public final class SidFactory {
      *                  some standard role ({@link GrantedAuthoritySid}
      * @return created instance of sid that has the {@code sidName} as the sid id inside
      */
-    public static Sid create(@Nonnull String sidName, boolean principal) {
+    public Sid create(@Nonnull String sidName, boolean principal) {
         Sid toReturn = parseCustomSid(sidName);
         if (toReturn == null) {
             if (principal) {
@@ -88,7 +116,7 @@ public final class SidFactory {
      *         if no mapping for that name was found and there are no appropriate custom implementations of sid
      */
     private static Sid parseCustomSid(String sidName) {
-        for (Map.Entry<String, Class<? extends IdentifiableSid>> customSidEntry : CUSTOM_SIDS.entrySet()) {
+        for (Map.Entry<String, Class<? extends UniversalSid>> customSidEntry : CUSTOM_SIDS.entrySet()) {
             if (sidName.startsWith(customSidEntry.getKey())) {
                 try {
                     return customSidEntry.getValue().getDeclaredConstructor(String.class).newInstance(sidName);
@@ -107,7 +135,7 @@ public final class SidFactory {
     }
 
     @VisibleForTesting
-    static void addMapping(String sidPrefix, Class<? extends IdentifiableSid> clazz) {
+    static void addMapping(String sidPrefix, Class<? extends UniversalSid> clazz) {
         CUSTOM_SIDS.put(sidPrefix, clazz);
     }
 
@@ -122,7 +150,7 @@ public final class SidFactory {
          * @param ex       reflection exception that originally caused the error when factory tried to instantiate the
          *                 class
          */
-        public SidClassIsNotConcreteException(Class<? extends IdentifiableSid> sidClass, Throwable ex) {
+        public SidClassIsNotConcreteException(Class<? extends UniversalSid> sidClass, Throwable ex) {
             super(sidClass + " class is not a concrete class: its either an interface or abstract.", ex);
         }
     }
@@ -140,7 +168,7 @@ public final class SidFactory {
          * @param ex       reflection exception that originally caused the error when factory tried to instantiate the
          *                 class
          */
-        public SidWithoutRequiredConstructorException(Class<? extends IdentifiableSid> sidClass, Throwable ex) {
+        public SidWithoutRequiredConstructorException(Class<? extends UniversalSid> sidClass, Throwable ex) {
             super(sidClass + " doesnt have a public constructor with single String argument.", ex);
         }
     }
@@ -155,7 +183,7 @@ public final class SidFactory {
          *                 instantiated
          * @param ex       the root exception that was thrown when the constructor was invoked
          */
-        public SidConstructorThrewException(Class<? extends IdentifiableSid> sidClass, Throwable ex) {
+        public SidConstructorThrewException(Class<? extends UniversalSid> sidClass, Throwable ex) {
             super(sidClass + ". While initiating the class, it threw an exception.", ex);
         }
     }

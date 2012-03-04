@@ -31,12 +31,12 @@ public class UserGroupSidTest {
         assertEquals(new UserGroupSid("groupname:1").getGroupId(), "1");
     }
 
-    @Test(expectedExceptions = IdentifiableSid.WrongFormatException.class)
+    @Test(expectedExceptions = UniversalSid.WrongFormatException.class)
     public void testConstructor_withSidNameWithoutGroupId() throws Exception {
         new UserGroupSid("groupname:").getGroupId();
     }
 
-    @Test(expectedExceptions = IdentifiableSid.WrongFormatException.class)
+    @Test(expectedExceptions = UniversalSid.WrongFormatException.class)
     public void testConstructor_withSidNameWithTwoSeparators() throws Exception {
         new UserGroupSid("groupname:1:2").getGroupId();
     }
