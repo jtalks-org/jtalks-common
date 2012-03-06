@@ -24,9 +24,8 @@ import org.jtalks.common.model.entity.User;
  * @author Pavel Vervenko
  * @author Kirill Afonin
  * @author Alexey Malev
- * @see {@link org.jtalks.common.model.dao.hibernate.UserHibernateDAO}
  */
-public interface UserDao extends ParentRepository<User> {
+public interface UserDao {
 
     /**
      * Get {@link User} with corresponding username.
@@ -36,47 +35,4 @@ public interface UserDao extends ParentRepository<User> {
      * @see User
      */
     User getByUsername(String username);
-
-    /**
-     * Find all users whose username contains specified string.
-     *
-     * @param substring or symbol in user name of requested user.
-     * @return List of users with given string in username.
-     * @see User
-     */
-    List<User> getByUsernamePart(String substring);
-
-    /**
-     * Check if {@link User} with given username exist.
-     *
-     * @param username username
-     * @return <code>true</code> if {@link User} with given username exist or
-     *         <code>false</code>
-     */
-    boolean isUserWithUsernameExist(String username);
-
-    /**
-     * Get {@link User} with corresponding encodedUsername.
-     *
-     * @param encodedUsername encoded name of requested user.
-     * @return {@link User} with given encodedUsername.
-     * @see User
-     */
-    User getByEncodedUsername(String encodedUsername);
-
-    /**
-     * Check if {@link User} with given email exist.
-     *
-     * @param email email
-     * @return <code>true</code> if {@link User} with given email exist or
-     *         <code>false</code>
-     */
-    boolean isUserWithEmailExist(String email);
-
-    /**
-     * Get {@link List} with all Users
-     *
-     * @return <code>List<User></code>
-     */
-    List<User> getAll();
 }

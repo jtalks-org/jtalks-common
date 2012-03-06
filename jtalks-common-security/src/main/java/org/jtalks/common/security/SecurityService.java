@@ -81,7 +81,7 @@ public class SecurityService implements UserDetailsService {
     }
 
     public BasicAclBuilder grantToCurrentUser(JtalksPermission ...jtalksPermissions){
-        return new BasicAclBuilder(aclManager).grant(jtalksPermissions);
+        return new BasicAclBuilder(aclManager).grant(jtalksPermissions).setReceiver(getCurrentUser());
     }
 
     /**

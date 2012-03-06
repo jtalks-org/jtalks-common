@@ -17,6 +17,7 @@ package org.jtalks.common.security.acl;
 import com.google.common.collect.Lists;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.entity.Group;
+import org.jtalks.common.model.entity.User;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
 import ru.javatalks.utils.general.Assert;
@@ -62,9 +63,34 @@ public class BasicAclBuilder {
      * @param owners the user groups that are the owner of the permissions
      * @return this
      */
+    @Deprecated
     public BasicAclBuilder setOwner(@Nonnull Group... owners) {
+        return setReceiver(owners);
+    }
+
+    /**
+     * Sets the user group that will be granted (or restrict from) the permissions. Thus, all the users in that group
+     * will be granted as well.
+     *
+     * @param owners the user groups that are the owner of the permissions
+     * @return this
+     */
+    public BasicAclBuilder setReceiver(@Nonnull Group... owners) {
         for (Group group : owners) {
             sids.add(new UserGroupSid(group));
+        }
+        return this;
+    }
+
+    /**
+     * Sets the user that will be granted (or restrict from) the permissions.
+     *
+     * @param owners the users that are the receivers of the permissions
+     * @return this
+     */
+    public BasicAclBuilder setReceiver(@Nonnull User... owners) {
+        for (User user : owners) {
+            sids.add(new UserSid(user));
         }
         return this;
     }
@@ -177,7 +203,7 @@ public class BasicAclBuilder {
     }
 
     private void throwIfTargetIsNull() throws IllegalArgumentException {
-        if(target == null){
+        if (target == null) {
             throw new IllegalStateException("The target is null! Set the target before flushing");
         }
     }

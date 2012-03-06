@@ -30,7 +30,6 @@
   </aop:config>
 
   <!--Declaration of DAO beans -->
-  <bean id="userDao" class="org.jtalks.common.model.dao.hibernate.UserHibernateDao" parent="abstractHibernateDao" />
   <bean id="groupDao" class="org.jtalks.common.model.dao.hibernate.GroupHibernateDao" parent="abstractHibernateDao" />
 
   <bean id="abstractHibernateDao" abstract="true">

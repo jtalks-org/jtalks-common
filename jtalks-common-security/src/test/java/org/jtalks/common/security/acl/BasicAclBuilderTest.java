@@ -46,26 +46,26 @@ public class BasicAclBuilderTest {
 
     @Test(dataProvider = "groupsAndPermissions")
     public void testGrant(Group[] groups, Permission[] permissions) throws Exception {
-        builder.setOwner(groups).grant(permissions).on(target).flush();
+        builder.setReceiver(groups).grant(permissions).on(target).flush();
         verify(manager).grant(groupSids(groups), Lists.newArrayList(permissions), target);
     }
 
 
     @Test(dataProvider = "groupsAndPermissions")
     public void testDelete(Group[] groups, Permission[] permissions) throws Exception {
-        builder.delete(permissions).setOwner(groups).on(target).flush();
+        builder.delete(permissions).setReceiver(groups).on(target).flush();
         verify(manager).delete(groupSids(groups), newArrayList(permissions), target);
     }
 
     @Test(dataProvider = "groupsAndPermissions")
     public void testRestrict(Group[] groups, Permission[] permissions) throws Exception {
-        builder.restrict(permissions).setOwner(groups).on(target).flush();
+        builder.restrict(permissions).setReceiver(groups).on(target).flush();
         verify(manager).restrict(groupSids(groups), newArrayList(permissions), target);
     }
 
     @Test(dataProvider = "onePermissionAndOneGroup")
     public void testRestrictGrantDeleteTogether(Permission permission, Group group) throws Exception {
-        builder.restrict(permission).delete(permission).grant(permission).setOwner(group).on(target).flush();
+        builder.restrict(permission).delete(permission).grant(permission).setReceiver(group).on(target).flush();
         verify(manager, times(1)).grant(groupSids(group), Lists.newArrayList(permission), target);
         verify(manager, times(1)).restrict(groupSids(group), Lists.newArrayList(permission), target);
         verify(manager, times(1)).delete(groupSids(group), Lists.newArrayList(permission), target);
@@ -76,7 +76,7 @@ public class BasicAclBuilderTest {
         for (int i = 0; i < permissions.length; i++) {
             Permission permission = permissions[i];
             Group group = groups[i];
-            builder.restrict(permission).delete(permission).grant(permission).setOwner(group).on(target).flush();
+            builder.restrict(permission).delete(permission).grant(permission).setReceiver(group).on(target).flush();
             verify(manager, times(1)).grant(groupSids(group), Lists.newArrayList(permission), target);
             verify(manager, times(1)).restrict(groupSids(group), Lists.newArrayList(permission), target);
             verify(manager, times(1)).delete(groupSids(group), Lists.newArrayList(permission), target);
@@ -87,7 +87,7 @@ public class BasicAclBuilderTest {
     @Test
     public void testFlushWithoutPermissions() throws Exception {
         Group group = new Group();
-        builder.setOwner(group).on(target).flush();
+        builder.setReceiver(group).on(target).flush();
         verify(manager, times(0)).restrict(anyList(), anyList(), same(target));
     }
 
@@ -100,7 +100,7 @@ public class BasicAclBuilderTest {
 
     @Test(expectedExceptions = IllegalStateException.class)
     public void testFlushWithoutTarget() throws Exception {
-        builder.restrict(BranchPermission.VIEW_TOPICS).setOwner(new Group()).flush();
+        builder.restrict(BranchPermission.VIEW_TOPICS).setReceiver(new Group()).flush();
     }
 
     private List<Sid> groupSids(Group... groups) {
