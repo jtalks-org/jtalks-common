@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author stanislav bashkirtsev
  */
-class CompoundAclBuilder<T extends Entity> implements Action<T>, To<T>, From<T>, On, Flush {
+class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo<T>, AclFrom<T>, AclOn, AclFlush {
     private final List<Permission> permissions = new ArrayList<Permission>();
     private final List<Sid> sids = new ArrayList<Sid>();
     private final AclManager aclManager;
@@ -27,38 +27,38 @@ class CompoundAclBuilder<T extends Entity> implements Action<T>, To<T>, From<T>,
     }
 
     @Override
-    public To<T> grant(JtalksPermission... permissions) {
+    public AclTo<T> grant(JtalksPermission... permissions) {
         addPermissions(Actions.GRANT, permissions);
         return this;
     }
 
     @Override
-    public To<T> restrict(JtalksPermission... permissions) {
+    public AclTo<T> restrict(JtalksPermission... permissions) {
         addPermissions(Actions.RESTRICT, permissions);
         return this;
     }
 
     @Override
-    public From<T> delete(JtalksPermission... permissions) {
+    public AclFrom<T> delete(JtalksPermission... permissions) {
         addPermissions(Actions.DELETE, permissions);
         return this;
     }
 
     @Override
-    public On from(T... sids) {
+    public AclOn from(T... sids) {
         this.sids.addAll(sidFactory.create(Arrays.asList(sids)));
         return this;
     }
 
     @Override
-    public On to(T... sids) {
+    public AclOn to(T... sids) {
         this.sids.addAll(sidFactory.create(Arrays.asList(sids)));
         return this;
     }
 
 
     @Override
-    public Flush on(Entity objectIdentity) {
+    public AclFlush on(Entity objectIdentity) {
         this.objectIdentity = objectIdentity;
         return this;
     }

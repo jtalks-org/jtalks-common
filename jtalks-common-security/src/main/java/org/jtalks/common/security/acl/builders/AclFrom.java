@@ -5,6 +5,6 @@ import org.jtalks.common.model.entity.Entity;
 /**
  * @author stanislav bashkirtsev
  */
-public interface On {
-    Flush on(Entity objectIdentity);
+public interface AclFrom<T extends Entity> {
+    AclOn from(T... sids);
 }

@@ -7,7 +7,7 @@ import org.jtalks.common.security.acl.AclManager;
  * @author stanislav bashkirtsev
  */
 public class AclBuilders {
-    public <T extends Entity> Action<T> newBuilder(AclManager aclManager){
+    public <T extends Entity> AclAction<T> newBuilder(AclManager aclManager){
         return new CompoundAclBuilder<T>(aclManager);
     }
 }

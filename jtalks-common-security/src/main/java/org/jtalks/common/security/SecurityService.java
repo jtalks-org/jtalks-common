@@ -22,6 +22,8 @@ import org.jtalks.common.model.entity.User;
 import org.jtalks.common.model.permissions.JtalksPermission;
 import org.jtalks.common.security.acl.AclManager;
 import org.jtalks.common.security.acl.BasicAclBuilder;
+import org.jtalks.common.security.acl.builders.AclAction;
+import org.jtalks.common.security.acl.builders.AclBuilders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,6 +41,8 @@ public class SecurityService implements UserDetailsService {
     private final UserDao userDao;
     private final AclManager aclManager;
     private SecurityContextFacade securityContextFacade = new SecurityContextFacade();
+    @VisibleForTesting
+    AclBuilders aclBuilders = new AclBuilders();
 
     /**
      * Constructor creates an instance of service.
@@ -80,7 +84,12 @@ public class SecurityService implements UserDetailsService {
         return username;
     }
 
-    public BasicAclBuilder grantToCurrentUser(JtalksPermission ...jtalksPermissions){
+    public <T extends Entity> AclAction<T> createAclBuilder() {
+        return aclBuilders.newBuilder(aclManager);
+    }
+
+    @Deprecated
+    public BasicAclBuilder grantToCurrentUser(JtalksPermission... jtalksPermissions) {
         return new BasicAclBuilder(aclManager).grant(jtalksPermissions).setReceiver(getCurrentUser());
     }
 
