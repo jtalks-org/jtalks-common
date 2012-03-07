@@ -35,8 +35,10 @@ import java.util.List;
  * @author stanislav bashkirstsev
  * @see <a href="http://static.springsource.org/spring-security/site/docs/3.0.x/reference/domain-acls.html">Spring ACL
  *      documentation</a>
+ * @deprecated use new {@link org.jtalks.common.security.acl.builders.AclBuilders} instead
  */
 @NotThreadSafe
+@Deprecated
 public class BasicAclBuilder {
     private final List<Permission> permissionsToDelete = new ArrayList<Permission>();
     private final List<Permission> permissionsToGrant = new ArrayList<Permission>();

@@ -15,7 +15,8 @@
 package org.jtalks.common.security.acl;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Maps;
+import org.jtalks.common.model.entity.Entity;
+import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.entity.User;
 import org.springframework.security.acls.domain.DefaultSidFactory;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
@@ -28,9 +29,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Decides what implementation of {@link Sid} should be created by the string representation of the sid name (or sid
@@ -42,7 +43,7 @@ import java.util.Map;
  * @see UniversalSid
  */
 public class JtalksSidFactory implements SidFactory {
-    private final static Map<String, Class<? extends UniversalSid>> CUSTOM_SIDS = getCustomSids();
+    private final static List<SidConfiguration> CUSTOM_SIDS = getCustomSids();
 
     /**
      * This is a static factory, it shouldn't be instantiated.
@@ -70,18 +71,33 @@ public class JtalksSidFactory implements SidFactory {
         return new DefaultSidFactory().createGrantedAuthorities(grantedAuthorities);
     }
 
-    /**
-     * Gets the mapping of the sid implementations to the sid name formats. All the custom sids should have the prefix
-     * like {@link UserGroupSid#SID_PREFIX} by which we can find out what type of sid it is.
-     *
-     * @return the mapping of the sid implementations to the string format of the sids
-     */
-    private static Map<String, Class<? extends UniversalSid>> getCustomSids() {
-        Map<String, Class<? extends UniversalSid>> customSids = Maps.newHashMap();
-        customSids.put(UserGroupSid.SID_PREFIX, UserGroupSid.class);
-        return customSids;
+    public List<Sid> create(List<? extends Entity> receivers){
+        List<Sid> sids = new ArrayList<Sid>(receivers.size());
+        for(Entity next: receivers){
+            sids.add(create(next));
+        }
+        return sids;
     }
-
+    
+    public Sid create(Entity receiver){
+        for (SidConfiguration customSidEntry : CUSTOM_SIDS) {
+            if (receiver.getClass() == customSidEntry.getReceiverClass()) {
+                try {
+                    return customSidEntry.getSidClass().getDeclaredConstructor(receiver.getClass()).newInstance(receiver);
+                } catch (InstantiationException e) {
+                    throw new SidClassIsNotConcreteException(customSidEntry.getSidClass(), e);
+                } catch (IllegalAccessException e) {
+                    throw new SidWithoutRequiredConstructorException(customSidEntry.getSidClass(), e);
+                } catch (InvocationTargetException e) {
+                    throw new SidConstructorThrewException(customSidEntry.getSidClass(), e);
+                } catch (NoSuchMethodException e) {
+                    throw new SidWithoutRequiredConstructorException(customSidEntry.getSidClass(), e);
+                }
+            }
+        }
+        return null;
+    }
+    
     /**
      * Looks at the format of the {@code sidName} and finds out what sid implementation should be created. If the
      * specified name doesn't comply with the format of custom sids (prefix + {@link UniversalSid#SID_NAME_SEPARATOR} +
@@ -94,6 +110,7 @@ public class JtalksSidFactory implements SidFactory {
      *                  some standard role ({@link GrantedAuthoritySid}
      * @return created instance of sid that has the {@code sidName} as the sid id inside
      */
+    @Override
     public Sid create(@Nonnull String sidName, boolean principal) {
         Sid toReturn = parseCustomSid(sidName);
         if (toReturn == null) {
@@ -116,27 +133,40 @@ public class JtalksSidFactory implements SidFactory {
      *         if no mapping for that name was found and there are no appropriate custom implementations of sid
      */
     private static Sid parseCustomSid(String sidName) {
-        for (Map.Entry<String, Class<? extends UniversalSid>> customSidEntry : CUSTOM_SIDS.entrySet()) {
-            if (sidName.startsWith(customSidEntry.getKey())) {
+        for (SidConfiguration customSidEntry : CUSTOM_SIDS) {
+            if (sidName.startsWith(customSidEntry.getSidPrefix())) {
                 try {
-                    return customSidEntry.getValue().getDeclaredConstructor(String.class).newInstance(sidName);
+                    return customSidEntry.getSidClass().getDeclaredConstructor(String.class).newInstance(sidName);
                 } catch (InstantiationException e) {
-                    throw new SidClassIsNotConcreteException(customSidEntry.getValue(), e);
+                    throw new SidClassIsNotConcreteException(customSidEntry.getSidClass(), e);
                 } catch (IllegalAccessException e) {
-                    throw new SidWithoutRequiredConstructorException(customSidEntry.getValue(), e);
+                    throw new SidWithoutRequiredConstructorException(customSidEntry.getSidClass(), e);
                 } catch (InvocationTargetException e) {
-                    throw new SidConstructorThrewException(customSidEntry.getValue(), e);
+                    throw new SidConstructorThrewException(customSidEntry.getSidClass(), e);
                 } catch (NoSuchMethodException e) {
-                    throw new SidWithoutRequiredConstructorException(customSidEntry.getValue(), e);
+                    throw new SidWithoutRequiredConstructorException(customSidEntry.getSidClass(), e);
                 }
             }
         }
         return null;
     }
 
+    /**
+     * Gets the mapping of the sid implementations to the sid name formats. All the custom sids should have the prefix
+     * like {@link UserGroupSid#SID_PREFIX} by which we can find out what type of sid it is.
+     *
+     * @return the mapping of the sid implementations to the string format of the sids
+     */
+    private static List<SidConfiguration> getCustomSids() {
+        List<SidConfiguration> sidConfigurations = new ArrayList<SidConfiguration>(2);
+        sidConfigurations.add(new SidConfiguration(UserGroupSid.SID_PREFIX, Group.class, UserGroupSid.class));
+        sidConfigurations.add(new SidConfiguration(UserSid.SID_PREFIX, User.class, UserSid.class));
+        return sidConfigurations;
+    }
+
     @VisibleForTesting
-    static void addMapping(String sidPrefix, Class<? extends UniversalSid> clazz) {
-        CUSTOM_SIDS.put(sidPrefix, clazz);
+    static void addMapping(String sidPrefix, Class<?> receiverClass, Class<? extends UniversalSid> sidClass) {
+        CUSTOM_SIDS.add(new SidConfiguration(sidPrefix, receiverClass, sidClass));
     }
 
     /**
@@ -185,6 +215,30 @@ public class JtalksSidFactory implements SidFactory {
          */
         public SidConstructorThrewException(Class<? extends UniversalSid> sidClass, Throwable ex) {
             super(sidClass + ". While initiating the class, it threw an exception.", ex);
+        }
+    }
+
+    private static class SidConfiguration {
+        private final String sidPrefix;
+        private final Class<?> receiverClass;
+        private final Class<? extends UniversalSid> sidClass;
+
+        private SidConfiguration(String sidPrefix, Class<?> receiverClass, Class<? extends UniversalSid> sidClass) {
+            this.sidPrefix = sidPrefix;
+            this.receiverClass = receiverClass;
+            this.sidClass = sidClass;
+        }
+
+        public String getSidPrefix() {
+            return sidPrefix;
+        }
+
+        public Class<?> getReceiverClass() {
+            return receiverClass;
+        }
+
+        public Class<? extends UniversalSid> getSidClass() {
+            return sidClass;
         }
     }
 }
