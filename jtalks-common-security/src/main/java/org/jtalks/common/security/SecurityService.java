@@ -40,9 +40,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class SecurityService implements UserDetailsService {
     private final UserDao userDao;
     private final AclManager aclManager;
+    private final AclBuilders aclBuilders = new AclBuilders();
     private SecurityContextFacade securityContextFacade = new SecurityContextFacade();
-    @VisibleForTesting
-    AclBuilders aclBuilders = new AclBuilders();
 
     /**
      * Constructor creates an instance of service.
@@ -62,7 +61,12 @@ public class SecurityService implements UserDetailsService {
      * @see User
      */
     public User getCurrentUser() {
-        return userDao.getByUsername(getCurrentUserUsername());
+        Authentication auth = securityContextFacade.getContext().getAuthentication();
+        Object principal = auth.getPrincipal();
+        if (principal instanceof User) {
+            return (User) principal;
+        }
+        return null;
     }
 
     /**
@@ -72,18 +76,20 @@ public class SecurityService implements UserDetailsService {
      */
     public String getCurrentUserUsername() {
         Authentication auth = securityContextFacade.getContext().getAuthentication();
-        if (auth == null) {
-            return null;
-        }
         Object principal = auth.getPrincipal();
         String username = extractUsername(principal);
-
         if (isAnonymous(username)) {
             return null;
         }
         return username;
     }
 
+    /**
+     * Creates the builder to work with the permissions.
+     *
+     * @param <T> entity that should be the receiver of the permission (SID)
+     * @return the builder to work with the permissions
+     */
     public <T extends Entity> AclAction<T> createAclBuilder() {
         return aclBuilders.newBuilder(aclManager);
     }

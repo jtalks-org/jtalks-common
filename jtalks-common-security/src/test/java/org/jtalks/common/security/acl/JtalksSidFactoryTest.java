@@ -40,6 +40,15 @@ public class JtalksSidFactoryTest {
     }
 
     @Test
+    public void testCreate_customSidByChildEntity() throws Exception {
+        Group receiver = new GroupChild();
+        receiver.setId(1L);
+        UserGroupSid sid = (UserGroupSid) sidFactory.create(receiver);
+        assertEquals(sid.getGroupId(), "1");
+        assertEquals(sid.getSidId(), "usergroup:1");
+    }
+
+    @Test
     public void testCreate_customSidByEntityies() throws Exception {
         Group group = new Group();
         group.setId(1L);
@@ -50,7 +59,7 @@ public class JtalksSidFactoryTest {
         assertEquals(sids.get(0).getSidId(), "usergroup:1");
         assertEquals(sids.get(1).getSidId(), "user:2");
     }
-    
+
     @Test
     public void testCreate_customSidByEntityt() throws Exception {
         Group receiver = new Group();
@@ -65,30 +74,6 @@ public class JtalksSidFactoryTest {
         UserGroupSid sid = (UserGroupSid) sidFactory.create("usergroup:2", true);
         assertEquals(sid.getGroupId(), "2");
         assertEquals(sid.getSidId(), "usergroup:2");
-    }
-
-    @Test(expectedExceptions = JtalksSidFactory.SidWithoutRequiredConstructorException.class)
-    public void testCreate_sidWithoutRequiredConstructor() throws Exception {
-        JtalksSidFactory.addMapping("without_required_constructor", Object.class, SidWithoutRequiredConstructor.class);
-        sidFactory.create("without_required_constructor:2", false);
-    }
-
-    @Test(expectedExceptions = JtalksSidFactory.SidWithoutRequiredConstructorException.class)
-    public void testCreate_sidWithPrivateConstructor() throws Exception {
-        JtalksSidFactory.addMapping("private_constructor", Object.class, SidWithPrivateConstructor.class);
-        sidFactory.create("private_constructor:2", false);
-    }
-
-    @Test(expectedExceptions = JtalksSidFactory.SidClassIsNotConcreteException.class)
-    public void testCreate_sidWithAbstractClass() throws Exception {
-        JtalksSidFactory.addMapping("abstract_class", Object.class, AbstractSid.class);
-        sidFactory.create("abstract_class:2", false);
-    }
-
-    @Test(expectedExceptions = JtalksSidFactory.SidConstructorThrewException.class)
-    public void testCreate_sidWithConstructorThatThrowsException() throws Exception {
-        JtalksSidFactory.addMapping("constructor_throws", Object.class, SidWithConstructorThatThrowsException.class);
-        sidFactory.create("constructor_throws:2", false);
     }
 
     @Test
@@ -115,46 +100,8 @@ public class JtalksSidFactoryTest {
         }
     }
 
-    private static class SidWithPrivateConstructor implements UniversalSid {
-        private SidWithPrivateConstructor(String sidId) {
-        }
 
-        @Override
-        public boolean isPrincipal() {
-            return false;
-        }
+    private static class GroupChild extends Group {
 
-        @Override
-        public String getSidId() {
-            return null;
-        }
     }
-
-    private static class SidWithConstructorThatThrowsException implements UniversalSid {
-        public SidWithConstructorThatThrowsException(String sidId) {
-            throw new UnsupportedOperationException(sidId);
-        }
-
-        @Override
-        public boolean isPrincipal() {
-            return false;
-        }
-
-        @Override
-        public String getSidId() {
-            return null;
-        }
-    }
-
-    private static abstract class AbstractSid implements UniversalSid {
-        public AbstractSid(String sidId) {
-            super();
-        }
-
-        @Override
-        public String getSidId() {
-            return null;
-        }
-    }
-
 }

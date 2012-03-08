@@ -34,7 +34,7 @@ public class UserSid extends PrincipalSid implements UniversalSid {
     }
 
     public UserSid(@Nonnegative long userId) {
-        super(String.valueOf(userId));
+        super(SID_PREFIX + String.valueOf(userId));
         this.userId = String.valueOf(userId);
     }
 
@@ -57,7 +57,7 @@ public class UserSid extends PrincipalSid implements UniversalSid {
 
     @Override
     public String getPrincipal() {
-        return super.getPrincipal();
+        return getSidId();
     }
 
     /**
@@ -76,11 +76,11 @@ public class UserSid extends PrincipalSid implements UniversalSid {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || !o.getClass().isAssignableFrom(getClass())) {
             return false;
         }
-        UserSid that = (UserSid) o;
-        if (!userId.equals(that.userId)) {
+        PrincipalSid that = (PrincipalSid) o;
+        if (!getPrincipal().equals(that.getPrincipal())) {
             return false;
         }
         return true;
