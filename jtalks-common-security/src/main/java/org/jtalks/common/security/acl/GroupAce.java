@@ -17,11 +17,11 @@ package org.jtalks.common.security.acl;
 import org.jtalks.common.model.dao.GroupDao;
 import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.permissions.BranchPermission;
+import org.jtalks.common.security.acl.sids.UserGroupSid;
 import org.springframework.security.acls.model.AccessControlEntry;
 
 /**
- * Created by IntelliJ IDEA. User: ctapobep Date: 1/27/12 Time: 6:53 PM To change this template use File | Settings |
- * File Templates.
+ * @author stanislav bashkirtsev
  */
 public class GroupAce {
     private final AccessControlEntry ace;
@@ -42,8 +42,7 @@ public class GroupAce {
      */
     public long getGroupId() {
         String groupIdString = ((UserGroupSid) ace.getSid()).getGroupId();
-        long groupId = Long.parseLong(groupIdString);
-        return groupId;
+        return Long.parseLong(groupIdString);
     }
     
     public BranchPermission getBranchPermission() {

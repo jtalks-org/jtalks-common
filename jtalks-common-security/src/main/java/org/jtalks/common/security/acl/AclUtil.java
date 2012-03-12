@@ -17,10 +17,12 @@ package org.jtalks.common.security.acl;
 import com.google.common.base.Predicate;
 import org.jtalks.common.model.entity.Entity;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
+import org.springframework.security.acls.domain.ObjectIdentityRetrievalStrategyImpl;
 import org.springframework.security.acls.model.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.Serializable;
 import java.util.List;
 
 import static com.google.common.collect.Iterables.filter;
@@ -31,31 +33,78 @@ import static com.google.common.collect.Lists.newArrayList;
  *
  * @author stanislav bashkirtsev
  */
-public class AclUtil {
+public class AclUtil implements ObjectIdentities, Acls, Permissions {
+    private final ObjectIdentityGenerator objectIdentityGenerator = new ObjectIdentityRetrievalStrategyImpl();
     private final MutableAclService mutableAclService;
 
+    /**
+     * Use this constructor if you need a full blown ACL utilities. If you need to work with only object identities or
+     * permissions, use respective factory methods.
+     *
+     * @param mutableAclService the acl service that is required for some operations related to DB. If you use factory
+     *                          methods, then you don't need to specify it working with object identities only for
+     *                          example.
+     * @see #createObjectIdentityUtils()
+     * @see #createAclUtils(org.springframework.security.acls.model.MutableAclService)
+     * @see #createPermissionUtils(org.springframework.security.acls.model.MutableAclService)
+     */
     public AclUtil(@Nonnull MutableAclService mutableAclService) {
         this.mutableAclService = mutableAclService;
     }
 
     /**
-     * Get existing ACL record for the entity. If ACL does not exist it will be created.
-     *
-     * @param entity entity to get is {@link ObjectIdentity} which is an ACL id of the entry and find/create its ACL
-     *               object
-     * @return Access Control List for the specified entity
+     * Need to be able to create it without {@link MutableAclService} if it's not required. This was created mainly for
+     * the purpose of factory methods.
      */
+    AclUtil() {
+        this.mutableAclService = null;
+    }
+
+    /**
+     * Creates a new instance of the object identity utilities (it won't have methods related to {@link Permission} or
+     * {@link Acl}.
+     *
+     * @return new instance of the object identity utilities
+     */
+    public static ObjectIdentities createObjectIdentityUtils() {
+        return new AclUtil();
+    }
+
+    /**
+     * Creates a new instance of the ACL utilities (it won't work with {@link ObjectIdentity} or {@link Permission}).
+     *
+     * @param mutableAclService the service to get database/cache access
+     * @return instance of the ACL utilities
+     */
+    public static Acls createAclUtils(@Nonnull MutableAclService mutableAclService) {
+        return new AclUtil(mutableAclService);
+    }
+
+    /**
+     * Creates a new instance of permission utilities (it won't work with {@link ObjectIdentity}; it will work with
+     * {@link Acl} though, but the main purpose of these utilities is to work mainly with graning/deleting/restricting
+     * permissions).
+     *
+     * @param mutableAclService the service to get database/cache access
+     * @return instance of permission utilities
+     */
+    public static Permissions createPermissionUtils(@Nonnull MutableAclService mutableAclService) {
+        return new AclUtil();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ExtendedMutableAcl getAclFor(Entity entity) {
         ObjectIdentity oid = createIdentityFor(entity);
         return getAclFor(oid);
     }
 
     /**
-     * Get existing ACL for identity. If ACL does not exist it will be created.
-     *
-     * @param oid object identity to get its ACL
-     * @return ACL or the specified object identity
+     * {@inheritDoc}
      */
+    @Override
     public ExtendedMutableAcl getAclFor(ObjectIdentity oid) {
         try {
             return ExtendedMutableAcl.castAndCreate(mutableAclService.readAclById(oid));
@@ -65,13 +114,9 @@ public class AclUtil {
     }
 
     /**
-     * Creates {@code ObjectIdentity} for {@code securedObject}.
-     *
-     * @param securedObject object to create its object identity (which is an ID for the Spring ACL that identifies the
-     *                      objects Sids have permissions for)
-     * @return identity with {@code securedObject} class name and id
-     * @throws IllegalArgumentException if the specified entity doesn't have the id (it's {@code id <= 0})
+     * {@inheritDoc}
      */
+    @Override
     public ObjectIdentity createIdentityFor(Entity securedObject) {
         if (securedObject.getId() <= 0) {
             throw new IllegalArgumentException("Object id must be assigned before creating acl.");
@@ -80,29 +125,33 @@ public class AclUtil {
     }
 
     /**
-     * Apply every permission from list to every sid from list.
-     *
-     * @param sids        list of sids
-     * @param permissions list of permissions
-     * @param target      securable object
-     * @return the ACL that serves the {@code sids}
+     * {@inheritDoc}
      */
+    @Override
+    public ObjectIdentity createIdentity(@Nonnull Serializable id, @Nonnull String type) {
+        return objectIdentityGenerator.createObjectIdentity(id, type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ExtendedMutableAcl grant(List<? extends Sid> sids, List<Permission> permissions, Entity target) {
         return applyPermissionsToSids(sids, permissions, target, true);
     }
 
     /**
-     * Apply every permission from list to every sid from list.
-     *
-     * @param sids        list of sids
-     * @param permissions list of permissions
-     * @param target      securable object
-     * @return the mutable acl that was created/retrieved while the operation
+     * {@inheritDoc}
      */
+    @Override
     public ExtendedMutableAcl restrict(List<? extends Sid> sids, List<Permission> permissions, Entity target) {
         return applyPermissionsToSids(sids, permissions, target, false);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ExtendedMutableAcl delete(List<? extends Sid> sids, List<Permission> permissions, Entity target) {
         ObjectIdentity oid = createIdentityFor(target);
         ExtendedMutableAcl acl = ExtendedMutableAcl.castAndCreate(mutableAclService.readAclById(oid));
@@ -111,12 +160,9 @@ public class AclUtil {
     }
 
     /**
-     * Delete permissions from {@code acl} for every sid.
-     *
-     * @param acl         the acl to remove the sid permissions from it
-     * @param sids        list of sids to remove their permissions
-     * @param permissions list of permissions to remove them
+     * {@inheritDoc}
      */
+    @Override
     public void deletePermissionsFromAcl(
             ExtendedMutableAcl acl, List<? extends Sid> sids, List<Permission> permissions) {
         List<AccessControlEntry> allEntries = acl.getEntries(); // it's a copy

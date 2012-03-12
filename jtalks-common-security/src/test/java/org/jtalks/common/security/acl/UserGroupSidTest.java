@@ -15,6 +15,8 @@
 package org.jtalks.common.security.acl;
 
 import org.jtalks.common.model.entity.Group;
+import org.jtalks.common.security.acl.sids.UniversalSid;
+import org.jtalks.common.security.acl.sids.UserGroupSid;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -31,12 +33,12 @@ public class UserGroupSidTest {
         assertEquals(new UserGroupSid("groupname:1").getGroupId(), "1");
     }
 
-    @Test(expectedExceptions = IdentifiableSid.WrongFormatException.class)
+    @Test(expectedExceptions = UniversalSid.WrongFormatException.class)
     public void testConstructor_withSidNameWithoutGroupId() throws Exception {
         new UserGroupSid("groupname:").getGroupId();
     }
 
-    @Test(expectedExceptions = IdentifiableSid.WrongFormatException.class)
+    @Test(expectedExceptions = UniversalSid.WrongFormatException.class)
     public void testConstructor_withSidNameWithTwoSeparators() throws Exception {
         new UserGroupSid("groupname:1:2").getGroupId();
     }

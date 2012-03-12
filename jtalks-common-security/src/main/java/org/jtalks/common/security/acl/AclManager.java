@@ -18,6 +18,7 @@ import com.google.common.annotations.VisibleForTesting;
 import org.jtalks.common.model.dao.GroupDao;
 import org.jtalks.common.model.entity.Branch;
 import org.jtalks.common.model.entity.Entity;
+import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,10 +55,23 @@ public class AclManager {
         }
         return resultingAces;
     }
-    
-    public List<Permission> getPermissions(User user, Branch branch){
-        groupDao.getGroupsOfUser(user);
-        return null;
+
+    public List<Permission> getPermissions(User user, Branch branch) {
+        List<Permission> permissions = new ArrayList<Permission>();
+
+        List<Group> groups = groupDao.getGroupsOfUser(user);
+
+        MutableAcl branchAcl = aclUtil.getAclFor(branch);
+        List<AccessControlEntry> originalAces = branchAcl.getEntries();
+
+        for (AccessControlEntry entry : originalAces) {
+            GroupAce groupAce = new GroupAce(entry);
+            if (groups.contains(groupAce.getGroup(groupDao))) {
+                permissions.add(groupAce.getBranchPermission());
+            }
+        }
+
+        return permissions;
     }
 
     /**

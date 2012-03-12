@@ -12,7 +12,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.jtalks.common.security.acl;
+package org.jtalks.common.security.acl.sids;
 
 import org.jtalks.common.model.entity.Group;
 
@@ -32,13 +32,13 @@ import java.util.regex.Pattern;
  * @author stanislav bashkirstev
  */
 @Immutable
-public class UserGroupSid implements IdentifiableSid {
+public class UserGroupSid implements UniversalSid {
     public final static String SID_PREFIX = "usergroup";
     private final String groupId;
 
     /**
      * @param sidId passes the direct sid id which should obey the format "usergroup:[group_id]"
-     * @throws IdentifiableSid.WrongFormatException
+     * @throws UniversalSid.WrongFormatException
      *          if the format of the passed string is wrong
      */
     public UserGroupSid(@Nonnull String sidId) {
@@ -86,8 +86,16 @@ public class UserGroupSid implements IdentifiableSid {
      * {@inheritDoc}
      */
     @Override
+    public boolean isPrincipal() {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getSidId() {
-        return SID_PREFIX + IdentifiableSid.SID_NAME_SEPARATOR + groupId;
+        return SID_PREFIX + UniversalSid.SID_NAME_SEPARATOR + groupId;
     }
 
     /**

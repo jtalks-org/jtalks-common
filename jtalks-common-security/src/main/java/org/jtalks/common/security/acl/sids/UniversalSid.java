@@ -12,7 +12,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.jtalks.common.security.acl;
+package org.jtalks.common.security.acl.sids;
 
 import org.springframework.security.acls.model.Sid;
 
@@ -22,21 +22,13 @@ import org.springframework.security.acls.model.Sid;
  *
  * @author stanislav bashkirtsev
  */
-public interface IdentifiableSid extends Sid {
+public interface UniversalSid extends Sid {
     /**
-     * All the custom Sids, when they implement the {@link IdentifiableSid} should obey some pattern since they are
+     * All the custom Sids, when they implement the {@link UniversalSid} should obey some pattern since they are
      * saved as string to the DB. This pattern usually will be: some string identifier of the Sid implementation + ":" +
      * the database id of the entity which is a Sid. Like in case of user groups: {@code usergroup:2123}.
      */
     static final String SID_NAME_SEPARATOR = ":";
-
-    /**
-     * Gets the unique identifier of the SID (usually a database ID of the entity). It is string since the ACL tables
-     * require this.
-     *
-     * @return the unique identifier of the SID (usually a database ID of the entity)
-     */
-    String getSidId();
 
     /**
      * Since some of Sid implementations accept different arguments while creation, like String, and these arguments

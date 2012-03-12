@@ -1,17 +1,3 @@
-/**
- * Copyright (C) 2011  JTalks.org Team
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- */
 package org.jtalks.common.model.permissions;
 
 import com.google.common.collect.Lists;
@@ -20,26 +6,20 @@ import ru.javatalks.utils.general.Assert;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-
 /**
- * These are the restrictions that relate only to branches and sections.
+ * General purpose permissions like in {@link org.springframework.security.acls.domain.BasePermission}.
  *
  * @author stanislav bashkirtsev
  */
-public enum BranchPermission implements JtalksPermission {
+public enum GeneralPermission implements JtalksPermission {
     /**
-     * The ability of user group or user to create new topics in the branch.
+     * The ability of Sids to have all the rights, to perform any action on the object.
      */
-    CREATE_TOPICS("11", "CREATE_TOPICS"),
+    ADMIN("10000", "ADMIN"),
     /**
-     * The ability of user group or user to view the branch (to see its topics).
+     * The ability of the Sids to change the object identity.
      */
-    VIEW_TOPICS("110", "VIEW_TOPICS"),
-    /**
-     * The ability of users to remove their own posts. Some forums prefer to restrict this functionality to avoid
-     * misunderstanding between users.
-     */
-    DELETE_POSTS("111", "DELETE_POSTS");
+    WRITE("100", "WRITE");
 
     private final String name;
     private final int mask;
@@ -52,7 +32,7 @@ public enum BranchPermission implements JtalksPermission {
      * @param name a textual representation of the permission (usually the same as the constant name), though the
      *             restriction usually starts with the 'RESTRICTION_' word
      */
-    BranchPermission(int mask, @Nonnull String name) {
+    GeneralPermission(int mask, @Nonnull String name) {
         this.mask = mask;
         throwIfNameNotValid(name);
         this.name = name;
@@ -66,10 +46,10 @@ public enum BranchPermission implements JtalksPermission {
      * @param name a textual representation of the permission (usually the same as the constant name)
      * @throws NumberFormatException look at {@link Integer#parseInt(String, int)} for details on this as this method is
      *                               used underneath
-     * @see BranchPermission#BranchPermission(int, String)
+     * @see GeneralPermission#GeneralPermission(int, String)
      * @see org.springframework.security.acls.domain.BasePermission
      */
-    BranchPermission(@Nonnull String mask, @Nonnull String name) {
+    GeneralPermission(@Nonnull String mask, @Nonnull String name) {
         throwIfNameNotValid(name);
         this.mask = Integer.parseInt(mask, 2);
         this.name = name;
@@ -105,8 +85,8 @@ public enum BranchPermission implements JtalksPermission {
         return null;
     }
 
-    public static BranchPermission findByMask(int mask) {
-        for (BranchPermission nextPermission : values()) {
+    public static GeneralPermission findByMask(int mask) {
+        for (GeneralPermission nextPermission : values()) {
             if (mask == nextPermission.getMask()) {
                 return nextPermission;
             }
@@ -114,7 +94,7 @@ public enum BranchPermission implements JtalksPermission {
         return null;
     }
 
-    public static List<BranchPermission> getAllAsList() {
+    public static List<GeneralPermission> getAllAsList() {
         return Lists.newArrayList(values());
     }
 
