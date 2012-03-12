@@ -17,9 +17,14 @@ package org.jtalks.common.security.acl;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.entity.User;
+import org.jtalks.common.security.acl.sids.JtalksSidFactory;
+import org.jtalks.common.security.acl.sids.UniversalSid;
+import org.jtalks.common.security.acl.sids.UserGroupSid;
+import org.jtalks.common.security.acl.sids.UserSid;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.Sid;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -27,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertSame;
 
 /**
  * @author stanislav bashkirtsev
@@ -37,6 +43,13 @@ public class JtalksSidFactoryTest {
     @BeforeMethod
     public void setUp() throws Exception {
         sidFactory = new JtalksSidFactory();
+    }
+
+    @Test
+    public void testCreatePrincipal_anonymousUser() throws Exception {
+        String username = "anonymousUser";
+        Sid anonymousUser = sidFactory.createPrincipal(new UsernamePasswordAuthenticationToken(username, ""));
+        assertSame(anonymousUser, UserSid.createAnonymous());
     }
 
     @Test

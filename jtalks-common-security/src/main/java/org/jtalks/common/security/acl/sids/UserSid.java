@@ -12,13 +12,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.jtalks.common.security.acl;
+package org.jtalks.common.security.acl.sids;
 
 import org.jtalks.common.model.entity.User;
 import org.springframework.security.acls.domain.PrincipalSid;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.regex.Pattern;
 
 /**
@@ -58,6 +59,26 @@ public class UserSid extends PrincipalSid implements UniversalSid {
     @Override
     public String getPrincipal() {
         return getSidId();
+    }
+
+    /**
+     * Defines whether the specified principal is an anonymous user (the one that's name is {@code anonymousUser}).
+     *
+     * @param principal the principal to decide whether it's an anonymous user
+     * @return {@code true} if the specified principal is an anonymous user
+     */
+    public static boolean isAnonymous(@Nullable String principal) {
+        return AnonymousUserSid.isAnonymous(principal);
+    }
+
+    /**
+     * Creates an anonymous user which actually is an instance of {@link AnonymousUserSid} and has a sid id equal to
+     * {@link AnonymousUserSid#ANONYMOUS_USER_SID_ID}.
+     *
+     * @return the instance of the user sid that represents an anonymous user
+     */
+    public static UserSid createAnonymous() {
+        return AnonymousUserSid.create();
     }
 
     /**

@@ -3,7 +3,7 @@ package org.jtalks.common.security.acl.builders;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.permissions.JtalksPermission;
 import org.jtalks.common.security.acl.AclManager;
-import org.jtalks.common.security.acl.JtalksSidFactory;
+import org.jtalks.common.security.acl.sids.JtalksSidFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
 

@@ -12,7 +12,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package org.jtalks.common.security.acl;
+package org.jtalks.common.security.acl.sids;
 
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.entity.Group;
@@ -53,10 +53,13 @@ public class JtalksSidFactory implements SidFactory {
      */
     @Override
     public Sid createPrincipal(Authentication authentication) {
-        if (authentication.getPrincipal() instanceof UserDetails) {
-            return new UserSid((User) authentication.getPrincipal());
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            return new UserSid((User) principal);
+        } else if (UserSid.isAnonymous(principal.toString())) {
+            return UserSid.createAnonymous();
         } else {
-            return new UserSid(authentication.getPrincipal().toString());
+            return new UserSid(principal.toString());
         }
     }
 

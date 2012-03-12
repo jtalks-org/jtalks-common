@@ -15,6 +15,8 @@
 package org.jtalks.common.security.acl;
 
 import org.jtalks.common.model.entity.Group;
+import org.jtalks.common.security.acl.sids.UniversalSid;
+import org.jtalks.common.security.acl.sids.UserGroupSid;
 import org.testng.annotations.Test;
 
 import java.util.List;
