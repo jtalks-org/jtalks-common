@@ -12,9 +12,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * The class that implements all the AclBuilder related interfaces like {@link AclTo} or {@link AclFlush}, so it
+ * actually is a combination of ACL operations. Don't use it directly, use {@link AclBuilders} instead to upcast it to
+ * the respective interfaces.
+ *
  * @author stanislav bashkirtsev
  */
-class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo<T>, AclFrom<T>, AclOn, AclFlush {
+public class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo<T>, AclFrom<T>, AclOn, AclFlush {
     private final List<Permission> permissions = new ArrayList<Permission>();
     private final List<Sid> sids = new ArrayList<Sid>();
     private final AclManager aclManager;
@@ -26,12 +30,18 @@ class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo<T>, Ac
         this.aclManager = aclManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AclTo<T> grant(JtalksPermission... permissions) {
         addPermissions(Actions.GRANT, permissions);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AclTo<T> restrict(JtalksPermission... permissions) {
         addPermissions(Actions.RESTRICT, permissions);
@@ -56,13 +66,18 @@ class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo<T>, Ac
         return this;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AclFlush on(Entity objectIdentity) {
         this.objectIdentity = objectIdentity;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void flush() {
         if (action == Actions.GRANT) {
