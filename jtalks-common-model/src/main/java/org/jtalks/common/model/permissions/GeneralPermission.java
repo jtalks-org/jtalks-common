@@ -17,6 +17,10 @@ public enum GeneralPermission implements JtalksPermission {
      */
     ADMIN("10000", "ADMIN"),
     /**
+     * The ability of Sids to read the object identity.
+     */
+    READ("1", "READ"),
+    /**
      * The ability of the Sids to change the object identity.
      */
     WRITE("100", "WRITE");
