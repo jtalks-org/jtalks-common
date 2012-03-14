@@ -7,6 +7,7 @@ import org.jtalks.common.security.acl.sids.JtalksSidFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +35,7 @@ public class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo
      * {@inheritDoc}
      */
     @Override
-    public AclTo<T> grant(JtalksPermission... permissions) {
+    public AclTo<T> grant(@Nonnull JtalksPermission... permissions) {
         addPermissions(Actions.GRANT, permissions);
         return this;
     }
@@ -43,25 +44,25 @@ public class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo
      * {@inheritDoc}
      */
     @Override
-    public AclTo<T> restrict(JtalksPermission... permissions) {
+    public AclTo<T> restrict(@Nonnull JtalksPermission... permissions) {
         addPermissions(Actions.RESTRICT, permissions);
         return this;
     }
 
     @Override
-    public AclFrom<T> delete(JtalksPermission... permissions) {
+    public AclFrom<T> delete(@Nonnull JtalksPermission... permissions) {
         addPermissions(Actions.DELETE, permissions);
         return this;
     }
 
     @Override
-    public AclOn from(T... sids) {
+    public AclOn from(@Nonnull T... sids) {
         this.sids.addAll(sidFactory.create(Arrays.asList(sids)));
         return this;
     }
 
     @Override
-    public AclOn to(T... sids) {
+    public AclOn to(@Nonnull T... sids) {
         this.sids.addAll(sidFactory.create(Arrays.asList(sids)));
         return this;
     }
@@ -70,7 +71,7 @@ public class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo
      * {@inheritDoc}
      */
     @Override
-    public AclFlush on(Entity objectIdentity) {
+    public AclFlush on(@Nonnull Entity objectIdentity) {
         this.objectIdentity = objectIdentity;
         return this;
     }

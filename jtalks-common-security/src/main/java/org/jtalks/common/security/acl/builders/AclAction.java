@@ -3,6 +3,8 @@ package org.jtalks.common.security.acl.builders;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.permissions.JtalksPermission;
 
+import javax.annotation.Nonnull;
+
 /**
  * Represents a set of actions that can be made with permissions like grant, delete and restrict. This interface should
  * be used along with other interfaces in the package in order to create a finished chain of methods to finish granting
@@ -23,7 +25,7 @@ public interface AclAction<T extends Entity> {
      * @return next interface to continue the chain of ACL methods to be able to specify the Sid you're going to grant
      *         access to
      */
-    AclTo<T> grant(JtalksPermission... permissions);
+    AclTo<T> grant(@Nonnull JtalksPermission... permissions);
 
     /**
      * Restricts the access for the action represented by the specified permission.
@@ -31,7 +33,7 @@ public interface AclAction<T extends Entity> {
      * @param permissions the permissions to be restricted to some Sid provided further in the chain of methods
      * @return next interface to continue the chain of acl to be able to specify the Sid to restrict the permission to
      */
-    AclTo<T> restrict(JtalksPermission... permissions);
+    AclTo<T> restrict(@Nonnull JtalksPermission... permissions);
 
     /**
      * Removes the access for the action represented by the specified permission. No matter whether this permission was
@@ -41,7 +43,7 @@ public interface AclAction<T extends Entity> {
      * @return next interface to continue the chain of acl related methods to be able to specify the Sid to remove its
      *         permissions
      */
-    AclFrom<T> delete(JtalksPermission... permissions);
+    AclFrom<T> delete(@Nonnull JtalksPermission... permissions);
 
     /**
      * Represents all the actions that can be undertaken with the permissions (effectively the are the same as the
