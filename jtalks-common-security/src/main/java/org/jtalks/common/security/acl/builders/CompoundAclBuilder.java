@@ -29,9 +29,11 @@ import java.util.List;
 /**
  * The class that implements all the AclBuilder related interfaces like {@link AclTo} or {@link AclFlush}, so it
  * actually is a combination of ACL operations. Don't use it directly, use {@link AclBuilders} instead to upcast it to
- * the respective interfaces.
+ * the respective interfaces. The only operation that actually pushes the changes to the data store is {@link
+ * #flush()}.
  *
  * @author stanislav bashkirtsev
+ * @see AclBuilders
  */
 public class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo<T>, AclFrom<T>, AclOn, AclFlush {
     private final List<Permission> permissions = new ArrayList<Permission>();
@@ -41,7 +43,14 @@ public class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo
     private Entity objectIdentity;
     private Actions action;
 
-    public CompoundAclBuilder(AclManager aclManager) {
+    /**
+     * Constructs the full blown acl builder, usually you shouldn't use this constructor and instead work with {@link
+     * AclBuilders}, but if you're writing tests or creating your own builders API, this might be useful for you.
+     *
+     * @param aclManager acl builder works with the ACL Manager in order to access the data store and actually work with
+     *                   permissions
+     */
+    public CompoundAclBuilder(@Nonnull AclManager aclManager) {
         this.aclManager = aclManager;
     }
 
@@ -63,18 +72,27 @@ public class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AclFrom<T> delete(@Nonnull JtalksPermission... permissions) {
         addPermissions(Actions.DELETE, permissions);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AclOn from(@Nonnull T... sids) {
         this.sids.addAll(sidFactory.create(Arrays.asList(sids)));
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AclOn to(@Nonnull T... sids) {
         this.sids.addAll(sidFactory.create(Arrays.asList(sids)));

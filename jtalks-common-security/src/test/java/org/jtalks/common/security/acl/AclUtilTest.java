@@ -34,12 +34,15 @@ import static org.testng.Assert.assertSame;
 public class AclUtilTest {
     @Mock
     MutableAclService aclService;
+    @Mock
+    ObjectIdentityGenerator oidGenerator;
     AclUtil util;
 
     @BeforeMethod
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
         util = new AclUtil(aclService);
+        util.setObjectIdentityGenerator(oidGenerator);
     }
 
     @Test(dataProvider = "randomSidsAndPermissions", dataProviderClass = AclDataProvider.class)
@@ -86,4 +89,12 @@ public class AclUtilTest {
         util.createIdentityFor(entity);
     }
 
+    @Test
+    public void testAclFromObjectIdentity(){
+        ObjectIdentityImpl oid = new ObjectIdentityImpl("type", "1");
+        MutableAcl acl = mock(MutableAcl.class);
+        when(oidGenerator.createObjectIdentity("1", "type")).thenReturn(oid);
+        when(aclService.readAclById(oid)).thenReturn(acl);
+        assertSame(((ExtendedMutableAcl)util.aclFromObjectIdentity("1", "type")).getAcl(), acl);
+    }
 }

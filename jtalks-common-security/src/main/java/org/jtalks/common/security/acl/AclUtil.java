@@ -14,6 +14,7 @@
  */
 package org.jtalks.common.security.acl;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
 import org.jtalks.common.model.entity.Entity;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
@@ -34,7 +35,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author stanislav bashkirtsev
  */
 public class AclUtil implements ObjectIdentities, Acls, Permissions {
-    private final ObjectIdentityGenerator objectIdentityGenerator = new ObjectIdentityRetrievalStrategyImpl();
+    private ObjectIdentityGenerator objectIdentityGenerator = new ObjectIdentityRetrievalStrategyImpl();
     private final MutableAclService mutableAclService;
 
     /**
@@ -168,6 +169,16 @@ public class AclUtil implements ObjectIdentities, Acls, Permissions {
         List<AccessControlEntry> allEntries = acl.getEntries(); // it's a copy
         List<AccessControlEntry> filtered = newArrayList(filter(allEntries, new BySidAndPermissionFilter(sids, permissions)));
         acl.delete(filtered);
+    }
+    
+    public Acl aclFromObjectIdentity(@Nonnull Serializable id, @Nonnull String type){
+        ObjectIdentity identity = this.objectIdentityGenerator.createObjectIdentity(id, type);
+        return getAclFor(identity);
+    }
+
+    @VisibleForTesting
+    void setObjectIdentityGenerator(ObjectIdentityGenerator objectIdentityGenerator) {
+        this.objectIdentityGenerator = objectIdentityGenerator;
     }
 
 
