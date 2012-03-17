@@ -90,11 +90,21 @@ public class AclUtilTest {
     }
 
     @Test
-    public void testAclFromObjectIdentity(){
+    public void testAclFromObjectIdentity_readAcl(){
         ObjectIdentityImpl oid = new ObjectIdentityImpl("type", "1");
         MutableAcl acl = mock(MutableAcl.class);
         when(oidGenerator.createObjectIdentity("1", "type")).thenReturn(oid);
         when(aclService.readAclById(oid)).thenReturn(acl);
+        assertSame(((ExtendedMutableAcl)util.aclFromObjectIdentity("1", "type")).getAcl(), acl);
+    }
+
+    @Test
+    public void testAclFromObjectIdentity_CreateAcl(){
+        ObjectIdentityImpl oid = new ObjectIdentityImpl("type", "1");
+        MutableAcl acl = mock(MutableAcl.class);
+        when(oidGenerator.createObjectIdentity("1", "type")).thenReturn(oid);
+        when(aclService.readAclById(oid)).thenThrow(new NotFoundException(""));
+        when(aclService.createAcl(oid)).thenReturn(acl);
         assertSame(((ExtendedMutableAcl)util.aclFromObjectIdentity("1", "type")).getAcl(), acl);
     }
 }
