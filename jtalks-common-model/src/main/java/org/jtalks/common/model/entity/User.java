@@ -14,17 +14,16 @@
  */
 package org.jtalks.common.model.entity;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.joda.time.DateTime;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import ru.javatalks.utils.datetime.DateTimeUtilsFactory;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Stores information about the forum user.
@@ -34,6 +33,7 @@ import ru.javatalks.utils.datetime.DateTimeUtilsFactory;
  * @author Kirill Afonin
  * @author Alexandre Teterin
  * @author Masich Ivan
+ * @author Ancient_Mariner
  */
 public class User extends Entity implements UserDetails {
     
@@ -177,7 +177,7 @@ public class User extends Entity implements UserDetails {
     public final void setUsername(String username) {
         this.username = username;
         try {
-            setEncodedUsername(URLEncoder.encode(username, "UTF-8"));
+            setEncodedUsername(URLEncoder.encode(username, "UTF-8").replace("+", "%20"));
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("Could not encode username", e);
         }

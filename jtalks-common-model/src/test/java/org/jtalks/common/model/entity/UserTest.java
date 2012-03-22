@@ -25,6 +25,7 @@ import static org.testng.Assert.*;
 
 /**
  * @author Kirill Afonin
+ * @author Ancient_Mariner
  */
 public class UserTest {
     private static final String SALT = "salt";
@@ -43,6 +44,16 @@ public class UserTest {
         assertTrue(sut.isEnabled());
     }
 
+    @Test
+    public void testSetUserNameEncodingSymbolReplacement(){
+
+        String expected = "Hello%20World";
+        String unencoded = "Hello World";
+
+        sut.setUsername(unencoded);
+        assertEquals(sut.getEncodedUsername(), expected);
+    }
+        
     @Test
     public void testUserDefaultAuthority() {
         GrantedAuthority expectedAuthority = new GrantedAuthorityImpl("ROLE_USER");
