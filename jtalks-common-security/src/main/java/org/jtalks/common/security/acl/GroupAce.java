@@ -27,6 +27,9 @@ public class GroupAce {
     private final AccessControlEntry ace;
 
     public GroupAce(AccessControlEntry ace) {
+        if(!(ace.getSid() instanceof UserGroupSid)){
+            throw new IllegalArgumentException("The specified ACE has sid which is not of type: " + UserGroupSid.class);
+        }
         this.ace = ace;
     }
 
