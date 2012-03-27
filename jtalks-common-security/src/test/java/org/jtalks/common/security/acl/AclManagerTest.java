@@ -27,6 +27,8 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertSame;
 
 /**
  * @author stanislav bashkirtsev
@@ -45,18 +47,29 @@ public class AclManagerTest {
         manager.setAclUtil(mockAclUtil);
     }
 
-    @Test()
-    public void testGetBranchPermissions() throws Exception {
+    @Test(dataProviderClass = AclDataProvider.class, dataProvider = "provideAclWithMixedTypeSids")
+    public void testGetEntityPermissions(ExtendedMutableAcl acl) throws Exception {
         Branch branch = new Branch("", "");
-        ExtendedMutableAcl acl = mock(ExtendedMutableAcl.class);
-        List<AccessControlEntry> aces = AclDataProvider.createRandomEntries(acl);
-        when(acl.getEntries()).thenReturn(aces);
         when(mockAclUtil.getAclFor(branch)).thenReturn(acl);
-        List<GroupAce> branchPermissions = manager.getBranchPermissions(branch);
-        for (AccessControlEntry entry : aces) {
-            UserGroupSid sid = (UserGroupSid) entry.getSid();
-//            results.get(entry.getPermission().getMask(), Long.parseLong(sid.getGroupId()));
+        List<GroupAce> branchPermissions = manager.getGroupPermissionsOn(branch);
+        //next check that UserGroupSids are in the resulting list and others are not there
+        for (AccessControlEntry entry : acl.getEntries()) {
+            if (entry.getSid() instanceof UserGroupSid) {
+                GroupAce groupAce = findWithOriginalAce(branchPermissions, entry);
+                assertSame(entry.getSid(), groupAce.getOriginalAce().getSid());
+            } else {
+                assertNull(findWithOriginalAce(branchPermissions, entry));
+            }
         }
+    }
+
+    private GroupAce findWithOriginalAce(List<GroupAce> groupAces, AccessControlEntry originalAce) {
+        for (GroupAce groupAce : groupAces) {
+            if (groupAce.getOriginalAce() == originalAce) {
+                return groupAce;
+            }
+        }
+        return null;
     }
 
     @Test(dataProvider = "randomSidsAndPermissionsAndEntity", dataProviderClass = AclDataProvider.class)

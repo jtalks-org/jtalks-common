@@ -17,7 +17,9 @@ package org.jtalks.common.security.acl;
 import com.google.common.collect.Lists;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.permissions.BranchPermission;
+import org.jtalks.common.model.permissions.GeneralPermission;
 import org.jtalks.common.security.acl.sids.UserGroupSid;
+import org.jtalks.common.security.acl.sids.UserSid;
 import org.springframework.security.acls.domain.AccessControlEntryImpl;
 import org.springframework.security.acls.model.AccessControlEntry;
 import org.springframework.security.acls.model.MutableAcl;
@@ -28,6 +30,8 @@ import org.testng.annotations.DataProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -73,13 +77,18 @@ public class AclDataProvider {
         return new Object[][]{{new EntityImpl(0L)}};
     }
 
-    @SuppressWarnings("unchecked")
-    public static List<AccessControlEntry> createRandomEntries(MutableAcl acl) {
-        List<Sid> sids = (List<Sid>) provideRandomSidsAndPermissionsAndEntity()[0][0];
-        List<Permission> permissions = (List<Permission>) provideRandomSidsAndPermissionsAndEntity()[0][1];
-        return createEntries(acl, sids, permissions);
+    @DataProvider
+    public static Object[][] provideAclWithMixedTypeSids() {
+        List<AccessControlEntry> aces = new ArrayList<AccessControlEntry>();
+        ExtendedMutableAcl acl = mock(ExtendedMutableAcl.class);
+        when(acl.getEntries()).thenReturn(aces);
+
+        aces.add(new AccessControlEntryImpl(1L, acl, new UserGroupSid(1L), GeneralPermission.READ, true, true, true));
+        aces.add(new AccessControlEntryImpl(2L, acl, new UserSid(2L), BranchPermission.VIEW_TOPICS, false, true, true));
+        aces.add(new AccessControlEntryImpl(3L, acl, new UserGroupSid(3L), GeneralPermission.WRITE, true, true, true));
+        return new Object[][]{{acl}};
     }
-    
+
     public static List<AccessControlEntry> createEntries(MutableAcl acl, List<Sid> sids,
                                                          List<Permission> permissions) {
         assertEquals(sids.size(), permissions.size(), "Provided lists should have the same size");

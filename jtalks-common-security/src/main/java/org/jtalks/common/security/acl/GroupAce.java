@@ -60,6 +60,10 @@ public class GroupAce {
         return ace.isGranting();
     }
 
+    public AccessControlEntry getOriginalAce() {
+        return ace;
+    }
+
     private void throwIfNull(long groupId, Group group) {
         if (group == null) {
             throw new ObsoleteAclException(groupId);

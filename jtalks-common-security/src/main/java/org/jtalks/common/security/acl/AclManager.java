@@ -20,6 +20,7 @@ import org.jtalks.common.model.entity.Branch;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.entity.User;
+import org.jtalks.common.security.acl.sids.UserGroupSid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
@@ -46,6 +47,31 @@ public class AclManager {
         aclUtil = new AclUtil(mutableAclService);
     }
 
+    /**
+     * Gets only group permissions (where sid is {@link UserGroupSid}) and returns them for the specified entity (object
+     * identity). Note, that if there are other records with sids different than {@link UserGroupSid}, they will be
+     * filtered out.
+     *
+     * @param entity an object identity for which the permissions were given
+     * @return permissions assigned on {@link Group}s without any other permissions. Returns empty collection if there
+     *         are no group permissions given on the specified object identity
+     */
+    public List<GroupAce> getGroupPermissionsOn(@Nonnull Entity entity) {
+        MutableAcl branchAcl = aclUtil.getAclFor(entity);
+        List<AccessControlEntry> originalAces = branchAcl.getEntries();
+        List<GroupAce> resultingAces = new ArrayList<GroupAce>(originalAces.size());
+        for (AccessControlEntry originalAce : originalAces) {
+            if (originalAce.getSid() instanceof UserGroupSid) {
+                resultingAces.add(new GroupAce(originalAce));
+            }
+        }
+        return resultingAces;
+    }
+
+    /**
+     * @deprecated use {@link #getGroupPermissionsOn}
+     */
+    @Deprecated()
     public List<GroupAce> getBranchPermissions(Branch branch) {
         MutableAcl branchAcl = aclUtil.getAclFor(branch);
         List<AccessControlEntry> originalAces = branchAcl.getEntries();
@@ -56,22 +82,29 @@ public class AclManager {
         return resultingAces;
     }
 
+    /**
+     * TODO: NOT FINISHED! TO BE IMPLEMENTED
+     * @param user
+     * @param branch
+     * @return
+     */
     public List<Permission> getPermissions(User user, Branch branch) {
-        List<Permission> permissions = new ArrayList<Permission>();
-
-        List<Group> groups = groupDao.getGroupsOfUser(user);
-
-        MutableAcl branchAcl = aclUtil.getAclFor(branch);
-        List<AccessControlEntry> originalAces = branchAcl.getEntries();
-
-        for (AccessControlEntry entry : originalAces) {
-            GroupAce groupAce = new GroupAce(entry);
-            if (groups.contains(groupAce.getGroup(groupDao))) {
-                permissions.add(groupAce.getBranchPermission());
-            }
-        }
-
-        return permissions;
+        throw new UnsupportedOperationException();
+//        List<Permission> permissions = new ArrayList<Permission>();
+//
+//        List<Group> groups = groupDao.getGroupsOfUser(user);
+//
+//        MutableAcl branchAcl = aclUtil.getAclFor(branch);
+//        List<AccessControlEntry> originalAces = branchAcl.getEntries();
+//
+//        for (AccessControlEntry entry : originalAces) {
+//            GroupAce groupAce = new GroupAce(entry);
+//            if (groups.contains(groupAce.getGroup(groupDao))) {
+//                permissions.add(groupAce.getBranchPermission());
+//            }
+//        }
+//
+//        return permissions;
     }
 
     /**
