@@ -29,9 +29,6 @@
     <aop:advisor advice-ref="exceptionTranslationInterceptor" pointcut="execution(* org.jtalks.common.model.dao.ChildRepository+.* (*))" />
   </aop:config>
 
-  <!--Declaration of DAO beans -->
-  <bean id="groupDao" class="org.jtalks.common.model.dao.hibernate.GroupHibernateDao" parent="abstractHibernateDao" />
-
   <bean id="abstractHibernateDao" abstract="true">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
