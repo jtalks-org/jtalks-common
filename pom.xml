@@ -62,7 +62,7 @@
         <artifactId>hibernate-validator</artifactId>
         <version>4.1.0.Final</version>
       </dependency>
-      
+
       <!-- JDBC -->
       <dependency>
         <groupId>mysql</groupId>
@@ -409,7 +409,7 @@
   <properties>
     <copyrightDir>${basedir}</copyrightDir>
     <project_version>${project.version}</project_version>
-    <hibernateVersion>3.3.2.GA</hibernateVersion>
+    <hibernateVersion>3.6.10.Final</hibernateVersion>
     <springVersion>3.0.5.RELEASE</springVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
