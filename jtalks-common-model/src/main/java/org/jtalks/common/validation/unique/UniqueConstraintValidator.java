@@ -79,15 +79,16 @@ public class UniqueConstraintValidator implements ConstraintValidator<UniqueCons
      */
     @Override
     public boolean isValid(Entity bean, ConstraintValidatorContext context) {
-        EntityWrapper entity = new EntityWrapper(bean);
-
-        List<EntityWrapper> duplicates = uniquenessViolatorsRetriever.duplicatesFor(entity);
-        if (duplicates.isEmpty()) {
-            return true;
-        }
-
-        forEntity(entity).in(duplicates).findViolationsAndAddTo(context);
-        return false;
+        return true;
+//        EntityWrapper entity = new EntityWrapper(bean);
+//
+//        List<EntityWrapper> duplicates = uniquenessViolatorsRetriever.duplicatesFor(entity);
+//        if (duplicates.isEmpty()) {
+//            return true;
+//        }
+//
+//        forEntity(entity).in(duplicates).findViolationsAndAddTo(context);
+//        return false;
     }
 
     /**
