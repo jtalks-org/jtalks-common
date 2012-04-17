@@ -14,16 +14,14 @@
  */
 package org.jtalks.common.model.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.validation.annotations.UniqueConstraint;
 import org.jtalks.common.validation.annotations.UniqueField;
+
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Forum section that contains branches.
@@ -51,8 +49,10 @@ public class Section extends Entity {
     @NotEmpty(message = SECTION_CANT_BE_VOID)
     @Length(min = 1, max = 254, message = ERROR_LABEL_SECTION_NAME_WRONG)
     private String name;
-    
+
+    @Length(max = 254, message = "{section.description.length_constraint_violation}")
     private String description;
+
     private Integer position;
     private List<Branch> branches = new ArrayList<Branch>();
 
