@@ -14,7 +14,8 @@
  */
 package org.jtalks.common.model.entity;
 
-import org.jtalks.common.model.entity.Entity;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * The Property entity which contains configuration for components
@@ -25,6 +26,8 @@ public class Property extends Entity {
     /**
      * Property's name
      */
+    @NotBlank
+    @Length(max = 256, message = "{property.name.length_constraint_violation}")
     private String name;
     /**
      * Property's value

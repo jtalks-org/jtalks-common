@@ -14,28 +14,23 @@
  */
 package org.jtalks.common.validation.unique;
 
-import static org.jtalks.common.validation.unique.UniquenessViolationFinder.forEntity;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
-import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderDefinedContext;
-
 import org.jtalks.common.model.entity.Component;
 import org.jtalks.common.model.entity.ComponentType;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.testutils.ObjectsFactory;
-import org.jtalks.common.validation.unique.EntityWrapper;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderDefinedContext;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.jtalks.common.validation.unique.UniquenessViolationFinder.forEntity;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Alexey Grigorev
@@ -95,14 +90,6 @@ public class UniquenessViolationFinderTest {
         verifyNoConstraintViolationsAdded();
     }
 
-    @Test
-    public void oneDuplicatesType() {
-        List<EntityWrapper> duplicates = componentTypeDuplicatedList();
-        forEntity(forum).in(duplicates).findViolationsAndAddTo(context);
-
-        verifyComponentTypeConstraintViolationAdded();
-    }
-
     private List<EntityWrapper> componentTypeDuplicatedList() {
         return Arrays.asList(forum());
     }
@@ -113,14 +100,6 @@ public class UniquenessViolationFinderTest {
         verify(componentTypeNode).addConstraintViolation();
     }
 
-    @Test
-    public void oneDuplicatesName() {
-        List<EntityWrapper> duplicates = oneNameDuplicationList();
-        forEntity(forum).in(duplicates).findViolationsAndAddTo(context);
-
-        verifyNameConstaintViolationAdded();
-    }
-    
     private List<EntityWrapper> oneNameDuplicationList() {
         Component article = new Component(component.getName(), "desc", ComponentType.ARTICLE);
         return Arrays.asList(wrap(article));
@@ -140,14 +119,6 @@ public class UniquenessViolationFinderTest {
         verify(context).disableDefaultConstraintViolation();
     }
 
-    @Test
-    public void twoDuplicates() {
-        List<EntityWrapper> duplicates = twoDuplicatesList();
-        forEntity(forum).in(duplicates).findViolationsAndAddTo(context);
-
-        verityBothViolationsAdded();
-    }
-    
     private List<EntityWrapper> twoDuplicatesList() {
         Component article = new Component(component.getName(), "desc", ComponentType.ARTICLE);
         return Arrays.asList(wrap(article), forum());

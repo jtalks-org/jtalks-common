@@ -14,14 +14,14 @@
  */
 package org.jtalks.common.model.entity;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.jtalks.common.validation.annotations.UniqueConstraint;
+import ru.javatalks.utils.general.Assert;
+
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jtalks.common.model.entity.Entity;
-import org.jtalks.common.validation.annotations.UniqueConstraint;
-import org.jtalks.common.validation.annotations.UniqueField;
-
-import ru.javatalks.utils.general.Assert;
 
 /**
  * Represent jtalks engine component.
@@ -31,15 +31,17 @@ import ru.javatalks.utils.general.Assert;
  */
 @UniqueConstraint
 public class Component extends Entity {
-    public static final String NOT_UNIQUE_NAME = "item.already.exist";
-    public static final String NOT_UNIQUE_TYPE = "item.already.exist";
+    private static final String NOT_UNIQUE_NAME = "{item.already.exist}";
+    private static final String NOT_UNIQUE_TYPE = "{item.already.exist}";
 
-    @UniqueField(message = NOT_UNIQUE_NAME)
+    @NotBlank
+    @Length(max = 100, message = "{component.name.length_constraint_violation}")
     private String name;
 
+    @Length(max = 256, message = "{component.description.length_constraint_violation}")
     private String description;
 
-    @UniqueField(message = NOT_UNIQUE_TYPE)
+    @NotNull(message = "{component.componentType.notNull_constraint_violation}")
     private ComponentType componentType;
 
     /**

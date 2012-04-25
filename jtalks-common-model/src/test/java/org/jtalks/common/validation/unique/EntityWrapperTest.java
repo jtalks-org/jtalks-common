@@ -14,18 +14,17 @@
  */
 package org.jtalks.common.validation.unique;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNull;
+import org.jtalks.common.model.entity.Component;
+import org.jtalks.common.model.entity.ComponentType;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.jtalks.common.model.entity.Component;
-import org.jtalks.common.model.entity.ComponentType;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author Alexey Grigorev
@@ -52,50 +51,6 @@ public class EntityWrapperTest {
     @Test
     public void getEntityClass() {
         assertEquals(wrapper.getEntityClass(), Component.class);
-    }
-
-    @Test
-    public void getErrorMessage() {
-        String errorMessage = wrapper.getErrorMessage("name");
-        assertEquals(errorMessage, Component.NOT_UNIQUE_NAME);
-    }
-
-    @Test
-    public void getNameValue() {
-        Object actual = wrapper.getValue("name");
-        String expected = component.getName();
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void getComponentTypeValue() {
-        Object actual = wrapper.getValue("componentType");
-        ComponentType expected = component.getComponentType();
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void getProperties() {
-        Set<Entry<String, Object>> properties = wrapper.getProperties();
-
-        Map<String, Object> result = toMap(properties);
-
-        assertEquals(result.size(), 2);
-        assertEquals(component.getName(), result.get("name"));
-        assertEquals(component.getComponentType(), result.get("componentType"));
-    }
-
-    @Test
-    public void nullsFiltered() {
-        component.setComponentType(null);
-        wrapper = new EntityWrapper(component);
-
-        Set<Entry<String, Object>> properties = wrapper.getProperties();
-        Map<String, Object> result = toMap(properties);
-
-        assertEquals(result.size(), 1);
-        assertEquals(component.getName(), result.get("name"));
-        assertNull(component.getComponentType());
     }
 
     public static <K, V> Map<K, V> toMap(Set<Entry<K, V>> properties) {

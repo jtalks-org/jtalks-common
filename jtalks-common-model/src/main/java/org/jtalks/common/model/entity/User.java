@@ -14,12 +14,16 @@
  */
 package org.jtalks.common.model.entity;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
+import org.jtalks.common.validation.annotations.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.javatalks.utils.datetime.DateTimeUtilsFactory;
 
+import javax.validation.constraints.NotNull;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -39,8 +43,16 @@ public class User extends Entity implements UserDetails {
     
     private String lastName;
     private String firstName;
+
+    @NotNull
+    @Length(min = 1, max = 25, message = "{user.username.length_constraint_violation}")
     private String username;
+
+    @Email(message = "{user.email.email_format_constraint_violation}")
     private String email;
+
+    @NotBlank
+    @Length(max = 50, message = "{user.password.length_constraint_violation}")
     private String password;
     private DateTime lastLogin;
     private String role = "ROLE_USER";
@@ -51,9 +63,7 @@ public class User extends Entity implements UserDetails {
     private String banReason;
     private String salt;
 
-    /**
-     * Minimum length of the username.
-     */
+
     public static final int USERNAME_MIN_LENGTH = 3;
     /**
      * Maximum length of the username.
@@ -79,7 +89,6 @@ public class User extends Entity implements UserDetails {
      * Maximum avatar size in kilobytes.
      */
     public static final int AVATAR_MAX_SIZE = 65;
-
 
     /**
      * Only for hibernate usage.

@@ -14,13 +14,9 @@
  */
 package org.jtalks.common.model.entity;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.jtalks.common.model.entity.Entity;
+import org.hibernate.validator.constraints.NotBlank;
 import org.jtalks.common.validation.annotations.UniqueConstraint;
-import org.jtalks.common.validation.annotations.UniqueField;
 
 /**
  * Forum branch that contains topics related to branch theme.
@@ -30,16 +26,15 @@ import org.jtalks.common.validation.annotations.UniqueField;
 @UniqueConstraint
 public class Branch extends Entity {
 
-    public static final String BRANCH_ALREADY_EXISTS = "branches.error.branch_name_already_exists";
-    public static final String BRANCH_CANT_BE_VOID = "branches.error.branch_name_cant_be_void";
-    public static final String ERROR_LABEL_SECTION_NAME_WRONG = "sections.editsection.name.err";
+    private static final String BRANCH_ALREADY_EXISTS = "{branches.error.branch_name_already_exists}";
+    private static final String BRANCH_CANT_BE_VOID = "{branches.error.branch_name_cant_be_void}";
+    private static final String ERROR_LABEL_SECTION_NAME_WRONG = "{branch.editsection.name.err}";
 
-    @UniqueField(message = BRANCH_ALREADY_EXISTS)
-    @NotNull(message = BRANCH_CANT_BE_VOID)
-    @NotEmpty(message = BRANCH_CANT_BE_VOID)
-    @Length(min = 1, max = 254, message = ERROR_LABEL_SECTION_NAME_WRONG)
+    @NotBlank(message = BRANCH_CANT_BE_VOID)
+    @Length(max = 80, message = ERROR_LABEL_SECTION_NAME_WRONG)
     private String name;
 
+    @Length(max = 256, message = "{branch.description.length_constraint_violation}")
     private String description;
     private Integer position;
     private Section section;

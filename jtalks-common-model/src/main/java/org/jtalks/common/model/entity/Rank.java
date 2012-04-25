@@ -14,12 +14,12 @@
  */
 package org.jtalks.common.model.entity;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.jtalks.common.model.entity.Entity;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.jtalks.common.validation.annotations.UniqueConstraint;
-import org.jtalks.common.validation.annotations.UniqueField;
+
+import javax.validation.constraints.Min;
 
 /**
  * Forum rank.
@@ -33,19 +33,19 @@ public class Rank extends Entity {
     /**
      * Error message if rank already exists
      */
-    public static final String RANK_ALREADY_EXISTS = "rank.validation.not_unique_rank_name";
+    private static final String RANK_ALREADY_EXISTS = "{rank.validation.not_unique_rank_name}";
     
     /**
      * Error message if rank name is void
      */
-    public static final String RANK_CANT_BE_VOID = "rank.error.rank_name_cant_be_void";
+    private static final String RANK_CANT_BE_VOID = "{rank.error.rank_name_cant_be_void}";
     
-    @UniqueField(message = RANK_ALREADY_EXISTS)
-    @NotNull(message = RANK_CANT_BE_VOID)
-    @NotEmpty(message = RANK_CANT_BE_VOID)
+    @NotBlank
+    @Length(max = 32, message = RANK_CANT_BE_VOID)
     private String rankName;
-    
+    @Email
     private boolean autoAssigned;
+    @Min(0)
     private int postCount;
 
     /**

@@ -14,42 +14,14 @@
  */
 package org.jtalks.common.validation.util;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import org.jtalks.common.validation.annotations.UniqueField;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
-
-import org.jtalks.common.model.entity.Component;
-import org.jtalks.common.model.entity.ComponentType;
-import org.jtalks.common.testutils.ObjectsFactory;
-import org.jtalks.common.validation.annotations.UniqueField;
-import org.jtalks.common.validation.util.AnnotatedField;
-import org.jtalks.common.validation.util.ReflectionAnnotationUtil;
-import org.testng.annotations.Test;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 
 public class ReflectionAnnotationUtilTest {
-
-    @Test
-    public void getBranchFields() {
-        List<AnnotatedField<UniqueField>> fields = ReflectionAnnotationUtil.getAnnotatedFields(Component.class, UniqueField.class);
-        List<String> names = toNames(fields);
-
-        assertTrue(names.contains("name"));
-    }
-
-    @Test
-    public void getComponentFields() {
-        List<AnnotatedField<UniqueField>> fields = ReflectionAnnotationUtil.getAnnotatedFields(Component.class, UniqueField.class);
-
-        List<String> names = toNames(fields);
-        assertTrue(names.contains("name"));
-        assertTrue(names.contains("componentType"));
-    }
 
     private static List<String> toNames(List<AnnotatedField<UniqueField>> fields) {
         return Lists.transform(fields, fieldNamesRetriever);
@@ -61,19 +33,6 @@ public class ReflectionAnnotationUtilTest {
             return input.getFieldName();
         }
     };
-
-    @Test
-    public void convertToMap() {
-        Component component = ObjectsFactory.createComponent(ComponentType.ARTICLE);
-        List<AnnotatedField<UniqueField>> fields = ReflectionAnnotationUtil
-                .getAccessibleAnnotatedFields(Component.class, UniqueField.class);
-
-        Map<String, Object> result = ReflectionAnnotationUtil.convertToMap(component, toFields(fields));
-
-        assertEquals(result.get("name"), component.getName());
-        assertEquals(result.get("componentType"), component.getComponentType());
-        assertEquals(result.size(), 2);
-    }
 
     private static List<Field> toFields(List<AnnotatedField<UniqueField>> fields) {
         return Lists.transform(fields, fieldRetriever);

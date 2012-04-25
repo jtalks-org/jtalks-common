@@ -14,18 +14,14 @@
  */
 package org.jtalks.common.model.entity;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.jtalks.common.validation.annotations.UniqueConstraint;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.jtalks.common.model.entity.Entity;
-import org.jtalks.common.validation.annotations.UniqueConstraint;
-import org.jtalks.common.validation.annotations.UniqueField;
 
 /**
  * User Groups is the class that can join users into groups. After that permissions can be assigned to the groups and
@@ -39,24 +35,23 @@ public class Group extends Entity {
     /**
      * Error message if group already exists
      */
-    public static final String GROUP_ALREADY_EXISTS = "groups.validation.not_unique_group_name";
+    private static final String GROUP_ALREADY_EXISTS = "{groups.validation.not_unique_group_name}";
 
     /**
      * Error message if group name is void
      */
-    public static final String GROUP_CANT_BE_VOID = "groups.error.group_name_cant_be_void";
+    private static final String GROUP_CANT_BE_VOID = "{groups.error.group_name_cant_be_void}";
 
     /**
      * Error message if section name is wrong
      */
-    public static final String ERROR_LABEL_SECTION_NAME_WRONG = "sections.editsection.name.err";
+    private static final String ERROR_LABEL_GROUP_NAME_WRONG = "{groups.editsection.name.err}";
 
-    @UniqueField(message = GROUP_ALREADY_EXISTS)
-    @NotNull(message = GROUP_CANT_BE_VOID)
-    @NotEmpty(message = GROUP_CANT_BE_VOID)
-    @Length(min = 1, max = 254, message = ERROR_LABEL_SECTION_NAME_WRONG)
+    @NotBlank(message = GROUP_CANT_BE_VOID)
+    @Length(max = 100, message = ERROR_LABEL_GROUP_NAME_WRONG)
     private String name;
-    
+
+    @Length(max = 256, message = "{groups.description.length_constraint_violation}")
     private String description;
     private List<User> users = new ArrayList<User>();
 
