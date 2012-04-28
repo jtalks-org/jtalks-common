@@ -26,15 +26,15 @@ import org.jtalks.common.validation.annotations.UniqueConstraint;
 @UniqueConstraint
 public class Branch extends Entity {
 
-    private static final String BRANCH_ALREADY_EXISTS = "{branches.error.branch_name_already_exists}";
-    private static final String BRANCH_CANT_BE_VOID = "{branches.error.branch_name_cant_be_void}";
-    private static final String ERROR_LABEL_SECTION_NAME_WRONG = "{branch.editsection.name.err}";
+    private static final String BRANCH_DESCRIPTION_ILLEGAL_LENGTH = "{branch.description.length_constraint_violation}";
+    private static final String BRANCH_CANT_BE_VOID = "{branch.name.emptiness_constraint_violation}";
+    private static final String BRANCH_NAME_ILLEGAL_LENGTH = "{branch.name.length_constraint_violation}";
 
     @NotBlank(message = BRANCH_CANT_BE_VOID)
-    @Length(max = 80, message = ERROR_LABEL_SECTION_NAME_WRONG)
+    @Length(max = 80, message = BRANCH_NAME_ILLEGAL_LENGTH)
     private String name;
 
-    @Length(max = 256, message = "{branch.description.length_constraint_violation}")
+    @Length(max = 256, message = BRANCH_DESCRIPTION_ILLEGAL_LENGTH)
     private String description;
     private Integer position;
     private Section section;

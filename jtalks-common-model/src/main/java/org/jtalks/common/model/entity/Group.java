@@ -33,25 +33,25 @@ import java.util.List;
 @UniqueConstraint
 public class Group extends Entity {
     /**
-     * Error message if group already exists
+     * Error message if group description has illegal length
      */
-    private static final String GROUP_ALREADY_EXISTS = "{groups.validation.not_unique_group_name}";
+    private static final String GROUP_DESCRIPTION_ILLEGAL_LENGTH = "{group.description.length_constraint_violation}";
 
     /**
      * Error message if group name is void
      */
-    private static final String GROUP_CANT_BE_VOID = "{groups.error.group_name_cant_be_void}";
+    private static final String GROUP_CANT_BE_VOID = "{group.name.emptiness_constraint_violation}";
 
     /**
-     * Error message if section name is wrong
+     * Error message if group name length is illegal
      */
-    private static final String ERROR_LABEL_GROUP_NAME_WRONG = "{groups.editsection.name.err}";
+    private static final String GROUP_NAME_ILLEGAL_LENGTH = "{group.name.length_constraint_violation}";
 
     @NotBlank(message = GROUP_CANT_BE_VOID)
-    @Length(max = 100, message = ERROR_LABEL_GROUP_NAME_WRONG)
+    @Length(max = 100, message = GROUP_NAME_ILLEGAL_LENGTH)
     private String name;
 
-    @Length(max = 256, message = "{groups.description.length_constraint_violation}")
+    @Length(max = 256, message = GROUP_DESCRIPTION_ILLEGAL_LENGTH)
     private String description;
     private List<User> users = new ArrayList<User>();
 

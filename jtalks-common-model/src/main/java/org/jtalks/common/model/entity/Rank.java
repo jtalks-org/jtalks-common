@@ -14,7 +14,6 @@
  */
 package org.jtalks.common.model.entity;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jtalks.common.validation.annotations.UniqueConstraint;
@@ -30,21 +29,19 @@ import javax.validation.constraints.Min;
  */
 @UniqueConstraint
 public class Rank extends Entity {
-    /**
-     * Error message if rank already exists
-     */
-    private static final String RANK_ALREADY_EXISTS = "{rank.validation.not_unique_rank_name}";
-    
+
     /**
      * Error message if rank name is void
      */
-    private static final String RANK_CANT_BE_VOID = "{rank.error.rank_name_cant_be_void}";
+    private static final String RANK_RANKNAME_ILLEGAL_LENGTH = "{rank.name.length_constraint_violation}";
+    private static final String RANK_CANT_BE_VOID = "{rank.name.emptiness_constraint_violation}";
     
-    @NotBlank
-    @Length(max = 32, message = RANK_CANT_BE_VOID)
+    @NotBlank(message = RANK_CANT_BE_VOID)
+    @Length(max = 32, message = RANK_RANKNAME_ILLEGAL_LENGTH)
     private String rankName;
-    @Email
+
     private boolean autoAssigned;
+
     @Min(0)
     private int postCount;
 

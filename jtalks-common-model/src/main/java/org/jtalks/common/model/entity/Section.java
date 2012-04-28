@@ -29,24 +29,21 @@ import java.util.List;
  */
 @UniqueConstraint
 public class Section extends Entity {
-    /**
-     * Error message if section already exist
+   /**
+     * Error message if section description is illegal length
      */
-    private static final String SECTION_ALREADY_EXISTS = "sections.error.section_name_already_exists";
+    private static final String SECTION_DESCRIPTION_ILLEGAL_LENGTH = "section.description.length_constraint_violation";
     /**
-     * Error message if section can be void
+     * Error message if section name is illegal length
      */
-    private static final String SECTION_CANT_BE_VOID = "sections.error.section_name_cant_be_void";
-    /**
-     * Error message if section name is wrong
-     */
-    private static final String ERROR_LABEL_SECTION_NAME_WRONG = "sections.editsection.name.err";
+    private static final String SECTION_NAME_ILLEGAL_LENGTH = "section.name.length_constraint_violation";
+    private static final String SECTION_CANT_BE_VOID = "{section.name.emptiness_constraint_violation}";
 
-    @NotBlank
-    @Length(max = 80, message = ERROR_LABEL_SECTION_NAME_WRONG)
+    @NotBlank(message = SECTION_CANT_BE_VOID)
+    @Length(max = 80, message = SECTION_NAME_ILLEGAL_LENGTH)
     private String name;
 
-    @Length(max = 256, message = "{section.description.length_constraint_violation}")
+    @Length(max = 256, message = SECTION_DESCRIPTION_ILLEGAL_LENGTH)
     private String description;
 
     private Integer position;

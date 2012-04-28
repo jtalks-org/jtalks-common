@@ -41,18 +41,23 @@ import java.util.Collection;
  */
 public class User extends Entity implements UserDetails {
     
+    private static final String USER_EMAIL_ILLEGAL_FORMAT = "{user.email.email_format_constraint_violation}";
+    private static final String USER_PASSWORD_ILLEGAL_LENGTH = "{user.password.length_constraint_violation}";
+    private static final String USER_USERNAME_ILLEGAL_LENGTH = "{user.username.length_constraint_violation}";
+    private static final String USER_CANT_BE_NULL = "{user.username.null_constraint_violation}";
+
     private String lastName;
     private String firstName;
 
-    @NotNull
-    @Length(min = 1, max = 25, message = "{user.username.length_constraint_violation}")
+    @NotNull(message = USER_CANT_BE_NULL)
+    @Length(min = 1, max = 25, message = USER_USERNAME_ILLEGAL_LENGTH)
     private String username;
 
-    @Email(message = "{user.email.email_format_constraint_violation}")
+    @Email(message = USER_EMAIL_ILLEGAL_FORMAT)
     private String email;
 
     @NotBlank
-    @Length(max = 50, message = "{user.password.length_constraint_violation}")
+    @Length(max = 50, message = USER_PASSWORD_ILLEGAL_LENGTH)
     private String password;
     private DateTime lastLogin;
     private String role = "ROLE_USER";

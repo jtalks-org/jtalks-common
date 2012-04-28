@@ -23,11 +23,14 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author Vahluev Vyacheslav
  */
 public class Property extends Entity {
+    
+    private static final String PROPERTY_NAME_ILLEGAL_LENGTH = "{property.name.length_constraint_violation}";
+    private static final String PROPERTY_CANT_BE_VOID = "{property.name.emptiness_constraint_violation}";
     /**
      * Property's name
      */
-    @NotBlank
-    @Length(max = 256, message = "{property.name.length_constraint_violation}")
+    @NotBlank(message = PROPERTY_CANT_BE_VOID)
+    @Length(max = 256, message = PROPERTY_NAME_ILLEGAL_LENGTH)
     private String name;
     /**
      * Property's value

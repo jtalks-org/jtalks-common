@@ -31,17 +31,19 @@ import java.util.List;
  */
 @UniqueConstraint
 public class Component extends Entity {
-    private static final String NOT_UNIQUE_NAME = "{item.already.exist}";
-    private static final String NOT_UNIQUE_TYPE = "{item.already.exist}";
+    private static final String COMPONENT_NAME_ILLEGAL_LENGTH = "{component.name.length_constraint_violation}";
+    private static final String COMPONENT_DESCRIPTION_ILLEGAL_LENGTH = "{component.description.length_constraint_violation}";
+    private static final String COMPONENT_EMPTY_COMPONENT_TYPE = "{component.componentType.emptiness_constraint_violation}";
+    private static final String COMPONENT_CANT_BE_VOID = "{component.name.emptiness_constraint_violation}";
 
-    @NotBlank
-    @Length(max = 100, message = "{component.name.length_constraint_violation}")
+    @NotBlank(message = COMPONENT_CANT_BE_VOID)
+    @Length(max = 100, message = COMPONENT_NAME_ILLEGAL_LENGTH)
     private String name;
 
-    @Length(max = 256, message = "{component.description.length_constraint_violation}")
+    @Length(max = 256, message = COMPONENT_DESCRIPTION_ILLEGAL_LENGTH)
     private String description;
 
-    @NotNull(message = "{component.componentType.notNull_constraint_violation}")
+    @NotNull(message = COMPONENT_EMPTY_COMPONENT_TYPE)
     private ComponentType componentType;
 
     /**

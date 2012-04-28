@@ -2,6 +2,33 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 set foreign_key_checks=0;
 
 --
+-- Table structure for table `acl_sid`
+--
+DROP TABLE IF EXISTS `acl_sid`;
+CREATE TABLE `acl_sid` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `principal` tinyint(1) NOT NULL,
+  `sid` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_acl_sid` (`sid`,`principal`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acl_class`
+--
+DROP TABLE IF EXISTS `acl_class`;
+CREATE TABLE `acl_class` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `class` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_acl_class` (`class`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `acl_entry`
 --
 DROP TABLE IF EXISTS `acl_entry`;
@@ -23,19 +50,6 @@ CREATE TABLE `acl_entry` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `acl_class`
---
-DROP TABLE IF EXISTS `acl_class`;
-CREATE TABLE `acl_class` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `class` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_acl_class` (`class`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `acl_object_identity`
 --
 DROP TABLE IF EXISTS `acl_object_identity`;
@@ -51,20 +65,6 @@ CREATE TABLE `acl_object_identity` (
   KEY `fk_acl_obj_parent` (`parent_object`),
   KEY `fk_acl_obj_class` (`object_id_class`),
   KEY `fk_acl_obj_owner` (`owner_sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `acl_sid`
---
-DROP TABLE IF EXISTS `acl_sid`;
-CREATE TABLE `acl_sid` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `principal` tinyint(1) NOT NULL,
-  `sid` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_acl_sid` (`sid`,`principal`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
