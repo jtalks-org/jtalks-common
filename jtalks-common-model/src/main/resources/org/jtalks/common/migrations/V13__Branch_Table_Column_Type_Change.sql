@@ -1,1 +1,1 @@
-alter table BRANCHES modify DESCRIPTION text not null default '';
+alter table BRANCHES modify DESCRIPTION text null;
