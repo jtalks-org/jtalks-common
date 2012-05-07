@@ -77,7 +77,7 @@ public abstract class Entity {
             return false;
         }
         Entity other = (Entity) obj;
-        return uuid.equals(other.uuid);
+        return uuid.equals(other.getUuid());
     }
 
     /**
