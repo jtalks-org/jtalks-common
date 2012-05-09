@@ -63,8 +63,6 @@ public class User extends Entity implements UserDetails {
     private String role = "ROLE_USER";
     private String encodedUsername;
     private byte[] avatar = new byte[0];
-    private boolean permanentBan;
-    private DateTime banExpirationDate;
     private String banReason;
     private String salt;
 
@@ -114,7 +112,6 @@ public class User extends Entity implements UserDetails {
         this.setUsername(username);
         this.email = email;
         this.password = password;
-        this.permanentBan = false;
         this.salt = "";
     }
 
@@ -331,44 +328,6 @@ public class User extends Entity implements UserDetails {
      */
     protected final void setEncodedUsername(String encodedUsername) {
         this.encodedUsername = encodedUsername;
-    }
-
-    /**
-     * Gets the user permanent ban status.
-     *
-     * @return the {@code true} if user is banned, {@code false} otherwise
-     */
-    public boolean isPermanentBan() {
-        return permanentBan;
-    }
-
-    /**
-     * Sets the user permanent ban status.
-     *
-     * @param permanentBan the status to set
-     */
-    public void setPermanentBan(boolean permanentBan) {
-        this.permanentBan = permanentBan;
-    }
-
-    /**
-     * Gets the user ban expiration date and time.
-     *
-     * @return the {@code DateTime} object, contains date and time when user ban
-     *         status will have expired
-     */
-    public DateTime getBanExpirationDate() {
-        return banExpirationDate;
-    }
-
-    /**
-     * Sets the user ban expiration date and time.
-     *
-     * @param banExpirationDate the {@code DateTime} object to set, contains date and time when user
-     *                          ban status will have expired
-     */
-    public void setBanExpirationDate(DateTime banExpirationDate) {
-        this.banExpirationDate = banExpirationDate;
     }
 
     /**

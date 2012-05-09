@@ -78,16 +78,6 @@ public class UserTest {
     }
 
     @Test
-    public void testSetDefaultPermanentBan() {
-        assertEquals(sut.isPermanentBan(), false);
-    }
-
-    @Test
-    public void testSetDefaultBanExpiredDate() {
-        assertNull(sut.getBanExpirationDate());
-    }
-
-    @Test
     public void testSetDefaultBanDescription() {
         assertNull(sut.getBanReason());
     }
