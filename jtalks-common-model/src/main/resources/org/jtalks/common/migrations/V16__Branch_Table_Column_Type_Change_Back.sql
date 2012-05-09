@@ -1,0 +1,1 @@
+alter table BRANCHES modify DESCRIPTION varchar(512) default null;
