@@ -77,7 +77,7 @@ public abstract class Entity {
             return false;
         }
         Entity other = (Entity) obj;
-        return uuid.equals(other.uuid);
+        return getUuid().equals(other.getUuid());
     }
 
     /**
@@ -85,6 +85,6 @@ public abstract class Entity {
      */
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return getUuid().hashCode();
     }
 }
