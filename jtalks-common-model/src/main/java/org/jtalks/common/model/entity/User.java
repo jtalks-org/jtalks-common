@@ -253,9 +253,9 @@ public class User extends Entity implements UserDetails {
         this.password = password;
     }
 
-    //methods from UserDetails inteface, indicating that
-    //user can or can't authenticate.
-    //we don't need this functional now and users always enabled
+    // methods from UserDetails inteface, indicating that
+    // user can or can't authenticate.
+    // we don't need this functional now and users always enabled
 
     /**
      * {@inheritDoc}
