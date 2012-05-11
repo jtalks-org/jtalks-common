@@ -46,18 +46,24 @@ public class User extends Entity implements UserDetails {
     private static final String USER_USERNAME_ILLEGAL_LENGTH = "{user.username.length_constraint_violation}";
     private static final String USER_CANT_BE_NULL = "{user.username.null_constraint_violation}";
 
+    public static final int USER_USERNAME_MIN_LENGTH = 1;
+    public static final int USER_USERNAME_MAX_LENGTH = 100;
+    public static final int USER_PASSWORD_MIN_LENGTH = 1;
+    public static final int USER_PASSWORD_MAX_LENGTH = 100;
+
+
     private String lastName;
     private String firstName;
 
     @NotNull(message = USER_CANT_BE_NULL)
-    @Length(min = 1, max = 25, message = USER_USERNAME_ILLEGAL_LENGTH)
+    @Length(min = USER_USERNAME_MIN_LENGTH, max = USER_USERNAME_MAX_LENGTH, message = USER_USERNAME_ILLEGAL_LENGTH)
     private String username;
 
     @Email(message = USER_EMAIL_ILLEGAL_FORMAT)
     private String email;
 
     @NotBlank
-    @Length(max = 50, message = USER_PASSWORD_ILLEGAL_LENGTH)
+    @Length(min = USER_PASSWORD_MIN_LENGTH, max = USER_PASSWORD_MAX_LENGTH, message = USER_PASSWORD_ILLEGAL_LENGTH)
     private String password;
     private DateTime lastLogin;
     private String role = "ROLE_USER";
