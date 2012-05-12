@@ -47,9 +47,9 @@ public class User extends Entity implements UserDetails {
     private static final String USER_CANT_BE_NULL = "{user.username.null_constraint_violation}";
 
     public static final int USER_USERNAME_MIN_LENGTH = 1;
-    public static final int USER_USERNAME_MAX_LENGTH = 100;
+    public static final int USER_USERNAME_MAX_LENGTH = 25;
     public static final int USER_PASSWORD_MIN_LENGTH = 1;
-    public static final int USER_PASSWORD_MAX_LENGTH = 100;
+    public static final int USER_PASSWORD_MAX_LENGTH = 25;
 
 
     private String lastName;
