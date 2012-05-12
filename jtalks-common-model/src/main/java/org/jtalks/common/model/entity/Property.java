@@ -26,11 +26,14 @@ public class Property extends Entity {
     
     private static final String PROPERTY_NAME_ILLEGAL_LENGTH = "{property.name.length_constraint_violation}";
     private static final String PROPERTY_CANT_BE_VOID = "{property.name.emptiness_constraint_violation}";
+
+    public static final int PROPERTY_NAME_MAX_LENGTH = 256;
+
     /**
      * Property's name
      */
     @NotBlank(message = PROPERTY_CANT_BE_VOID)
-    @Length(max = 256, message = PROPERTY_NAME_ILLEGAL_LENGTH)
+    @Length(max = PROPERTY_NAME_MAX_LENGTH, message = PROPERTY_NAME_ILLEGAL_LENGTH)
     private String name;
     /**
      * Property's value

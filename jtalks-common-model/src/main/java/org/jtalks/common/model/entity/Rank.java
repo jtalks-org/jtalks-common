@@ -35,9 +35,11 @@ public class Rank extends Entity {
      */
     private static final String RANK_RANKNAME_ILLEGAL_LENGTH = "{rank.name.length_constraint_violation}";
     private static final String RANK_CANT_BE_VOID = "{rank.name.emptiness_constraint_violation}";
+
+    public static final int RANK_RANKNAME_MAX_LENGTH = 32;
     
     @NotBlank(message = RANK_CANT_BE_VOID)
-    @Length(max = 32, message = RANK_RANKNAME_ILLEGAL_LENGTH)
+    @Length(max = RANK_RANKNAME_MAX_LENGTH, message = RANK_RANKNAME_ILLEGAL_LENGTH)
     private String rankName;
 
     private boolean autoAssigned;

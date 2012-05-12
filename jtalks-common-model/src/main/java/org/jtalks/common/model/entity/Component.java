@@ -36,11 +36,14 @@ public class Component extends Entity {
     private static final String COMPONENT_EMPTY_COMPONENT_TYPE = "{component.componentType.emptiness_constraint_violation}";
     private static final String COMPONENT_CANT_BE_VOID = "{component.name.emptiness_constraint_violation}";
 
+    public static final int COMPONENT_NAME_MAX_LENGTH = 100;
+    public static final int COMPONENT_DESCRIPTION_MAX_LENGTH = 256;
+
     @NotBlank(message = COMPONENT_CANT_BE_VOID)
-    @Length(max = 100, message = COMPONENT_NAME_ILLEGAL_LENGTH)
+    @Length(max = COMPONENT_NAME_MAX_LENGTH, message = COMPONENT_NAME_ILLEGAL_LENGTH)
     private String name;
 
-    @Length(max = 256, message = COMPONENT_DESCRIPTION_ILLEGAL_LENGTH)
+    @Length(max = COMPONENT_DESCRIPTION_MAX_LENGTH, message = COMPONENT_DESCRIPTION_ILLEGAL_LENGTH)
     private String description;
 
     @NotNull(message = COMPONENT_EMPTY_COMPONENT_TYPE)
