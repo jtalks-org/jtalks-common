@@ -42,6 +42,8 @@ public class Branch extends Entity {
     private Integer position;
     private Section section;
 
+    private Group moderatorsGroup;
+
     /**
      * Default constructor, protected for using only by hibernate
      */
@@ -130,6 +132,28 @@ public class Branch extends Entity {
      */
     public void setPosition(Integer position) {
         this.position = position;
+    }
+
+    /**
+     * Sets a {@link Group} of moderators for this branch. This field is an extra information about moderators, since we
+     * already have ACL records that explain what permissions groups have on branches, but this moderators group is just
+     * for convenience - in order to easily work with moderators.
+     *
+     * @param moderatorsGroup a group of moderators for this branch
+     */
+    public void setModeratorsGroup(Group moderatorsGroup) {
+        this.moderatorsGroup = moderatorsGroup;
+    }
+
+    /**
+     * Returns a {@link Group} of moderators of this branch. This field is an extra information about moderators, since
+     * we already have ACL records that explain what permissions groups have on branches, but this moderators group is
+     * just for convenience - in order to easily work with moderators.
+     *
+     * @return a group of moderators for this branch
+     */
+    public Group getModeratorsGroup() {
+        return moderatorsGroup;
     }
 
     @Override
