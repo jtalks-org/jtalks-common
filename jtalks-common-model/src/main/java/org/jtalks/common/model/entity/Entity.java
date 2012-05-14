@@ -62,6 +62,10 @@ public abstract class Entity {
         this.uuid = uuid;
     }
 
+    public boolean isPersistent(){
+        return getId() != 0;
+    }
+
     /**
      * {@inheritDoc }
      */

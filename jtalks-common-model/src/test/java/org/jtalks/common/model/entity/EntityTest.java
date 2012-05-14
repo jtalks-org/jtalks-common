@@ -16,6 +16,8 @@ package org.jtalks.common.model.entity;
 
 import org.testng.annotations.Test;
 
+import java.util.Random;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -95,6 +97,21 @@ public class EntityTest {
         second.setUuid(id);
 
         assertFalse(first.equals(second));
+    }
+
+    /***
+     * Tests the persistency of Entity ID
+     */
+    @Test
+    public void testPersistency(){
+        long id = (long)(25 * Math.random());
+        long zero = 0;
+
+        first.setId(id);
+        second.setId(zero);
+
+        assertEquals(first.isPersistent(), true);
+        assertFalse(second.isPersistent());
     }
 
     @Test
