@@ -100,18 +100,29 @@ public class EntityTest {
     }
 
     /***
-     * Tests the persistency of Entity ID
+     * Tests the persistency of Entity ID - positive case
      */
     @Test
-    public void testPersistency(){
+    public void testPersistencyPresence(){
         long id = (long)(25 * Math.random());
-        long zero = 0;
-
+        first = new Entity(){
+        };
         first.setId(id);
-        second.setId(zero);
 
-        assertEquals(first.isPersistent(), true);
-        assertFalse(second.isPersistent());
+        assertTrue(first.isPersistent());
+    }
+
+    /***
+     * Tests the persistency of Entity ID - negative case
+     */
+    @Test
+    public void testPersistencyAbsence(){
+        long zero = 0;
+        first = new Entity(){
+        };
+        first.setId(zero);
+
+        assertFalse(first.isPersistent());
     }
 
     @Test

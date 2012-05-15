@@ -62,6 +62,11 @@ public abstract class Entity {
         this.uuid = uuid;
     }
 
+    /**
+     * Checking if entity has not yet been saved to database.
+     *
+     * @return true if entity ID does not equal to 0, else - false
+     */
     public boolean isPersistent(){
         return getId() != 0;
     }
