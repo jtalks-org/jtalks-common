@@ -40,7 +40,7 @@ public class JtalksPermissionFactoryTest {
 
     @Test
     public void testBuildFromMask() throws Exception {
-        assertEquals(factory.buildFromMask(BranchPermission.DELETE_POSTS.getMask()), BranchPermission.DELETE_POSTS);
+        assertEquals(factory.buildFromMask(BranchPermission.DELETE_OWN_POSTS.getMask()), BranchPermission.DELETE_OWN_POSTS);
     }
 
     @Test

@@ -100,7 +100,7 @@ public class EntityTest {
     }
 
     /***
-     * Tests the persistency of Entity ID - positive case
+     * Tests the persistency of Entity ID - positive case.
      */
     @Test
     public void testPersistencyPresence(){
@@ -113,7 +113,7 @@ public class EntityTest {
     }
 
     /***
-     * Tests the persistency of Entity ID - negative case
+     * Tests the persistency of Entity ID - negative case.
      */
     @Test
     public void testPersistencyAbsence(){

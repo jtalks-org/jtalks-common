@@ -127,7 +127,7 @@ public class ExtendedMutableAclTest {
     }
 
     private List<Permission> createPermissions() {
-        return Lists.<Permission>newArrayList(BranchPermission.DELETE_POSTS, BranchPermission.VIEW_TOPICS);
+        return Lists.<Permission>newArrayList(BranchPermission.DELETE_OWN_POSTS, BranchPermission.VIEW_TOPICS);
     }
 
     private List<AccessControlEntry> createEntries(MutableAcl acl) {

@@ -36,10 +36,35 @@ public enum BranchPermission implements JtalksPermission {
      */
     VIEW_TOPICS("110", "VIEW_TOPICS"),
     /**
+     * The ability to move topics from the branch, this permissions is granted for to another branch
+     * (not mandatory to be grated to the permission for that branch as well).
+     */
+    MOVE_TOPICS("1000", "MOVE_TOPICS"),
+    /**
+     *  The ability to split topic into 2 different topics (not necessary in the same branch).
+     */
+    SPLIT_TOPICS("1001", "SPLIT_TOPICS"),
+    /**
+     * The ability of user group or user to delete topics from the branch.
+     */
+    DELETE_TOPICS("1010", "DELETE_TOPICS"),
+    /**
+     * The ability of user group or user to close topics in the branch.
+     */
+    CLOSE_TOPICS("1011", "CLOSE_TOPICS"),
+    /**
+     * The ability of user group or user to create posts in the branch.
+     */
+    CREATE_POSTS("1100", "CREATE_POSTS"),
+    /**
      * The ability of users to remove their own posts. Some forums prefer to restrict this functionality to avoid
      * misunderstanding between users.
      */
-    DELETE_POSTS("111", "DELETE_POSTS");
+    DELETE_OWN_POSTS("111", "DELETE_OWN_POSTS"),
+    /**
+     * The ability of users to remove posts of the other users.
+     */
+    DELETE_OTHERS_POSTS("1101", "DELETE_OTHERS_POSTS");
 
     private final String name;
     private final int mask;
