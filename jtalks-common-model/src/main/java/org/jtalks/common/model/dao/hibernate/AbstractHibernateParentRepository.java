@@ -28,7 +28,7 @@ import org.jtalks.common.model.entity.Entity;
 public abstract class AbstractHibernateParentRepository<T extends Entity> extends AbstractHibernateChildRepository<T>
     implements ParentRepository<T> {
 
-    private final String deleteQuery = "delete " + getType().getSimpleName() + " e where e.id= :id";
+    private final String deleteQuery = "delete " + getType().getCanonicalName() + " e where e.id= :id";
 
     /**
      * {@inheritDoc}
