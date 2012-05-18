@@ -58,6 +58,7 @@ public class JtalksPermissionTest {
         List<JtalksPermission> permissions = new ArrayList<JtalksPermission>();
         permissions.addAll(BranchPermission.getAllAsList());
         permissions.addAll(GeneralPermission.getAllAsList());
+        permissions.addAll(AdditionalPermission.getAllAsList());
         return new Object[][]{{permissions}};
     }
 
