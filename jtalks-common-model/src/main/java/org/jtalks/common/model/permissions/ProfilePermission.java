@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Ancient_Mariner
  */
-public enum AdditionalPermission implements JtalksPermission{
+public enum ProfilePermission implements JtalksPermission{
     /**
      * The ability of user group or user to send private messages.
      */
@@ -31,7 +31,7 @@ public enum AdditionalPermission implements JtalksPermission{
      * @param name a textual representation of the permission (usually the same as the constant name), though the
      *             restriction usually starts with the 'RESTRICTION_' word
      */
-    AdditionalPermission(int mask, @Nonnull String name){
+    ProfilePermission(int mask, @Nonnull String name){
         this.mask = mask;
         throwIfNameNotValid(name);
         this.name = name;
@@ -48,7 +48,7 @@ public enum AdditionalPermission implements JtalksPermission{
      * @see BranchPermission#BranchPermission(int, String)
      * @see org.springframework.security.acls.domain.BasePermission
      */
-    AdditionalPermission(@Nonnull String mask, @Nonnull String name){
+    ProfilePermission(@Nonnull String mask, @Nonnull String name){
         throwIfNameNotValid(name);
         this.mask = Integer.parseInt(mask, 2);
         this.name = name;
@@ -84,8 +84,8 @@ public enum AdditionalPermission implements JtalksPermission{
         return null;
     }
 
-    public static AdditionalPermission findByMask(int mask) {
-        for (AdditionalPermission nextPermission : values()) {
+    public static ProfilePermission findByMask(int mask) {
+        for (ProfilePermission nextPermission : values()) {
             if (mask == nextPermission.getMask()) {
                 return nextPermission;
             }
@@ -93,7 +93,7 @@ public enum AdditionalPermission implements JtalksPermission{
         return null;
     }
 
-    public static List<AdditionalPermission> getAllAsList(){
+    public static List<ProfilePermission> getAllAsList(){
         return Lists.newArrayList(values());
     }
 }
