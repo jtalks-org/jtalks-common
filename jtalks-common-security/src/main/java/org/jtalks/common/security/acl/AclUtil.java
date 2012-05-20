@@ -230,16 +230,5 @@ public class AclUtil implements ObjectIdentities, Acls, Permissions {
             }
             return sids.contains(input.getSid()) && permissions.contains(input.getPermission());
         }
-
-        /**
-         * Always return {@code false}, we don't need this functionality.
-         *
-         * @param object who cares
-         * @return always {@code false}
-         */
-        @Override
-        public boolean equals(@Nullable Object object) {
-            return false;
-        }
     }
 }
