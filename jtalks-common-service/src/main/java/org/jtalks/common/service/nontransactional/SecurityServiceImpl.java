@@ -61,7 +61,7 @@ public class SecurityServiceImpl implements SecurityService {
      */
     @Override
     public User getCurrentUser() {
-        return userDao.getByUsername(getCurrentUserUsername());
+        return (User) userDao.getByUsername(getCurrentUserUsername());
     }
 
     /**
@@ -166,7 +166,7 @@ public class SecurityServiceImpl implements SecurityService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User user = userDao.getByUsername(username);
+        User user = (User) userDao.getByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + username);
         }

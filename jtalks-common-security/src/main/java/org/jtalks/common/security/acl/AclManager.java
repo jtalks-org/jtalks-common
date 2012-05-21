@@ -52,12 +52,30 @@ public class AclManager {
      * identity). Note, that if there are other records with sids different than {@link UserGroupSid}, they will be
      * filtered out.
      *
-     * @param entity an object identity for which the permissions were given
+     * @param entity an object for which the permissions were given
      * @return permissions assigned on {@link Group}s without any other permissions. Returns empty collection if there
      *         are no group permissions given on the specified object identity
      */
     public List<GroupAce> getGroupPermissionsOn(@Nonnull Entity entity) {
         MutableAcl branchAcl = aclUtil.getAclFor(entity);
+        return getGroupPermissions(branchAcl);
+    }
+
+    /**
+     * Gets only group permissions (where sid is {@link UserGroupSid}) and returns them for the specified entity (object
+     * identity). Note, that if there are other records with sids different than {@link UserGroupSid}, they will be
+     * filtered out.
+     *
+     * @param entity an object identity for which the permissions were given
+     * @return permissions assigned on {@link Group}s without any other permissions. Returns empty collection if there
+     *         are no group permissions given on the specified object identity
+     */
+    public List<GroupAce> getGroupPermissionsOn(@Nonnull ObjectIdentity entity) {
+        MutableAcl branchAcl = aclUtil.getAclFor(entity);
+        return getGroupPermissions(branchAcl);
+    }
+
+    private List<GroupAce> getGroupPermissions(MutableAcl branchAcl) {
         List<AccessControlEntry> originalAces = branchAcl.getEntries();
         List<GroupAce> resultingAces = new ArrayList<GroupAce>(originalAces.size());
         for (AccessControlEntry originalAce : originalAces) {
@@ -84,6 +102,7 @@ public class AclManager {
 
     /**
      * TODO: NOT FINISHED! TO BE IMPLEMENTED
+     *
      * @param user
      * @param branch
      * @return

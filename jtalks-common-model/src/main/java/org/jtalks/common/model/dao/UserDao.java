@@ -14,8 +14,6 @@
  */
 package org.jtalks.common.model.dao;
 
-import java.util.List;
-
 import org.jtalks.common.model.entity.User;
 
 /**
@@ -25,7 +23,7 @@ import org.jtalks.common.model.entity.User;
  * @author Kirill Afonin
  * @author Alexey Malev
  */
-public interface UserDao {
+public interface UserDao<T extends User> extends ParentRepository<T>{
 
     /**
      * Get {@link User} with corresponding username.
@@ -34,5 +32,5 @@ public interface UserDao {
      * @return {@link User} with given username.
      * @see User
      */
-    User getByUsername(String username);
+    T getByUsername(String username);
 }

@@ -17,6 +17,7 @@ package org.jtalks.common.security.acl;
 import org.jtalks.common.model.permissions.BranchPermission;
 import org.jtalks.common.model.permissions.GeneralPermission;
 import org.jtalks.common.model.permissions.JtalksPermission;
+import org.jtalks.common.model.permissions.ProfilePermission;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
@@ -71,6 +72,7 @@ public class JtalksPermissionFactory implements PermissionFactory {
         List<JtalksPermission> permissions = new LinkedList<JtalksPermission>();
         permissions.addAll(BranchPermission.getAllAsList());
         permissions.addAll(GeneralPermission.getAllAsList());
+        permissions.addAll(ProfilePermission.getAllAsList());
         for (JtalksPermission permission : permissions) {
             permissionsByMask.put(permission.getMask(), permission);
             permissionsByName.put(permission.getName(), permission);
