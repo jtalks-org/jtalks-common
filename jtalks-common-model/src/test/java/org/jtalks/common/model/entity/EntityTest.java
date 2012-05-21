@@ -100,11 +100,12 @@ public class EntityTest {
     }
 
     /***
-     * Tests the persistency of Entity ID - positive case.
+     * Tests the persistency of Entity ID - positive case
      */
     @Test
     public void testPersistencyPresence(){
-        long id = (long)(25 * Math.random());
+        Random generator = new Random();
+        long id = (long) (generator.nextInt(50) + 1);
         first = new Entity(){
         };
         first.setId(id);
@@ -113,7 +114,7 @@ public class EntityTest {
     }
 
     /***
-     * Tests the persistency of Entity ID - negative case.
+     * Tests the persistency of Entity ID - negative case
      */
     @Test
     public void testPersistencyAbsence(){
