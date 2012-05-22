@@ -104,7 +104,7 @@ public class EntityTest {
      */
     @Test
     public void testPersistencyPresence(){
-        long id = (long)(25 * Math.random());
+        long id = 50;
         first = new Entity(){
         };
         first.setId(id);
