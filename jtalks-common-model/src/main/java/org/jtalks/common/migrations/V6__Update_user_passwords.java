@@ -36,7 +36,7 @@ public class V6__Update_user_passwords implements JavaMigration {
 
     private ApplicationContext context;
 
-    protected RowMapper<HashMap<String, String>> rowMapper = new RowMapper<HashMap<String, String>>() {
+    private RowMapper<HashMap<String, String>> rowMapper = new RowMapper<HashMap<String, String>>() {
         /**
          * @inheritDoc
          */
@@ -60,7 +60,7 @@ public class V6__Update_user_passwords implements JavaMigration {
 
         List<HashMap<String, String>> users = jdbcTemplate.query(
             "SELECT `ID`, `PASSWORD` FROM `USERS` WHERE `SALT` = ''",
-            rowMapper
+                getRowMapper()
         );
 
         for (HashMap<String, String> user : users) {
@@ -97,5 +97,13 @@ public class V6__Update_user_passwords implements JavaMigration {
      */
     public void setContext(ApplicationContext context) {
         this.context = context;
+    }
+
+    public RowMapper<HashMap<String, String>> getRowMapper() {
+        return rowMapper;
+    }
+
+    public void setRowMapper(RowMapper<HashMap<String, String>> rowMapper) {
+        this.rowMapper = rowMapper;
     }
 }

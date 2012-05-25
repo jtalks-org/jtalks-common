@@ -81,7 +81,7 @@ public class V6__Update_user_passwordsTest {
         when(resultSet.getString("ID")).thenReturn(ID);
         when(resultSet.getString("PASSWORD")).thenReturn(PASSWORD);
 
-        HashMap<String, String> result = MIGRATION.rowMapper.mapRow(resultSet, 1);
+        HashMap<String, String> result = MIGRATION.getRowMapper().mapRow(resultSet, 1);
         assertEquals(result.get("id"), ID);
         assertEquals(result.get("password"), PASSWORD);
     }
