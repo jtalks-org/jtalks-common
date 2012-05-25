@@ -18,6 +18,7 @@ import com.google.common.collect.Lists;
 import org.jtalks.common.model.permissions.BranchPermission;
 import org.jtalks.common.model.permissions.GeneralPermission;
 import org.jtalks.common.model.permissions.JtalksPermission;
+import org.jtalks.common.model.permissions.ProfilePermission;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -62,6 +63,7 @@ public class JtalksPermissionFactoryTest {
         List<JtalksPermission> permissions = new LinkedList<JtalksPermission>();
         permissions.addAll(BranchPermission.getAllAsList());
         permissions.addAll(GeneralPermission.getAllAsList());
+        permissions.addAll(ProfilePermission.getAllAsList());
         assertTrue(permissions.containsAll(factory.getAllPermissions()));
     }
 }

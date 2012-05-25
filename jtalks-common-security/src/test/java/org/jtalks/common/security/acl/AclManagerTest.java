@@ -49,7 +49,7 @@ public class AclManagerTest {
 
     @Test(dataProviderClass = AclDataProvider.class, dataProvider = "provideAclWithMixedTypeSids")
     public void testGetEntityPermissions(ExtendedMutableAcl acl) throws Exception {
-        Branch branch = new Branch("", "");
+        ObjectIdentity branch = new ObjectIdentityImpl(Branch.class, 0);
         when(mockAclUtil.getAclFor(branch)).thenReturn(acl);
         List<GroupAce> branchPermissions = manager.getGroupPermissionsOn(branch);
         //next check that UserGroupSids are in the resulting list and others are not there
