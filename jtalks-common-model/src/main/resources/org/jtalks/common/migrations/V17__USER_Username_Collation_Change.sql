@@ -1,0 +1,1 @@
+alter table USERS modify USERNAME varchar(255) NOT NULL COLLATE utf8_bin;
