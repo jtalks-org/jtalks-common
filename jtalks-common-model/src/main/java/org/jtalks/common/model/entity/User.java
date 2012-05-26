@@ -49,7 +49,7 @@ public class User extends Entity implements UserDetails {
     public static final int USER_USERNAME_MIN_LENGTH = 1;
     public static final int USER_USERNAME_MAX_LENGTH = 25;
     public static final int USER_PASSWORD_MIN_LENGTH = 1;
-    public static final int USER_PASSWORD_MAX_LENGTH = 25;
+    public static final int USER_PASSWORD_MAX_LENGTH = 32;
 
 
     private String lastName;
