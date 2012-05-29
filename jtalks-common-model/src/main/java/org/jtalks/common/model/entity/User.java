@@ -46,24 +46,18 @@ public class User extends Entity implements UserDetails {
     private static final String USER_USERNAME_ILLEGAL_LENGTH = "{user.username.length_constraint_violation}";
     private static final String USER_CANT_BE_NULL = "{user.username.null_constraint_violation}";
 
-    public static final int USER_USERNAME_MIN_LENGTH = 1;
-    public static final int USER_USERNAME_MAX_LENGTH = 25;
-    public static final int USER_PASSWORD_MIN_LENGTH = 1;
-    public static final int USER_PASSWORD_MAX_LENGTH = 50;
-
-
     private String lastName;
     private String firstName;
 
     @NotNull(message = USER_CANT_BE_NULL)
-    @Length(min = USER_USERNAME_MIN_LENGTH, max = USER_USERNAME_MAX_LENGTH, message = USER_USERNAME_ILLEGAL_LENGTH)
+    @Length(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH, message = USER_USERNAME_ILLEGAL_LENGTH)
     private String username;
 
     @Email(message = USER_EMAIL_ILLEGAL_FORMAT)
     private String email;
 
     @NotBlank
-    @Length(min = USER_PASSWORD_MIN_LENGTH, max = USER_PASSWORD_MAX_LENGTH, message = USER_PASSWORD_ILLEGAL_LENGTH)
+    @Length(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = USER_PASSWORD_ILLEGAL_LENGTH)
     private String password;
     private DateTime lastLogin;
     private String role = "ROLE_USER";
@@ -72,20 +66,22 @@ public class User extends Entity implements UserDetails {
     private String banReason;
     private String salt;
 
-
-    public static final int USERNAME_MIN_LENGTH = 3;
+    /**
+     * Minimum length of the username.
+     */
+    public static final int USERNAME_MIN_LENGTH = 1;
     /**
      * Maximum length of the username.
      */
-    public static final int USERNAME_MAX_LENGTH = 20;
+    public static final int USERNAME_MAX_LENGTH = 25;
     /**
      * Minimum length of the password.
      */
-    public static final int PASSWORD_MIN_LENGTH = 4;
+    public static final int PASSWORD_MIN_LENGTH = 1;
     /**
      * Maximum length of the password.
      */
-    public static final int PASSWORD_MAX_LENGTH = 20;
+    public static final int PASSWORD_MAX_LENGTH = 50;
     /**
      * Maximum avatar width in pixels.
      */
