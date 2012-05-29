@@ -4,11 +4,11 @@
   <parent>
     <artifactId>jtalks-common</artifactId>
     <groupId>org.jtalks.common</groupId>
-    <version>0.16-SNAPSHOT</version>
+    <version>0.17-SNAPSHOT</version>
   </parent>
   <groupId>org.jtalks.common</groupId>
   <artifactId>jtalks-common-service</artifactId>
-  <version>0.16-SNAPSHOT</version>
+  <version>0.17-SNAPSHOT</version>
   <name>jtalks-common-service</name>
   <url>http://maven.apache.org</url>
   <properties>
