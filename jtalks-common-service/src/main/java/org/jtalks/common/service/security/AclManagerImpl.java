@@ -78,7 +78,8 @@ public class AclManagerImpl implements AclManager {
      * @param acl         ACL of this object
      * @param granting grant if true, revoke if false
      */
-    private void applyPermissionsToSids(List<Sid> sids, List<Permission> permissions, Entity target, MutableAcl acl, boolean granting) {
+    private void applyPermissionsToSids
+        (List<Sid> sids, List<Permission> permissions, Entity target, MutableAcl acl, boolean granting) {
 
         deletePermissionsFromAcl(acl, sids, permissions);
 

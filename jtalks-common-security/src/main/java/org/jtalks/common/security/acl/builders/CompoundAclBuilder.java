@@ -122,12 +122,17 @@ public class CompoundAclBuilder<T extends Entity> implements AclAction<T>, AclTo
         }
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     private void addPermissions(Actions action, JtalksPermission... permissions) {
         this.permissions.addAll(Arrays.asList(permissions));
         this.action = action;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     private <T> List<T> clone(List<T> list) {
         return new ArrayList<T>(list);
     }

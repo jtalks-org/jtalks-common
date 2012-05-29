@@ -60,8 +60,8 @@ class EntityWrapper {
 
         // can be moved away for providing caching (annotations and fields can't
         // be changed in runtime)
-        List<AnnotatedField<UniqueField>> annotated = ReflectionAnnotationUtil.getAccessibleAnnotatedFields(entity.getClass(),
-                UniqueField.class);
+        List<AnnotatedField<UniqueField>> annotated =
+                ReflectionAnnotationUtil.getAccessibleAnnotatedFields(entity.getClass(), UniqueField.class);
 
         List<Field> fields = new ArrayList<Field>();
         errorsMessages = new HashMap<String, String>();

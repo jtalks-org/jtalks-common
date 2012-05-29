@@ -127,7 +127,8 @@ public class User extends Entity implements UserDetails {
      */
     public User(String username, String email, String password, String salt) {
         this(username, email, password);
-        this.setSalt(salt);
+        this.salt = salt;
+        //this.setSalt(salt);
     }
 
     /**

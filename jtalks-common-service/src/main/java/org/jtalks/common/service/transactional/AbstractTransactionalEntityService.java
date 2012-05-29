@@ -32,10 +32,7 @@ import ru.javatalks.utils.datetime.DateTimeUtilsFactory;
  */
 public abstract class AbstractTransactionalEntityService<T extends Entity, Y extends ChildRepository<T>>
     implements EntityService<T> {
-    /**
-     * Dao object implementation.
-     */
-    protected Y dao;
+    private Y dao;
 
     private DateTimeUtils dateTimeUtils;
 
@@ -44,7 +41,7 @@ public abstract class AbstractTransactionalEntityService<T extends Entity, Y ext
      * DateTimeUtils} returned by {@link DateTimeUtilsFactory#getDateTimeUtils()}
      */
     public AbstractTransactionalEntityService() {
-        this.dateTimeUtils = DateTimeUtilsFactory.getDateTimeUtils();
+        this.setDateTimeUtils(DateTimeUtilsFactory.getDateTimeUtils());
     }
 
     /**
@@ -52,10 +49,10 @@ public abstract class AbstractTransactionalEntityService<T extends Entity, Y ext
      */
     @Override
     public T get(Long id) throws NotFoundException {
-        if (!dao.isExist(id)) {
+        if (!getDao().isExist(id)) {
             throw new NotFoundException("Entity with id: " + id + " not found");
         }
-        return dao.get(id);
+        return getDao().get(id);
     }
 
     /**
@@ -63,7 +60,7 @@ public abstract class AbstractTransactionalEntityService<T extends Entity, Y ext
      */
     @Override
     public boolean isExist(long id) {
-        return dao.isExist(id);
+        return getDao().isExist(id);
     }
 
     /**
@@ -83,5 +80,16 @@ public abstract class AbstractTransactionalEntityService<T extends Entity, Y ext
      */
     protected void setDateTimeUtils(DateTimeUtils dateTimeUtils) {
         this.dateTimeUtils = dateTimeUtils;
+    }
+
+    /**
+     * Dao object implementation.
+     */
+    public Y getDao() {
+        return dao;
+    }
+
+    public void setDao(Y dao) {
+        this.dao = dao;
     }
 }

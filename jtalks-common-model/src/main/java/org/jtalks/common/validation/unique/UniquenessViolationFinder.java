@@ -64,8 +64,9 @@ class UniquenessViolationFinder {
     }
 
     /**
-     * Creates an instance saving the bean for further using. See
-     * {@link #forEntity(EntityWrapper)} and use it instead of this constructor.
+     * Creates an instance saving the bean for further using.
+     * @param bean the instance created for further using
+     * See {{@link #forEntity(EntityWrapper)} and use it instead of this constructor.
      */
     UniquenessViolationFinder(EntityWrapper bean) {
         this.bean = bean;

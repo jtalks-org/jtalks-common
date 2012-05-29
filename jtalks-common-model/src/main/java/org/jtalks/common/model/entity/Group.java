@@ -19,6 +19,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.jtalks.common.validation.annotations.UniqueConstraint;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -156,7 +157,7 @@ public class Group extends Entity {
      *
      * @author stanislav bashkirtsev
      */
-    public static class ByNameComparator implements Comparator<Group> {
+    public static class ByNameComparator implements Comparator<Group>, Serializable {
         /**
          * {@inheritDoc}
          */

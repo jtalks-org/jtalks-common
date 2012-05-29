@@ -76,6 +76,7 @@ public interface UserService extends EntityService<User> {
      * @param lastName        last name
      * @param currentPassword current user password, could be NULL
      * @param newPassword     new user password, could be NULL
+     * @param avatar          avatar image
      * @return edited user
      * @throws DuplicateEmailException when user with given email already exist
      * @throws WrongPasswordException  when user enter wrong currentPassword

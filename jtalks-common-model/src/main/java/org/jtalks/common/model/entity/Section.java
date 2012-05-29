@@ -32,7 +32,8 @@ public class Section extends Entity {
    /**
      * Error message if section description is illegal length
      */
-    private static final String SECTION_DESCRIPTION_ILLEGAL_LENGTH = "{section.description.length_constraint_violation}";
+    private static final String SECTION_DESCRIPTION_ILLEGAL_LENGTH =
+                                                        "{section.description.length_constraint_violation}";
     /**
      * Error message if section name is illegal length
      */

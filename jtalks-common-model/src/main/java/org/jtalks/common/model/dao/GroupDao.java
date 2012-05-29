@@ -36,10 +36,15 @@ public interface GroupDao extends ParentRepository<Group> {
     
     /**
      * Get the list of all groups which match to the specified name
-     * @param name
+     * @param name specified name
      * @return list of groups
      */
     List<Group> getMatchedByName(String name);
-    
+
+    /**
+     * Get the list of all groups, where user is present
+     * @param user specified name of user
+     * @return list of groups
+     */
     List<Group> getGroupsOfUser(User user);
 }

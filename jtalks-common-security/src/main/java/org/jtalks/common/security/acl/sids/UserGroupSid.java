@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  */
 @Immutable
 public class UserGroupSid implements UniversalSid {
-    public final static String SID_PREFIX = "usergroup";
+    public static final String SID_PREFIX = "usergroup";
     private final String groupId;
 
     /**

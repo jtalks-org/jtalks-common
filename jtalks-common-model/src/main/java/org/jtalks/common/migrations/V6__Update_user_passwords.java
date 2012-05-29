@@ -51,7 +51,7 @@ public class V6__Update_user_passwords implements JavaMigration {
     };
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
@@ -99,10 +99,16 @@ public class V6__Update_user_passwords implements JavaMigration {
         this.context = context;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public RowMapper<HashMap<String, String>> getRowMapper() {
         return rowMapper;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setRowMapper(RowMapper<HashMap<String, String>> rowMapper) {
         this.rowMapper = rowMapper;
     }

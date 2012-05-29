@@ -14,10 +14,6 @@
  */
 package org.jtalks.common.validation.unique;
 
-import static org.jtalks.common.validation.unique.UniquenessViolationFinder.forEntity;
-
-import java.util.List;
-
 import javax.annotation.concurrent.ThreadSafe;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
