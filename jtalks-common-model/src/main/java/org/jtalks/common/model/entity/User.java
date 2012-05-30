@@ -33,10 +33,6 @@ import java.util.Collection;
  * Stores information about the forum user.
  * Used as {@code UserDetails} in spring security for user authentication, authorization.
  *
- * @author Pavel Vervenko
- * @author Kirill Afonin
- * @author Alexandre Teterin
- * @author Masich Ivan
  * @author Ancient_Mariner
  */
 public class User extends Entity implements UserDetails {
@@ -45,27 +41,6 @@ public class User extends Entity implements UserDetails {
     private static final String USER_PASSWORD_ILLEGAL_LENGTH = "{user.password.length_constraint_violation}";
     private static final String USER_USERNAME_ILLEGAL_LENGTH = "{user.username.length_constraint_violation}";
     private static final String USER_CANT_BE_NULL = "{user.username.null_constraint_violation}";
-
-    private String lastName;
-    private String firstName;
-
-    @NotNull(message = USER_CANT_BE_NULL)
-    @Length(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH, message = USER_USERNAME_ILLEGAL_LENGTH)
-    private String username;
-
-    @Email(message = USER_EMAIL_ILLEGAL_FORMAT)
-    private String email;
-
-    @NotBlank
-    @Length(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = USER_PASSWORD_ILLEGAL_LENGTH)
-    private String password;
-    private DateTime lastLogin;
-    private String role = "ROLE_USER";
-    private String encodedUsername;
-    private byte[] avatar = new byte[0];
-    private String banReason;
-    private String salt;
-
     /**
      * Minimum length of the username.
      */
@@ -94,6 +69,25 @@ public class User extends Entity implements UserDetails {
      * Maximum avatar size in kilobytes.
      */
     public static final int AVATAR_MAX_SIZE = 65;
+
+    private String firstName;
+    private String lastName;
+    private String salt;
+    private DateTime lastLogin;
+    private String banReason;
+
+    @NotNull(message = USER_CANT_BE_NULL)
+    @Length(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH, message = USER_USERNAME_ILLEGAL_LENGTH)
+    private String username;
+    @Email(message = USER_EMAIL_ILLEGAL_FORMAT)
+    private String email;
+    @NotBlank
+    @Length(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = USER_PASSWORD_ILLEGAL_LENGTH)
+    private String password;
+    private String role = "ROLE_USER";
+    private String encodedUsername;
+
+    private byte[] avatar = new byte[0];
 
     /**
      * Only for hibernate usage.
