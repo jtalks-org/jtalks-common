@@ -32,7 +32,7 @@ import static org.testng.Assert.assertTrue;
 public class AbstractTransactionalEntityServiceTest {
     private class AbstractTransactionalEntityServiceObject extends AbstractTransactionalEntityService {
         private AbstractTransactionalEntityServiceObject(ChildRepository dao) {
-            this.setDao(dao);
+            this.dao = dao;
         }
     }
 

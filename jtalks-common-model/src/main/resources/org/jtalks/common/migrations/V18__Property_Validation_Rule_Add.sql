@@ -1,0 +1,1 @@
+alter table PROPERTIES add column VALIDATION_RULE varchar(64) NOT NULL default '';

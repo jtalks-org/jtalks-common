@@ -21,6 +21,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * The Property entity which contains configuration for components
  * 
  * @author Vahluev Vyacheslav
+ * @author Ancient_Mariner
  */
 public class Property extends Entity {
     
@@ -39,6 +40,11 @@ public class Property extends Entity {
      * Property's value
      */
     private String value;
+
+    /**
+     * Property's validation rule
+     */
+    private String validationRule;
 
     /**
      * Default constructor, sets nothing, used only by hibernate
@@ -91,5 +97,23 @@ public class Property extends Entity {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * Gets the validation rule of the property
+     *
+     * @return current validationRule of the property
+     */
+    public String getValidationRule() {
+        return validationRule;
+    }
+
+    /**
+     * Sets the validation rule of the property
+     *
+     * @param validationRule new validationRule of the property
+     */
+    public void setValidationRule(String validationRule) {
+        this.validationRule = validationRule;
     }
 }
