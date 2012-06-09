@@ -29,7 +29,6 @@ import java.util.List;
  * @author Pavel Vervenko
  * @author Vahluev Vyacheslav
  */
-@UniqueConstraint
 public class Component extends Entity {
     private static final String COMPONENT_NAME_ILLEGAL_LENGTH = "{component.name.length_constraint_violation}";
     private static final String COMPONENT_DESCRIPTION_ILLEGAL_LENGTH = "{component.description.length_constraint_violation}";
