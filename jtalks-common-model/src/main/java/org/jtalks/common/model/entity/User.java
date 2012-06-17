@@ -182,7 +182,7 @@ public class User extends Entity implements UserDetails {
      *
      * @param username the username to set
      */
-    public final void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
         try {
             setEncodedUsername(URLEncoder.encode(username, "UTF-8").replace("+", "%20"));
@@ -323,7 +323,7 @@ public class User extends Entity implements UserDetails {
      *
      * @param encodedUsername encoded version of username that doesn't contain special symbols
      */
-    protected final void setEncodedUsername(String encodedUsername) {
+    protected void setEncodedUsername(String encodedUsername) {
         this.encodedUsername = encodedUsername;
     }
 
