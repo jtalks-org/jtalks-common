@@ -16,11 +16,7 @@ package org.jtalks.common.model.entity;
 
 import org.testng.annotations.Test;
 
-import java.util.Random;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 /**
  * @author Kirill Afonin
@@ -95,6 +91,16 @@ public class EntityTest {
         second = new Entity() {
         };
         second.setUuid(id);
+
+        assertFalse(first.equals(second));
+    }
+
+    @Test
+    public void testEqualsInheritance(){
+        first = new EntityObject("1");
+        second = new Entity() {
+        };
+        second.setId(2);
 
         assertFalse(first.equals(second));
     }

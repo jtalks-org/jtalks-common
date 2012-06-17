@@ -82,7 +82,7 @@ public abstract class Entity {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if ( !(getClass().isInstance(obj)) ) {
             return false;
         }
         Entity other = (Entity) obj;
