@@ -19,7 +19,12 @@ import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.Arrays;
+import java.util.Set;
 
 import static org.testng.Assert.*;
 
@@ -30,10 +35,25 @@ import static org.testng.Assert.*;
 public class UserTest {
     private static final String SALT = "salt";
     private User sut;
+    private static Validator validator;
 
     @BeforeMethod
     public void setUp() {
         sut = new User("username", "email@mail.com", "pass", SALT);
+    }
+
+    @Test
+    public void testUserEmailCorrectness(){
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+
+        User myUser = new User("username", "!@!.com", "pass", SALT);
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(myUser);
+        assertEquals(1, constraintViolations.size());
+        assertEquals(
+                "Invalid mail was specified",
+                constraintViolations.iterator().next().getMessage());
     }
 
     @Test
