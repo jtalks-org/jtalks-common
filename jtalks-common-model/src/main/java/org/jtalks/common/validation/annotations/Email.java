@@ -4,6 +4,7 @@ import org.jtalks.common.validation.email.EmailValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.Pattern;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -27,14 +28,15 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
+@ReportAsSingleViolation
 @Pattern(regexp = "^[a-zA-Z0-9_'+*/^&=?~{}\\-](\\.?[a-zA-Z0-9_'+*/^&=?~{}\\-])" +
         "*\\@((\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}(\\:\\d{1,3})?)|(((([a-zA-Z0-9][a-zA-Z0-9\\-]" +
         "+[a-zA-Z0-9])|([a-zA-Z0-9]{1,2}))[\\.]{1})+([a-zA-Z]{2,6})))$"
-        )
+       )
 
 public @interface Email {
 
-    String message() default "{org.jtalks.common.validation.email.valid_Email}";
+    String message() default "{user.email.email_format_constraint_violation}";
 
     Class<?>[] groups() default {};
 
