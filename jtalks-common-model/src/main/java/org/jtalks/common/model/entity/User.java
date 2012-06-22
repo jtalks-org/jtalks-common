@@ -37,7 +37,7 @@ import java.util.Collection;
  */
 public class User extends Entity implements UserDetails {
     
-    private static final String USER_EMAIL_ILLEGAL_FORMAT = "{user.email.email_format_constraint_violation}";
+    private static final String USER_EMAIL_ILLEGAL_FORMAT = "{validation.invalid_email_format}";
     private static final String USER_PASSWORD_ILLEGAL_LENGTH = "{user.password.length_constraint_violation}";
     private static final String USER_USERNAME_ILLEGAL_LENGTH = "{user.username.length_constraint_violation}";
     private static final String USER_CANT_BE_NULL = "{user.username.null_constraint_violation}";
