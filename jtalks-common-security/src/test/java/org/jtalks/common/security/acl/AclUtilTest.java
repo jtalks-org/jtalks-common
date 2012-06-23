@@ -34,8 +34,8 @@ import static org.testng.Assert.assertSame;
 public class AclUtilTest {
     @Mock
     MutableAclService aclService;
-    @Mock
-    ObjectIdentityGenerator oidGenerator;
+
+    TypeConvertingObjectIdentityGenerator oidGenerator = TypeConvertingObjectIdentityGenerator.createDefaultGenerator();
     AclUtil util;
 
     @BeforeMethod
@@ -79,7 +79,7 @@ public class AclUtilTest {
     @Test(dataProvider = "randomEntity", dataProviderClass = AclDataProvider.class)
     public void testCreateIdentityFor(Entity entity) throws Exception {
         ObjectIdentity identity = util.createIdentityFor(entity);
-        assertEquals(identity.getType(), entity.getClass().getName());
+        assertEquals(identity.getType(), entity.getClass().getSimpleName());
         assertEquals(identity.getIdentifier(), entity.getId());
     }
 
@@ -91,20 +91,18 @@ public class AclUtilTest {
 
     @Test
     public void testAclFromObjectIdentity_readAcl(){
-        ObjectIdentityImpl oid = new ObjectIdentityImpl("type", "1");
+        ObjectIdentityImpl oid = new ObjectIdentityImpl("type", 1L);
         MutableAcl acl = mock(MutableAcl.class);
-        when(oidGenerator.createObjectIdentity("1", "type")).thenReturn(oid);
-        when(aclService.readAclById(oid)).thenReturn(acl);
-        assertSame(((ExtendedMutableAcl)util.aclFromObjectIdentity("1", "type")).getAcl(), acl);
+        when(aclService.readAclById(eq(oid))).thenReturn(acl);
+        assertSame(((ExtendedMutableAcl)util.aclFromObjectIdentity(1L, "type")).getAcl(), acl);
     }
 
     @Test
     public void testAclFromObjectIdentity_CreateAcl(){
-        ObjectIdentityImpl oid = new ObjectIdentityImpl("type", "1");
+        ObjectIdentityImpl oid = new ObjectIdentityImpl("type", 1L);
         MutableAcl acl = mock(MutableAcl.class);
-        when(oidGenerator.createObjectIdentity("1", "type")).thenReturn(oid);
         when(aclService.readAclById(oid)).thenThrow(new NotFoundException(""));
         when(aclService.createAcl(oid)).thenReturn(acl);
-        assertSame(((ExtendedMutableAcl)util.aclFromObjectIdentity("1", "type")).getAcl(), acl);
+        assertSame(((ExtendedMutableAcl)util.aclFromObjectIdentity(1L, "type")).getAcl(), acl);
     }
 }

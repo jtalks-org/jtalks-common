@@ -17,37 +17,32 @@ package org.jtalks.common.security.acl;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
 import org.jtalks.common.model.entity.Entity;
-import org.springframework.security.acls.domain.ObjectIdentityImpl;
-import org.springframework.security.acls.domain.ObjectIdentityRetrievalStrategyImpl;
 import org.springframework.security.acls.model.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.Serializable;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Lists.newArrayList;
+import static org.jtalks.common.security.acl.TypeConvertingObjectIdentityGenerator.createDefaultGenerator;
 
 /**
  * The fine grained utilities to work with Spring ACL.
  *
  * @author stanislav bashkirtsev
  */
-public class AclUtil implements ObjectIdentities, Acls, Permissions {
-    private ObjectIdentityGenerator objectIdentityGenerator = new ObjectIdentityRetrievalStrategyImpl();
+public class AclUtil {
+    private TypeConvertingObjectIdentityGenerator objectIdentityGenerator = createDefaultGenerator();
     private final MutableAclService mutableAclService;
 
     /**
-     * Use this constructor if you need a full blown ACL utilities. If you need to work with only object identities or
-     * permissions, use respective factory methods.
+     * Use this constructor if you need a full blown ACL utilities.
      *
      * @param mutableAclService the acl service that is required for some operations related to DB. If you use factory
      *                          methods, then you don't need to specify it working with object identities only for
      *                          example.
-     * @see #createObjectIdentityUtils()
-     * @see #createAclUtils(org.springframework.security.acls.model.MutableAclService)
-     * @see #createPermissionUtils(org.springframework.security.acls.model.MutableAclService)
      */
     public AclUtil(@Nonnull MutableAclService mutableAclService) {
         this.mutableAclService = mutableAclService;
@@ -61,42 +56,10 @@ public class AclUtil implements ObjectIdentities, Acls, Permissions {
         this.mutableAclService = null;
     }
 
-    /**
-     * Creates a new instance of the object identity utilities (it won't have methods related to {@link Permission} or
-     * {@link Acl}.
-     *
-     * @return new instance of the object identity utilities
-     */
-    public static ObjectIdentities createObjectIdentityUtils() {
-        return new AclUtil();
-    }
-
-    /**
-     * Creates a new instance of the ACL utilities (it won't work with {@link ObjectIdentity} or {@link Permission}).
-     *
-     * @param mutableAclService the service to get database/cache access
-     * @return instance of the ACL utilities
-     */
-    public static Acls createAclUtils(@Nonnull MutableAclService mutableAclService) {
-        return new AclUtil(mutableAclService);
-    }
-
-    /**
-     * Creates a new instance of permission utilities (it won't work with {@link ObjectIdentity}; it will work with
-     * {@link Acl} though, but the main purpose of these utilities is to work mainly with graning/deleting/restricting
-     * permissions).
-     *
-     * @param mutableAclService the service to get database/cache access
-     * @return instance of permission utilities
-     */
-    public static Permissions createPermissionUtils(@Nonnull MutableAclService mutableAclService) {
-        return new AclUtil();
-    }
 
     /**
      * {@inheritDoc}
      */
-    @Override
     public ExtendedMutableAcl getAclFor(Entity entity) {
         ObjectIdentity oid = createIdentityFor(entity);
         return getAclFor(oid);
@@ -105,7 +68,6 @@ public class AclUtil implements ObjectIdentities, Acls, Permissions {
     /**
      * {@inheritDoc}
      */
-    @Override
     public ExtendedMutableAcl getAclFor(ObjectIdentity oid) {
         try {
             return ExtendedMutableAcl.castAndCreate(mutableAclService.readAclById(oid));
@@ -117,26 +79,20 @@ public class AclUtil implements ObjectIdentities, Acls, Permissions {
     /**
      * {@inheritDoc}
      */
-    @Override
     public ObjectIdentity createIdentityFor(Entity securedObject) {
-        if (securedObject.getId() <= 0) {
-            throw new IllegalArgumentException("Object id must be assigned before creating acl.");
-        }
-        return new ObjectIdentityImpl(securedObject.getClass(), securedObject.getId());
+        return objectIdentityGenerator.getObjectIdentity(securedObject);
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public ObjectIdentity createIdentity(@Nonnull Serializable id, @Nonnull String type) {
+    public ObjectIdentity createIdentity(long id, @Nonnull String type) {
         return objectIdentityGenerator.createObjectIdentity(id, type);
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
     public ExtendedMutableAcl grant(List<? extends Sid> sids, List<Permission> permissions, Entity target) {
         return applyPermissionsToSids(sids, permissions, target, true);
     }
@@ -144,7 +100,6 @@ public class AclUtil implements ObjectIdentities, Acls, Permissions {
     /**
      * {@inheritDoc}
      */
-    @Override
     public ExtendedMutableAcl restrict(List<? extends Sid> sids, List<Permission> permissions, Entity target) {
         return applyPermissionsToSids(sids, permissions, target, false);
     }
@@ -152,7 +107,6 @@ public class AclUtil implements ObjectIdentities, Acls, Permissions {
     /**
      * {@inheritDoc}
      */
-    @Override
     public ExtendedMutableAcl delete(List<? extends Sid> sids, List<Permission> permissions, Entity target) {
         ObjectIdentity oid = createIdentityFor(target);
         ExtendedMutableAcl acl = ExtendedMutableAcl.castAndCreate(mutableAclService.readAclById(oid));
@@ -163,21 +117,20 @@ public class AclUtil implements ObjectIdentities, Acls, Permissions {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void deletePermissionsFromAcl(
             ExtendedMutableAcl acl, List<? extends Sid> sids, List<Permission> permissions) {
         List<AccessControlEntry> allEntries = acl.getEntries(); // it's a copy
         List<AccessControlEntry> filtered = newArrayList(filter(allEntries, new BySidAndPermissionFilter(sids, permissions)));
         acl.delete(filtered);
     }
-    
-    public Acl aclFromObjectIdentity(@Nonnull Serializable id, @Nonnull String type){
+
+    public Acl aclFromObjectIdentity(@Min(1) long id, @Nonnull String type) {
         ObjectIdentity identity = this.objectIdentityGenerator.createObjectIdentity(id, type);
         return getAclFor(identity);
     }
 
-    @VisibleForTesting
-    void setObjectIdentityGenerator(ObjectIdentityGenerator objectIdentityGenerator) {
+
+    public void setObjectIdentityGenerator(TypeConvertingObjectIdentityGenerator objectIdentityGenerator) {
         this.objectIdentityGenerator = objectIdentityGenerator;
     }
 
@@ -198,6 +151,7 @@ public class AclUtil implements ObjectIdentities, Acls, Permissions {
         acl.addPermissions(sids, permissions, granting);
         return acl;
     }
+
 
 
     /**

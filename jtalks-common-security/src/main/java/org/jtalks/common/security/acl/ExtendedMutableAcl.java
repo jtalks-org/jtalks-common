@@ -14,6 +14,7 @@
  */
 package org.jtalks.common.security.acl;
 
+import org.apache.commons.lang.Validate;
 import org.springframework.security.acls.model.*;
 
 import javax.annotation.Nonnull;
@@ -42,6 +43,7 @@ public class ExtendedMutableAcl implements MutableAcl {
      * @param acl the internal delegate-instance
      */
     private ExtendedMutableAcl(@Nonnull MutableAcl acl) {
+        Validate.notNull(acl, "Acl can't be null while creating ExtendedMutableAcl!");
         this.acl = acl;
     }
 

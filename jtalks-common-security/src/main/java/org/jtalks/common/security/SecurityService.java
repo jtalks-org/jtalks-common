@@ -21,7 +21,6 @@ import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.entity.User;
 import org.jtalks.common.model.permissions.JtalksPermission;
 import org.jtalks.common.security.acl.AclManager;
-import org.jtalks.common.security.acl.BasicAclBuilder;
 import org.jtalks.common.security.acl.builders.AclAction;
 import org.jtalks.common.security.acl.builders.AclBuilders;
 import org.springframework.security.core.Authentication;
@@ -92,11 +91,6 @@ public class SecurityService implements UserDetailsService {
      */
     public <T extends Entity> AclAction<T> createAclBuilder() {
         return aclBuilders.newBuilder(aclManager);
-    }
-
-    @Deprecated
-    public BasicAclBuilder grantToCurrentUser(JtalksPermission... jtalksPermissions) {
-        return new BasicAclBuilder(aclManager).grant(jtalksPermissions).setReceiver(getCurrentUser());
     }
 
     /**

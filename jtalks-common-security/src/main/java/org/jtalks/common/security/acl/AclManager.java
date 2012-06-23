@@ -177,8 +177,8 @@ public class AclManager {
         logger.debug("Deleted securedObject" + clazz.getSimpleName() + " with id:" + id);
     }
 
-    @VisibleForTesting
-    void setAclUtil(AclUtil aclUtil) {
+
+    public void setAclUtil(AclUtil aclUtil) {
         this.aclUtil = aclUtil;
     }
 }
