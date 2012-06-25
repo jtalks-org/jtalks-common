@@ -89,10 +89,4 @@ public interface UserService extends EntityService<User> {
      */
     void removeAvatarFromCurrentUser();
 
-    /**
-     * Return default avatar for example if user doesn't have one
-     * @return avatar as byte array
-     */
-    byte[] getDefaultAvatar();
-
 }
