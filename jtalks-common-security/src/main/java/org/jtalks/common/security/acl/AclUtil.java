@@ -14,7 +14,6 @@
  */
 package org.jtalks.common.security.acl;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
 import org.jtalks.common.model.entity.Entity;
 import org.springframework.security.acls.model.*;
@@ -151,7 +150,6 @@ public class AclUtil {
         acl.addPermissions(sids, permissions, granting);
         return acl;
     }
-
 
 
     /**
