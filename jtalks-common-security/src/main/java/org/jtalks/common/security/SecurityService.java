@@ -19,7 +19,6 @@ import com.google.common.annotations.VisibleForTesting;
 import org.jtalks.common.model.dao.UserDao;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.entity.User;
-import org.jtalks.common.model.permissions.JtalksPermission;
 import org.jtalks.common.security.acl.AclManager;
 import org.jtalks.common.security.acl.builders.AclAction;
 import org.jtalks.common.security.acl.builders.AclBuilders;
@@ -51,21 +50,6 @@ public class SecurityService implements UserDetailsService {
     public SecurityService(UserDao userDao, AclManager aclManager) {
         this.userDao = userDao;
         this.aclManager = aclManager;
-    }
-
-    /**
-     * Get current authenticated {@link User}.
-     *
-     * @return current authenticated {@link User} or {@code null} if there is no authenticated {@link User}.
-     * @see User
-     */
-    public User getCurrentUser() {
-        Authentication auth = securityContextFacade.getContext().getAuthentication();
-        Object principal = auth.getPrincipal();
-        if (principal instanceof User) {
-            return (User) principal;
-        }
-        return null;
     }
 
     /**
