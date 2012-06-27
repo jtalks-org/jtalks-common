@@ -10,7 +10,7 @@ set foreign_key_checks=0;
 DROP TABLE IF EXISTS `acl_sid`;
 CREATE TABLE `acl_sid` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `principal` tinyint(1) NOT NULL,                         -- a label, that shows whether the object is principal(is there a possibility to login with this object of not, i.e. groups cannot be here)
+  `principal` tinyint(1) NOT NULL,                         -- a label, that shows whether the object is principal(is there a possibility to login with this object or not, i.e. groups cannot be here)
   `sid` varchar(100) NOT NULL,                             -- an entity, which get the permissions()
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_acl_sid` (`sid`,`principal`)
