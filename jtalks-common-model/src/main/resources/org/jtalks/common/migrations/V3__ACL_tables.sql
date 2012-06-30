@@ -48,8 +48,8 @@ CREATE TABLE `acl_entry` (
   `sid` bigint(20) NOT NULL,                                      -- a link to a acl_sid table - who gets the permissions
   `mask` int(11) NOT NULL,                                        -- bit mask, which identifies the permissions (for example for read, write etc.)
   `granting` tinyint(1) NOT NULL,                                 -- a value, that identifies whether the permission is allowed or not (for JCommune - 1 - allowed, 0 - not allowed). The granting field, if set to true, indicates that the permissions indicated by mask are granted to the corresponding sid, otherwise they are revoked or blocked.
-  `audit_success` tinyint(1) NOT NULL,                            -- A flag to indicate whether to audit a successful permission
-  `audit_failure` tinyint(1) NOT NULL,                            -- A flag to indicate whether to audit a failed permission
+  `audit_success` tinyint(1) NOT NULL,                            -- a flag to indicate whether to audit a successful permission
+  `audit_failure` tinyint(1) NOT NULL,                            -- a flag to indicate whether to audit a failed permission
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_acl_entry` (`acl_object_identity`,`ace_order`),
   KEY `fk_acl_entry_obj_id` (`acl_object_identity`),
