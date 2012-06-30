@@ -61,7 +61,7 @@ CREATE TABLE `acl_entry` (
 --
 -- Table structure for table `acl_object_identity`
 --
--- Each table entry is the representation of the object (in other words - acl_class is class and acl_object_identity is instance of acl_class).
+-- Each table entry is the representation of the object (in other words - acl_class is class and acl_object_identity is instance of acl_class)
 -- for which the permissions are given
 --
 DROP TABLE IF EXISTS `acl_object_identity`;
