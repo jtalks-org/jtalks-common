@@ -27,7 +27,7 @@ public class GroupAce {
     private final AccessControlEntry ace;
 
     public GroupAce(AccessControlEntry ace) {
-        if(!(ace.getSid() instanceof UserGroupSid)){
+        if (!(ace.getSid() instanceof UserGroupSid)) {
             throw new IllegalArgumentException("The specified ACE has sid which is not of type: " + UserGroupSid.class);
         }
         this.ace = ace;
@@ -47,7 +47,7 @@ public class GroupAce {
         String groupIdString = ((UserGroupSid) ace.getSid()).getGroupId();
         return Long.parseLong(groupIdString);
     }
-    
+
     public BranchPermission getBranchPermission() {
         return BranchPermission.findByMask(getBranchPermissionMask());
     }
@@ -58,6 +58,15 @@ public class GroupAce {
 
     public boolean isGranting() {
         return ace.isGranting();
+    }
+
+    /**
+     * Defines whether the ACE is restricting and SID is not allowed to perform action.
+     *
+     * @return true if the permission is restricted or false if it's granted
+     */
+    public boolean isRestricting() {
+        return !isGranting();
     }
 
     public AccessControlEntry getOriginalAce() {
