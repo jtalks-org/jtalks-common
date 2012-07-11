@@ -97,7 +97,7 @@ public class UserSid extends PrincipalSid implements UniversalSid {
         if (this == o) {
             return true;
         }
-        if (o == null || !o.getClass().isAssignableFrom(getClass())) {
+        if (o == null || !(o instanceof PrincipalSid)) {
             return false;
         }
         PrincipalSid that = (PrincipalSid) o;
