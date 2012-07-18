@@ -36,11 +36,12 @@ import java.util.Collection;
  * @author Ancient_Mariner
  */
 public class User extends Entity implements UserDetails {
-    
+
     private static final String USER_EMAIL_ILLEGAL_FORMAT = "{validation.invalid_email_format}";
     private static final String USER_PASSWORD_ILLEGAL_LENGTH = "{user.password.length_constraint_violation}";
     private static final String USER_USERNAME_ILLEGAL_LENGTH = "{user.username.length_constraint_violation}";
     private static final String USER_CANT_BE_NULL = "{user.username.null_constraint_violation}";
+    private static final String USER_FIRST_AND_LAST_NAME_LENGTH = "{user.userfirstandlastname.null_constraint_violation}";
     /**
      * Minimum length of the username.
      */
@@ -69,9 +70,30 @@ public class User extends Entity implements UserDetails {
      * Maximum avatar size in kilobytes.
      */
     public static final int AVATAR_MAX_SIZE = 65;
+    /**
+     * Minimum length of the user first name.
+     */
+    public static final int USERNAME_FIRSTNAME_MIN_LENGTH = 0;
+    /**
+     * Maximum length of the user first name.
+     */
+    public static final int USERNAME_FIRSTNAME_MAX_LENGTH = 45;
+    /**
+     * Minimum length of the user last name.
+     */
+    public static final int USERNAME_LASTNAME_MIN_LENGTH = 0;
+    /**
+     * Maximum length of the user last name.
+     */
+    public static final int USERNAME_LASTNAME_MAX_LENGTH = 45;
 
+
+    @Length(min = USERNAME_FIRSTNAME_MIN_LENGTH, max = USERNAME_FIRSTNAME_MAX_LENGTH, message = USER_USERNAME_ILLEGAL_LENGTH)
     private String firstName;
+
+    @Length(min = USERNAME_LASTNAME_MIN_LENGTH, max = USERNAME_LASTNAME_MAX_LENGTH, message = USER_USERNAME_ILLEGAL_LENGTH)
     private String lastName;
+
     private String salt;
     private DateTime lastLogin;
     private String banReason;
@@ -356,6 +378,7 @@ public class User extends Entity implements UserDetails {
 
     /**
      * This method sets salt for encode password
+     *
      * @param salt salt salstring
      */
     public void setSalt(String salt) {
