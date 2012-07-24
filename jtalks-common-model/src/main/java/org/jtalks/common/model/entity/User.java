@@ -41,7 +41,8 @@ public class User extends Entity implements UserDetails {
     private static final String USER_PASSWORD_ILLEGAL_LENGTH = "{user.password.length_constraint_violation}";
     private static final String USER_USERNAME_ILLEGAL_LENGTH = "{user.username.length_constraint_violation}";
     private static final String USER_CANT_BE_NULL = "{user.username.null_constraint_violation}";
-    private static final String USER_FIRST_AND_LAST_NAME_ILLEGAL_LENGTH = "{user.first_and_last_name.illegal_length}";
+    private static final String USER_FIRST_NAME_ILLEGAL_LENGTH = "{user.first_name.illegal_length}";
+    private static final String USER_LAST_NAME_ILLEGAL_LENGTH = "{user.last_name.illegal_length}";
     /**
      * Minimum length of the username.
      */
@@ -88,10 +89,10 @@ public class User extends Entity implements UserDetails {
     public static final int USERNAME_LASTNAME_MAX_LENGTH = 45;
 
 
-    @Length(min = USERNAME_FIRSTNAME_MIN_LENGTH, max = USERNAME_FIRSTNAME_MAX_LENGTH, message = USER_FIRST_AND_LAST_NAME_ILLEGAL_LENGTH)
+    @Length(min = USERNAME_FIRSTNAME_MIN_LENGTH, max = USERNAME_FIRSTNAME_MAX_LENGTH, message = USER_FIRST_NAME_ILLEGAL_LENGTH)
     private String firstName;
 
-    @Length(min = USERNAME_LASTNAME_MIN_LENGTH, max = USERNAME_LASTNAME_MAX_LENGTH, message = USER_FIRST_AND_LAST_NAME_ILLEGAL_LENGTH)
+    @Length(min = USERNAME_LASTNAME_MIN_LENGTH, max = USERNAME_LASTNAME_MAX_LENGTH, message = USER_LAST_NAME_ILLEGAL_LENGTH)
     private String lastName;
 
     private String salt;
