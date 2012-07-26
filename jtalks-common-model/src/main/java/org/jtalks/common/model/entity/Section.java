@@ -41,7 +41,7 @@ public class Section extends Entity {
     private static final String SECTION_CANT_BE_VOID = "{section.name.emptiness_constraint_violation}";
 
     public static final int SECTION_NAME_MAX_LENGTH = 80;
-    public static final int SECTION_DESCRIPTION_MAX_LENGTH = 256;
+    public static final int SECTION_DESCRIPTION_MAX_LENGTH = 255;
 
     @NotBlank(message = SECTION_CANT_BE_VOID)
     @Length(max = SECTION_NAME_MAX_LENGTH, message = SECTION_NAME_ILLEGAL_LENGTH)

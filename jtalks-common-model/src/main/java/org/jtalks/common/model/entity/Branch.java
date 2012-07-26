@@ -31,7 +31,7 @@ public class Branch extends Entity {
     private static final String BRANCH_NAME_ILLEGAL_LENGTH = "{branch.name.length_constraint_violation}";
 
     public static final int BRANCH_NAME_MAX_LENGTH = 80;
-    public static final int BRANCH_DESCRIPTION_MAX_LENGTH = 256;
+    public static final int BRANCH_DESCRIPTION_MAX_LENGTH = 255;
 
     @NotBlank(message = BRANCH_CANT_BE_VOID)
     @Length(max = BRANCH_NAME_MAX_LENGTH, message = BRANCH_NAME_ILLEGAL_LENGTH)
