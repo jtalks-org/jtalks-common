@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Stores information about the forum user.
- * Used as {@code UserDetails} in spring security for user authentication, authorization.
+ * Stores information about the forum user. Used as {@code UserDetails} in spring security for user authentication,
+ * authorization.
  *
  * @author Ancient_Mariner
  */
@@ -135,17 +135,19 @@ public class User extends Entity implements UserDetails {
     }
 
     /**
-     * Create instance with requiered fields.
+     * Create instance with all the mandatory fields.
      *
      * @param username username
-     * @param email    email
+     * @param email    see {@link Email} for validation rules
      * @param password password
-     * @param salt     salt
+     * @param salt     a security salt that is used for encrypting the passwords to be less vulnerable for decryption of
+     *                 password from its hash, more info can be found <a href="http://en.wikipedia.org/wiki/Salt_(cryptography)">here</a>.
      */
     public User(String username, String email, String password, String salt) {
-        this(username, email, password);
+        this.username = username;
+        this.email = email;
+        this.password = password;
         this.salt = salt;
-        //this.setSalt(salt);
     }
 
     /**
@@ -369,18 +371,20 @@ public class User extends Entity implements UserDetails {
     }
 
     /**
-     * This method returns the salt for encode password
+     * Gets a security salt that is used for encrypting the passwords to be less vulnerable for decryption of password
+     * from its hash, more info can be found <a href="http://en.wikipedia.org/wiki/Salt_(cryptography)">here</a>.
      *
-     * @return salt string
+     * @return security salt that is used for encrypting the passwords
      */
     public String getSalt() {
         return salt;
     }
 
     /**
-     * This method sets salt for encode password
+     * Gets a security salt that is used for encrypting the passwords to be less vulnerable for decryption of password
+     * from its hash, more info can be found <a href="http://en.wikipedia.org/wiki/Salt_(cryptography)">here</a>.
      *
-     * @param salt salt salstring
+     * @param salt salt that is used to encrypt the passwords
      */
     public void setSalt(String salt) {
         this.salt = salt;
