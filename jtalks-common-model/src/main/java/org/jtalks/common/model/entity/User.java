@@ -127,7 +127,6 @@ public class User extends Entity implements UserDetails {
      * @deprecated
      */
     public User(String username, String email, String password) {
-        this();
         this.setUsername(username);
         this.email = email;
         this.password = password;
@@ -144,7 +143,7 @@ public class User extends Entity implements UserDetails {
      *                 password from its hash, more info can be found <a href="http://en.wikipedia.org/wiki/Salt_(cryptography)">here</a>.
      */
     public User(String username, String email, String password, String salt) {
-        this.username = username;
+        this.setUsername(username);
         this.email = email;
         this.password = password;
         this.salt = salt;
