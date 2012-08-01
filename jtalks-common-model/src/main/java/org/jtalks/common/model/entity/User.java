@@ -43,6 +43,7 @@ public class User extends Entity implements UserDetails {
     private static final String USER_CANT_BE_NULL = "{user.username.null_constraint_violation}";
     private static final String USER_FIRST_NAME_ILLEGAL_LENGTH = "{user.first_name.illegal_length}";
     private static final String USER_LAST_NAME_ILLEGAL_LENGTH = "{user.last_name.illegal_length}";
+    private static final String EMAIL_ILLEGAL_LENGTH = "{user.email.illegal_length}";
     /**
      * Minimum length of the username.
      */
@@ -87,6 +88,14 @@ public class User extends Entity implements UserDetails {
      * Maximum length of the user last name.
      */
     public static final int USERNAME_LASTNAME_MAX_LENGTH = 45;
+    /**
+     * Minimum length of the email.
+     */
+    public static final int EMAIL_MIN_LENGTH = 5;
+    /**
+     * Maximum length of the email.
+     */
+    public static final int EMAIL_MAX_LENGTH = 50;
 
 
     @Length(min = USERNAME_FIRSTNAME_MIN_LENGTH, max = USERNAME_FIRSTNAME_MAX_LENGTH, message = USER_FIRST_NAME_ILLEGAL_LENGTH)
@@ -102,8 +111,11 @@ public class User extends Entity implements UserDetails {
     @NotNull(message = USER_CANT_BE_NULL)
     @Length(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH, message = USER_USERNAME_ILLEGAL_LENGTH)
     private String username;
+
     @Email(message = USER_EMAIL_ILLEGAL_FORMAT)
+    @Length(min = EMAIL_MIN_LENGTH, max = EMAIL_MAX_LENGTH, message = EMAIL_ILLEGAL_LENGTH)
     private String email;
+
     @NotBlank
     @Length(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = USER_PASSWORD_ILLEGAL_LENGTH)
     private String password;
