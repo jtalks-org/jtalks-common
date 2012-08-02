@@ -87,11 +87,7 @@ public class User extends Entity implements UserDetails {
     /**
      * Maximum length of the user last name.
      */
-    public static final int USERNAME_LASTNAME_MAX_LENGTH = 45;
-    /**
-     * Minimum length of the email.
-     */
-    public static final int EMAIL_MIN_LENGTH = 5;
+    public static final int USERNAME_LASTNAME_MAX_LENGTH = 255;
     /**
      * Maximum length of the email.
      */
@@ -113,7 +109,7 @@ public class User extends Entity implements UserDetails {
     private String username;
 
     @Email(message = USER_EMAIL_ILLEGAL_FORMAT)
-    @Length(min = EMAIL_MIN_LENGTH, max = EMAIL_MAX_LENGTH, message = EMAIL_ILLEGAL_LENGTH)
+    @Length(max = EMAIL_MAX_LENGTH, message = EMAIL_ILLEGAL_LENGTH)
     private String email;
 
     @NotBlank
