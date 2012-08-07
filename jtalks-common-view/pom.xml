@@ -3,14 +3,14 @@
   <parent>
     <artifactId>jtalks-common</artifactId>
     <groupId>org.jtalks.common</groupId>
-    <version>0.29-SNAPSHOT</version>
+    <version>0.29</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.jtalks.common</groupId>
   <artifactId>jtalks-common-view</artifactId>
   <packaging>pom</packaging>
-  <version>0.29-SNAPSHOT</version>
+  <version>0.29</version>
   <properties>
     <copyrightDir>${basedir}/..</copyrightDir>
   </properties>
