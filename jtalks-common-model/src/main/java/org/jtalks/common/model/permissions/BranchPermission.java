@@ -41,7 +41,7 @@ public enum BranchPermission implements JtalksPermission {
      */
     MOVE_TOPICS("1000", "MOVE_TOPICS"),
     /**
-     *  The ability to split topic into 2 different topics (not necessary in the same branch).
+     * The ability to split topic into 2 different topics (not necessary in the same branch).
      */
     SPLIT_TOPICS("1001", "SPLIT_TOPICS"),
     /**
@@ -68,7 +68,15 @@ public enum BranchPermission implements JtalksPermission {
     /**
      * The ability of users to edit posts of other users.
      */
-    EDIT_OTHERS_POSTS("10001", "EDIT_OTHERS_POSTS");
+    EDIT_OTHERS_POSTS("10001", "EDIT_OTHERS_POSTS"),
+    /**
+     * The ability to create announcement
+     */
+    CREATE_ANNOUNCEMENTS("10010", "CREATE_ANNOUNCEMENTS"),
+    /**
+     * The ability to create sticked topic
+     */
+    CREATE_STICKED_TOPICS("10011", "CREATE_STICKED_TOPICS");
 
     private final String name;
     private final int mask;
