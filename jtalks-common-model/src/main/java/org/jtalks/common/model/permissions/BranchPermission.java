@@ -70,11 +70,11 @@ public enum BranchPermission implements JtalksPermission {
      */
     EDIT_OTHERS_POSTS("10001", "EDIT_OTHERS_POSTS"),
     /**
-     * The ability to create announcement
+     * The ability of users to create announcements
      */
     CREATE_ANNOUNCEMENTS("10010", "CREATE_ANNOUNCEMENTS"),
     /**
-     * The ability to create sticked topic
+     * The ability of users to create sticked topics
      */
     CREATE_STICKED_TOPICS("10011", "CREATE_STICKED_TOPICS");
 
