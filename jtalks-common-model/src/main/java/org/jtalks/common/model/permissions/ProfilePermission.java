@@ -2,6 +2,7 @@ package org.jtalks.common.model.permissions;
 
 import com.google.common.collect.Lists;
 import ru.javatalks.utils.general.Assert;
+
 import javax.annotation.Nonnull;
 import java.util.List;
 
@@ -10,11 +11,15 @@ import java.util.List;
  *
  * @author Ancient_Mariner
  */
-public enum ProfilePermission implements JtalksPermission{
+public enum ProfilePermission implements JtalksPermission {
     /**
      * The ability of user group or user to send private messages.
      */
-    SEND_PRIVATE_MESSAGES("1110","SEND_PRIVATE_MESSAGES"),
+    SEND_PRIVATE_MESSAGES("1110", "SEND_PRIVATE_MESSAGES"),
+    /**
+     * The ability of user group or user to create pages
+     */
+    CREATE_PAGES("10100", "CREATE_PAGES"),
     /**
      * The ability of user group or user to edit user profile.
      */
@@ -31,7 +36,7 @@ public enum ProfilePermission implements JtalksPermission{
      * @param name a textual representation of the permission (usually the same as the constant name), though the
      *             restriction usually starts with the 'RESTRICTION_' word
      */
-    ProfilePermission(int mask, @Nonnull String name){
+    ProfilePermission(int mask, @Nonnull String name) {
         this.mask = mask;
         throwIfNameNotValid(name);
         this.name = name;
@@ -48,7 +53,7 @@ public enum ProfilePermission implements JtalksPermission{
      * @see BranchPermission#BranchPermission(int, String)
      * @see org.springframework.security.acls.domain.BasePermission
      */
-    ProfilePermission(@Nonnull String mask, @Nonnull String name){
+    ProfilePermission(@Nonnull String mask, @Nonnull String name) {
         throwIfNameNotValid(name);
         this.mask = Integer.parseInt(mask, 2);
         this.name = name;
@@ -93,7 +98,7 @@ public enum ProfilePermission implements JtalksPermission{
         return null;
     }
 
-    public static List<ProfilePermission> getAllAsList(){
+    public static List<ProfilePermission> getAllAsList() {
         return Lists.newArrayList(values());
     }
 }
