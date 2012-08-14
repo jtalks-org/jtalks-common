@@ -17,9 +17,9 @@ public enum ProfilePermission implements JtalksPermission {
      */
     SEND_PRIVATE_MESSAGES("1110", "SEND_PRIVATE_MESSAGES"),
     /**
-     * The ability of user group or user to create pages
+     * The ability of user group or user to create frequently asked questions
      */
-    CREATE_PAGES("10100", "CREATE_PAGES"),
+    CREATE_FORUM_FAQ("10100", "CREATE_FORUM_FAQ"),
     /**
      * The ability of user group or user to edit user profile.
      */
