@@ -66,6 +66,10 @@ public enum BranchPermission implements JtalksPermission {
      */
     DELETE_OTHERS_POSTS("1101", "DELETE_OTHERS_POSTS"),
     /**
+     * The ability of users to edit their own posts.
+     */
+    EDIT_OWN_POSTS("10000101","EDIT_OWN_POSTS"),
+    /**
      * The ability of users to edit posts of other users.
      */
     EDIT_OTHERS_POSTS("10001", "EDIT_OTHERS_POSTS"),
