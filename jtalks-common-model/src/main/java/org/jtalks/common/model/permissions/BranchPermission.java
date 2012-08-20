@@ -24,6 +24,10 @@ import java.util.List;
 /**
  * These are the restrictions that relate only to branches and sections.
  *
+ * Please follow the binary numeration in permissions
+ * and do not create numbers more then 1 in comparing to existing ones
+ * (i.e. yoo have 010, use 011, not 10010)
+ *
  * @author stanislav bashkirtsev
  */
 public enum BranchPermission implements JtalksPermission {
@@ -68,7 +72,7 @@ public enum BranchPermission implements JtalksPermission {
     /**
      * The ability of users to edit their own posts.
      */
-    EDIT_OWN_POSTS("10000101","EDIT_OWN_POSTS"),
+    EDIT_OWN_POSTS("10000101", "EDIT_OWN_POSTS"),
     /**
      * The ability of users to edit posts of other users.
      */
