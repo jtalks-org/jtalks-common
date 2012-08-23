@@ -49,7 +49,7 @@ public class Group extends Entity {
     private static final String GROUP_NAME_ILLEGAL_LENGTH = "{group.name.length_constraint_violation}";
 
     public static final int GROUP_NAME_MAX_LENGTH = 100;
-    public static final int GROUP_DESCRIPTION_MAX_LENGTH = 256;
+    public static final int GROUP_DESCRIPTION_MAX_LENGTH = 255;
 
     @NotBlank(message = GROUP_CANT_BE_VOID)
     @Length(max = GROUP_NAME_MAX_LENGTH, message = GROUP_NAME_ILLEGAL_LENGTH)
