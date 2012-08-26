@@ -18,13 +18,16 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * The Property entity which contains configuration for components
- * 
+ * The Property entity which contains configuration for components. Components have default properties (like JCommune
+ * has some number of predefined properties) with default values which are represented by Property. And when actual
+ * component is created, default properties are copied to that component with their default values and those particular
+ * properties are also represented by Property class.
+ *
  * @author Vahluev Vyacheslav
  * @author Ancient_Mariner
  */
 public class Property extends Entity {
-    
+
     private static final String PROPERTY_NAME_ILLEGAL_LENGTH = "{property.name.length_constraint_violation}";
     private static final String PROPERTY_CANT_BE_VOID = "{property.name.emptiness_constraint_violation}";
 
@@ -54,8 +57,8 @@ public class Property extends Entity {
 
     /**
      * Constructor which sets name and value of the property
-     * 
-     * @param name of the property
+     *
+     * @param name  of the property
      * @param value of the property
      */
     public Property(String name, String value) {
