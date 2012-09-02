@@ -16,7 +16,6 @@ package org.jtalks.common.model.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.jtalks.common.validation.annotations.UniqueConstraint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,6 @@ import java.util.List;
  * @author Tatiana Birina
  * @author Guram Savinov
  */
-@UniqueConstraint
 public class Section extends Entity {
    /**
      * Error message if section description is illegal length
