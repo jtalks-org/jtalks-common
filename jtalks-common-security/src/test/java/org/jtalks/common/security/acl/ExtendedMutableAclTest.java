@@ -133,7 +133,7 @@ public class ExtendedMutableAclTest {
     private List<AccessControlEntry> createEntries(MutableAcl acl) {
         List<AccessControlEntry> toReturn = new ArrayList<AccessControlEntry>();
         for (int i = 0; i < 5; i++) {
-            toReturn.add(createEntry(i, acl, new PrincipalSid("1"), BranchPermission.CREATE_TOPICS));
+            toReturn.add(createEntry(i, acl, new PrincipalSid("1"), BranchPermission.CREATE_STICKED_TOPICS));
         }
         return toReturn;
     }

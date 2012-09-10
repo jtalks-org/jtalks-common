@@ -52,9 +52,9 @@ public class JtalksPermissionFactoryTest {
     @Test
     public void testBuildFromNames() throws Exception {
         List<String> names = Lists.newArrayList(
-                BranchPermission.VIEW_TOPICS.getName(), BranchPermission.CREATE_TOPICS.getName());
+                BranchPermission.VIEW_TOPICS.getName(), BranchPermission.CREATE_STICKED_TOPICS.getName());
         List<BranchPermission> permissions = Lists.newArrayList(
-                BranchPermission.VIEW_TOPICS, BranchPermission.CREATE_TOPICS);
+                BranchPermission.VIEW_TOPICS, BranchPermission.CREATE_STICKED_TOPICS);
         assertEquals(factory.buildFromNames(names), permissions);
     }
 
