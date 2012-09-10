@@ -44,10 +44,15 @@ public enum BranchPermission implements JtalksPermission {
      * (not mandatory to be grated to the permission for that branch as well).
      */
     MOVE_TOPICS("1000", "MOVE_TOPICS"),
+
+    /* will be implemented soon, no need of remove
     /**
      * The ability to split topic into 2 different topics (not necessary in the same branch).
      */
-    SPLIT_TOPICS("1001", "SPLIT_TOPICS"),
+    /**
+        SPLIT_TOPICS("1001", "SPLIT_TOPICS"),
+    */
+
     /**
      * The ability of user group or user to delete topics from the branch.
      */
