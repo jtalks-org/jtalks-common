@@ -33,9 +33,9 @@ import java.util.List;
 public enum BranchPermission implements JtalksPermission {
     /**
      * The ability of user group or user to create new topics in the branch.
-     */
+     *//*
     CREATE_TOPICS("11", "CREATE_TOPICS"),
-    /**
+    *//**
      * The ability of user group or user to view the branch (to see its topics).
      */
     VIEW_TOPICS("110", "VIEW_TOPICS"),
@@ -54,8 +54,7 @@ public enum BranchPermission implements JtalksPermission {
      */
     /**
      * The ability of user group or user to delete topics from the branch.
-     */
-    DELETE_TOPICS("1010", "DELETE_TOPICS"),
+    DELETE_TOPICS("1010", "DELETE_TOPICS"),*/
     /**
      * The ability of user group or user to close topics in the branch.
      */
