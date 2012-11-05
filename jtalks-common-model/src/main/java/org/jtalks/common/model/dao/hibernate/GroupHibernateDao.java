@@ -36,6 +36,9 @@ public class GroupHibernateDao extends AbstractHibernateParentRepository<Group> 
         return query.list();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Group> getGroupsOfUser(User user) {
         Assert.throwIfNull(user, "user");
@@ -44,6 +47,19 @@ public class GroupHibernateDao extends AbstractHibernateParentRepository<Group> 
         query.setParameter(0, "%" + user + "%");
 
         return query.list();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Group getGroupByName(String name) {
+        Assert.throwIfNull(name, "name");
+
+        Query query = getSession().createQuery("from Group g where g.name = ?");
+        query.setString(0, name);
+
+        return (Group) query.uniqueResult();
     }
 
     /**
