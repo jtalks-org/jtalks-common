@@ -20,7 +20,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.validation.Validator;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -92,5 +94,13 @@ public class UserTest {
     @Test
     public void testGetAvatarClonesCurrent() {
         assertEquals(sut.getAvatar(), new byte[0], "Returned unexpected array");
+    }
+
+    @Test
+    public void testGetGroups(){
+        List<Group> groupList = new ArrayList<Group>();
+        groupList.add(new Group());
+        sut.setGroups(groupList);
+        assertTrue(sut.getGroups().size()==1);
     }
 }

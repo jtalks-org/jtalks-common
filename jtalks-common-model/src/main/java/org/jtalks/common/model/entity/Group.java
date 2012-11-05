@@ -136,6 +136,17 @@ public class Group extends Entity {
     }
 
     /**
+     * This method adds a group of users in this group.
+     */
+    public void addToUsers(){
+        for (User user : users) {
+            if (!user.getGroups().contains(this)) {
+                user.getGroups().add(this);
+            }
+        }
+    }
+
+    /**
      * A handy method to create a number of groups with specified names.
      *
      * @param names the names you want resulting groups to be with

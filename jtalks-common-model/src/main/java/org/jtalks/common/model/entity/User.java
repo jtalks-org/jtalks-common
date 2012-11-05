@@ -28,6 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Stores information about the forum user. Used as {@code UserDetails} in spring security for user authentication,
@@ -119,6 +120,8 @@ public class User extends Entity implements UserDetails {
     private String encodedUsername;
 
     private byte[] avatar = new byte[0];
+
+    private List<Group> groups = new ArrayList<Group>();
 
     /**
      * Only for hibernate usage.
@@ -395,5 +398,19 @@ public class User extends Entity implements UserDetails {
      */
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    /**
+     * @return groups groups of user
+     */
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    /**
+     * @param groups groups of user
+     */
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 }
