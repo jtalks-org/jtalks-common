@@ -1,10 +1,7 @@
 package org.jtalks.common.security.acl;
 
 import org.apache.commons.lang.Validate;
-import org.jtalks.common.model.entity.Branch;
-import org.jtalks.common.model.entity.Component;
-import org.jtalks.common.model.entity.Entity;
-import org.jtalks.common.model.entity.Section;
+import org.jtalks.common.model.entity.*;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.model.ObjectIdentity;
 
@@ -92,6 +89,7 @@ public class TypeConvertingObjectIdentityGenerator {
      */
     public static TypeConvertingObjectIdentityGenerator createDefaultGenerator() {
         return new TypeConvertingObjectIdentityGenerator()
+                .addConversionRule(Group.class, "GROUP")
                 .addConversionRule(Branch.class, "BRANCH")
                 .addConversionRule(Section.class, "SECTION")
                 .addConversionRule(Component.class, "COMPONENT");

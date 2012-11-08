@@ -16,14 +16,14 @@ package org.jtalks.common.validation.util;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import org.jtalks.common.validation.annotations.UniqueField;
+import org.jtalks.common.validation.annotations.Email;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
 public class ReflectionAnnotationUtilTest {
 
-    private static List<String> toNames(List<AnnotatedField<UniqueField>> fields) {
+    private static List<String> toNames(List<AnnotatedField<Email>> fields) {
         return Lists.transform(fields, fieldNamesRetriever);
     }
 
@@ -34,7 +34,7 @@ public class ReflectionAnnotationUtilTest {
         }
     };
 
-    private static List<Field> toFields(List<AnnotatedField<UniqueField>> fields) {
+    private static List<Field> toFields(List<AnnotatedField<Email>> fields) {
         return Lists.transform(fields, fieldRetriever);
     }
 

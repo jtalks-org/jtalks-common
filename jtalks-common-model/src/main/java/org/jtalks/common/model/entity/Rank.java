@@ -16,7 +16,6 @@ package org.jtalks.common.model.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.jtalks.common.validation.annotations.UniqueConstraint;
 
 import javax.validation.constraints.Min;
 
@@ -27,7 +26,6 @@ import javax.validation.constraints.Min;
  * 
  * @author Pavel Vervenko
  */
-@UniqueConstraint
 public class Rank extends Entity {
 
     /**

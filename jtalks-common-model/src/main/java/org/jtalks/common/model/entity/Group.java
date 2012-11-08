@@ -16,7 +16,6 @@ package org.jtalks.common.model.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.jtalks.common.validation.annotations.UniqueConstraint;
 
 import javax.annotation.Nonnull;
 import java.io.Serializable;
@@ -31,7 +30,6 @@ import java.util.List;
  * @author Akimov Konstantin
  * @author Vyacheslav Zhivaev
  */
-@UniqueConstraint
 public class Group extends Entity {
     /**
      * Error message if group description has illegal length
@@ -135,6 +133,17 @@ public class Group extends Entity {
      */
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    /**
+     * This method adds a group of users in this group.
+     */
+    public void addToUsers(){
+        for (User user : users) {
+            if (!user.getGroups().contains(this)) {
+                user.getGroups().add(this);
+            }
+        }
     }
 
     /**

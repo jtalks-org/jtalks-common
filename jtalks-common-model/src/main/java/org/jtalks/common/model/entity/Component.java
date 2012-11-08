@@ -16,7 +16,6 @@ package org.jtalks.common.model.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.jtalks.common.validation.annotations.UniqueConstraint;
 import ru.javatalks.utils.general.Assert;
 
 import javax.validation.constraints.NotNull;

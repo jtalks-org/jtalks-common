@@ -14,6 +14,7 @@
  */
 package org.jtalks.common.model.entity;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
@@ -36,10 +37,15 @@ public class EntityTest {
     private Entity first;
     private Entity second;
     private Entity third;
+    private String uuid;
+
+    @BeforeMethod
+    public void setUp() throws Exception {
+        uuid = java.util.UUID.randomUUID().toString();
+    }
 
     @Test
     public void testEqualsSymmetry() {
-        String uuid = java.util.UUID.randomUUID().toString();
 
         first = new EntityObject(uuid);
         second = new EntityObject(uuid);
@@ -64,7 +70,6 @@ public class EntityTest {
 
     @Test
     public void testEqualsTransitivity() {
-        String uuid = java.util.UUID.randomUUID().toString();
 
         first = new EntityObject(uuid);
         second = new EntityObject(uuid);
@@ -85,22 +90,12 @@ public class EntityTest {
     }
 
     @Test
-    public void testEqualsWhenDifferentClasses() {
-        String id = "id";
-        first = new EntityObject(id);
-        second = new Entity() {
-        };
-        second.setUuid(id);
-
-        assertFalse(first.equals(second));
-    }
-
-    @Test
     public void testEqualsInheritance(){
-        first = new EntityObject("1");
+
+        first = new EntityObject(uuid);
         second = new Entity() {
         };
-        second.setId(2);
+        second.setUuid(uuid);
 
         assertFalse(first.equals(second));
     }

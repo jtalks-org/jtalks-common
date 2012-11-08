@@ -16,14 +16,12 @@ package org.jtalks.common.model.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.jtalks.common.validation.annotations.UniqueConstraint;
 
 /**
  * Forum branch that contains topics related to branch theme.
  * 
  * @author Pavel Vervenko
  */
-@UniqueConstraint
 public class Branch extends Entity {
 
     private static final String BRANCH_DESCRIPTION_ILLEGAL_LENGTH = "{branch.description.length_constraint_violation}";

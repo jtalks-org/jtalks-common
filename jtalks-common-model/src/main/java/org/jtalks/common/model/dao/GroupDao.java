@@ -22,7 +22,7 @@ import org.jtalks.common.model.entity.User;
 
 /**
  * Data access object for manipulating groups
- * 
+ *
  * @author Konstantin Akimov
  */
 public interface GroupDao extends ParentRepository<Group> {
@@ -33,9 +33,10 @@ public interface GroupDao extends ParentRepository<Group> {
      * @return list of groups
      */
     List<Group> getAll();
-    
+
     /**
      * Get the list of all groups which match to the specified name
+     *
      * @param name specified name
      * @return list of groups
      */
@@ -43,8 +44,17 @@ public interface GroupDao extends ParentRepository<Group> {
 
     /**
      * Get the list of all groups, where user is present
+     *
      * @param user specified name of user
      * @return list of groups
      */
     List<Group> getGroupsOfUser(User user);
+
+    /**
+     * Get user group with specified name.
+     *
+     * @param name group name
+     * @return user group
+     */
+    Group getGroupByName(String name);
 }

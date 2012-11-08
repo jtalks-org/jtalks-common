@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * These are the restrictions that relate only to branches and sections.
- *
+ * <p/>
  * Please follow the binary numeration in permissions
  * and do not create numbers more then 1 in comparing to existing ones
  * (i.e. yoo have 010, use 011, not 10010)
@@ -33,9 +33,9 @@ import java.util.List;
 public enum BranchPermission implements JtalksPermission {
     /**
      * The ability of user group or user to create new topics in the branch.
-     */
+     *//*
     CREATE_TOPICS("11", "CREATE_TOPICS"),
-    /**
+    *//**
      * The ability of user group or user to view the branch (to see its topics).
      */
     VIEW_TOPICS("110", "VIEW_TOPICS"),
@@ -44,14 +44,17 @@ public enum BranchPermission implements JtalksPermission {
      * (not mandatory to be grated to the permission for that branch as well).
      */
     MOVE_TOPICS("1000", "MOVE_TOPICS"),
+
+    /* will be implemented soon, no need of remove
     /**
      * The ability to split topic into 2 different topics (not necessary in the same branch).
      */
-    SPLIT_TOPICS("1001", "SPLIT_TOPICS"),
+    /**
+     SPLIT_TOPICS("1001", "SPLIT_TOPICS"),
+     */
     /**
      * The ability of user group or user to delete topics from the branch.
-     */
-    DELETE_TOPICS("1010", "DELETE_TOPICS"),
+    DELETE_TOPICS("1010", "DELETE_TOPICS"),*/
     /**
      * The ability of user group or user to close topics in the branch.
      */

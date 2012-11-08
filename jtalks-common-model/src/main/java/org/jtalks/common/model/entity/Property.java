@@ -18,44 +18,47 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * The Property entity which contains configuration for components
- * 
+ * The Property entity which contains configuration for components. Components have default properties (like JCommune
+ * has some number of predefined properties) with default values which are represented by Property. And when actual
+ * component is created, default properties are copied to that component with their default values and those particular
+ * properties are also represented by Property class.
+ *
  * @author Vahluev Vyacheslav
  * @author Ancient_Mariner
  */
 public class Property extends Entity {
-    
+
     private static final String PROPERTY_NAME_ILLEGAL_LENGTH = "{property.name.length_constraint_violation}";
     private static final String PROPERTY_CANT_BE_VOID = "{property.name.emptiness_constraint_violation}";
 
     public static final int PROPERTY_NAME_MAX_LENGTH = 256;
 
     /**
-     * Property's name
+     * Property's name.
      */
     @NotBlank(message = PROPERTY_CANT_BE_VOID)
     @Length(max = PROPERTY_NAME_MAX_LENGTH, message = PROPERTY_NAME_ILLEGAL_LENGTH)
     private String name;
     /**
-     * Property's value
+     * Property's value.
      */
     private String value;
 
     /**
-     * Property's validation rule
+     * Property's validation rule.
      */
     private String validationRule;
 
     /**
-     * Default constructor, sets nothing, used only by hibernate
+     * Default constructor, sets nothing, used only by hibernate.
      */
     protected Property() {
     }
 
     /**
-     * Constructor which sets name and value of the property
-     * 
-     * @param name of the property
+     * Constructor which sets name and value of the property.
+     *
+     * @param name  of the property
      * @param value of the property
      */
     public Property(String name, String value) {
@@ -64,7 +67,7 @@ public class Property extends Entity {
     }
 
     /**
-     * Gets the name of the property
+     * Gets the name of the property.
      *
      * @return name of the property
      */
@@ -73,7 +76,7 @@ public class Property extends Entity {
     }
 
     /**
-     * Sets the name of the property
+     * Sets the name of the property.
      *
      * @param name new name of the property
      */
@@ -82,7 +85,7 @@ public class Property extends Entity {
     }
 
     /**
-     * Gets the value of the property
+     * Gets the value of the property.
      *
      * @return current value of the property
      */
@@ -91,7 +94,7 @@ public class Property extends Entity {
     }
 
     /**
-     * Sets the value of the property
+     * Sets the value of the property.
      *
      * @param value new value of the property
      */
@@ -100,7 +103,7 @@ public class Property extends Entity {
     }
 
     /**
-     * Gets the validation rule of the property
+     * Gets the validation rule of the property.
      *
      * @return current validationRule of the property
      */
@@ -109,7 +112,7 @@ public class Property extends Entity {
     }
 
     /**
-     * Sets the validation rule of the property
+     * Sets the validation rule of the property.
      *
      * @param validationRule new validationRule of the property
      */
