@@ -147,7 +147,7 @@
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-acl</artifactId>
-        <version>3.1.1.JAVATALKS-PATCH.RELEASE</version>
+        <version>3.1.1.JAVATALKS-PATCH2.RELEASE</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.security</groupId>

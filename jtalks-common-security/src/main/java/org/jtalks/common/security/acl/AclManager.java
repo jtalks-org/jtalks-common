@@ -162,6 +162,17 @@ public class AclManager {
         mutableAclService.updateAcl(acl);
     }
 
+   /**
+     * Deletes all ACEs defined in the acl_entry table, wired with the presented SID, also wires owner_sid of OID
+     * belongs to SID to another SID, deletes given SID defined in acl_sid.
+     *
+     * @param sid     to ACL delete
+     * @param sidHeir will became the owner of ObjectIdentities belongs to sid
+     */
+    public void deleteSid(Sid sid, Sid sidHeir){
+       mutableAclService.deleteEntriesForSid(sid, sidHeir);
+    }
+
     /**
      * Delete object from acl. All permissions will be removed.
      *
