@@ -87,7 +87,16 @@ public enum BranchPermission implements JtalksPermission {
     /**
      * The ability of users to create sticked topics
      */
-    CREATE_STICKED_TOPICS("10011", "CREATE_STICKED_TOPICS");
+    CREATE_STICKED_TOPICS("10011", "CREATE_STICKED_TOPICS"),
+
+    /** Post a new code review topic (does not relate to commenting in code reviews). */
+    CREATE_CODE_REVIEW("10101", "CREATE_CODE_REVIEW"),
+    /**
+     * Whether to allow user posting comments for code review. Note that even if {@link #VIEW_TOPICS} is not allowed,
+     * user can still leave comments (by POST for instance) in code review. User don't need to have {@link
+     * #CREATE_CODE_REVIEW} permissions for that.
+     */
+    LEAVE_COMMENTS_IN_CODE_REVIEW("10110", "LEAVE_COMMENTS_IN_CODE_REVIEW");
 
     private final String name;
     private final int mask;
