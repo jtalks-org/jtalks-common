@@ -88,7 +88,7 @@ public class SecurityServiceImplTest {
         assertEquals(result.getAuthorities().iterator().next().getAuthority(), "ROLE_USER");
         assertTrue(result.isAccountNonExpired());
         assertTrue(result.isAccountNonLocked());
-        assertTrue(result.isEnabled());
+        assertFalse(result.isEnabled());
         assertTrue(result.isCredentialsNonExpired());
         verify(userDao).getByUsername(USERNAME);
         verify(auth).getPrincipal();
