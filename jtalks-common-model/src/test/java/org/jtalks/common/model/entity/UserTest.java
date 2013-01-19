@@ -45,7 +45,7 @@ public class UserTest {
         assertTrue(sut.isAccountNonExpired());
         assertTrue(sut.isAccountNonLocked());
         assertTrue(sut.isCredentialsNonExpired());
-        assertTrue(sut.isEnabled());
+        assertFalse(sut.isEnabled());
     }
 
     @Test

@@ -123,6 +123,8 @@ public class User extends Entity implements UserDetails {
 
     private List<Group> groups = new ArrayList<Group>();
 
+    private boolean enabled;
+
     /**
      * Only for hibernate usage.
      */
@@ -308,14 +310,6 @@ public class User extends Entity implements UserDetails {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    /**
      * @return last login time  and date
      */
     public DateTime getLastLogin() {
@@ -412,5 +406,24 @@ public class User extends Entity implements UserDetails {
      */
     public void setGroups(List<Group> groups) {
         this.groups = groups;
+    }
+
+    /**
+     * After registration user account is disabled by default.
+     * If not enabled in 24 hours after registration account will be deleted.
+     * <p/>
+     * User can activate his account by following the link in email.
+     *
+     * @return true, if user account is enabled
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * @param enabled if set to false, it will prevent user from log in
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
