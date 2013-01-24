@@ -1,10 +1,8 @@
 GENERAL
 ---------------------------------------------------------
 Project Home Page: http://jtalks.org
+
+These are common modules (jars) that are needed for other standalone JTalks projects like JCommune, Poulpe.
 ---------------------------------------------------------
 
-INSTALLATION
----------------------------------------------------------
-The installation guide can be found here:
- http://jtalks.org/display/jtalks/Installation+Guide
 ---------------------------------------------------------
