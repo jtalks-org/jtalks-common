@@ -17,6 +17,8 @@ package org.jtalks.common.security.acl;
 import org.jtalks.common.model.dao.GroupDao;
 import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.permissions.BranchPermission;
+import org.jtalks.common.model.permissions.GeneralPermission;
+import org.jtalks.common.model.permissions.JtalksPermission;
 import org.jtalks.common.security.acl.sids.UserGroupSid;
 import org.springframework.security.acls.model.AccessControlEntry;
 
@@ -47,12 +49,16 @@ public class GroupAce {
         String groupIdString = ((UserGroupSid) ace.getSid()).getGroupId();
         return Long.parseLong(groupIdString);
     }
-
-    public BranchPermission getBranchPermission() {
-        return BranchPermission.findByMask(getBranchPermissionMask());
+    
+    public JtalksPermission getPermission() {
+        JtalksPermission permission  = BranchPermission.findByMask(getPermissionMask());
+        if (permission == null) {
+            permission = GeneralPermission.findByMask(getPermissionMask());
+        }
+        return permission;
     }
-
-    public int getBranchPermissionMask() {
+    
+    public int getPermissionMask() {
         return ace.getPermission().getMask();
     }
 
