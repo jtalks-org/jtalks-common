@@ -378,9 +378,9 @@
     </plugins>
   </build>
   <scm>
-    <connection>scm:git:git@jtalks.org:jtalks-common</connection>
-    <developerConnection>scm:git:git@jtalks.org:jtalks-common</developerConnection>
-    <url>scm:git:git@jtalks.org:jtalks-common</url>
+    <connection>scm:git:git@github.com:jtalks-org/jtalks-common.git</connection>
+    <developerConnection>scm:git:git@github.com:jtalks-org/jtalks-common.git</developerConnection>
+    <url>scm:git:git@github.com:jtalks-org/jtalks-common.git</url>
   </scm>
   <repositories>
     <repository>
