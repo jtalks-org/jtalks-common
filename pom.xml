@@ -313,6 +313,16 @@
       <groupId>log4j</groupId>
       <artifactId>apache-log4j-extras</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
 
   <build>
@@ -373,6 +383,22 @@
         <version>2.2.1</version>
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+          <version>0.29</version>
+          <configuration>
+            <excludedClasses>
+              <param>org.jtalks.common.model.dao.hibernate*</param>
+            </excludedClasses>
+            <timestampedReports>false</timestampedReports>
+            <verbose>true</verbose>
+            <outputFormats>
+              <outputFormat>XML</outputFormat>
+            </outputFormats>
+            <failWhenNoMutations>false</failWhenNoMutations>
         </configuration>
       </plugin>
     </plugins>
