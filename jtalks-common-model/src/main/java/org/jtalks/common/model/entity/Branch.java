@@ -37,7 +37,6 @@ public class Branch extends Entity {
 
     @Length(max = BRANCH_DESCRIPTION_MAX_LENGTH, message = BRANCH_DESCRIPTION_ILLEGAL_LENGTH)
     private String description;
-    private Integer position;
     private Section section;
 
     private Group moderatorsGroup;
@@ -113,26 +112,6 @@ public class Branch extends Entity {
     }
 
     /**
-     * Gets the position of this branch within all branches of its parent
-     * section
-     * 
-     * @return the position
-     */
-    public Integer getPosition() {
-        return position;
-    }
-
-    /**
-     * Sets the position of this branch within all branches of its parent
-     * section
-     * 
-     * @param position the position to set
-     */
-    public void setPosition(Integer position) {
-        this.position = position;
-    }
-
-    /**
      * Sets a {@link Group} of moderators for this branch. This field is an extra information about moderators, since we
      * already have ACL records that explain what permissions groups have on branches, but this moderators group is just
      * for convenience - in order to easily work with moderators.
@@ -156,7 +135,6 @@ public class Branch extends Entity {
 
     @Override
     public String toString() {
-        return "PoulpeBranch [id=" + getId() + ", name=" + name + ", description=" + description + ", position="
-                + position + "]";
+        return "Branch [id=" + getId() + ", name=" + name + ", description=" + description + "]";
     }
 }
