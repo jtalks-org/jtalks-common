@@ -4,7 +4,7 @@
   <packaging>pom</packaging>
   <groupId>org.jtalks.common</groupId>
   <artifactId>jtalks-common</artifactId>
-  <version>0.46</version>
+  <version>0.47-SNAPSHOT</version>
   <name>${project.artifactId}</name>
   <url>http://maven.apache.org</url>
 
