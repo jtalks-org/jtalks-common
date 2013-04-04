@@ -32,13 +32,6 @@ import org.jtalks.common.model.entity.Entity;
 public interface ParentRepository<T extends Entity> extends ChildRepository<T> {
 
     /**
-     * Save or update entity.
-     *
-     * @param entity object to save
-     */
-    void saveOrUpdate(T entity);
-
-    /**
      * <p>Delete the entity by id.</p>
      * <b>Please note - this method doesn't delete cascaded entities.</b>
      *

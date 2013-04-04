@@ -20,7 +20,7 @@ import org.jtalks.common.model.entity.Entity;
  * Describes a DAO for typical child-type entity. Such an entity may be updated
  * on it's own, but for deletion it should use the following pattern: remove
  * an entity from parent's collection, save parent afterwards.
- * To prevent misuse a dao interfece for child repository lacks "delete(...)"
+ * To prevent misuse a dao interface for child repository lacks "delete(...)"
  * methods; these methods are eligible for parent-class entities and 
  * specified by ParentRepositoryDao interface.
  *
@@ -34,12 +34,11 @@ import org.jtalks.common.model.entity.Entity;
 public interface ChildRepository<T extends Entity> {
 
     /**
-     * Update entity.
-     * You should not try to save entity using this method.
+     * Save or update entity.
      *
      * @param entity object to save
      */
-    void update(T entity);
+    void saveOrUpdate(T entity);
 
     /**
      * Get entity by id.
@@ -50,7 +49,7 @@ public interface ChildRepository<T extends Entity> {
     T get(Long id);
 
     /**
-     * Check entity existance by id.
+     * Check entity existence by id.
      *
      * @param id entity id
      * @return {@code true} if entity exist

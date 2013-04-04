@@ -75,10 +75,9 @@ public abstract class AbstractHibernateChildRepository<T extends Entity> impleme
      * {@inheritDoc}
      */
     @Override
-    public void update(T entity) {
+    public void saveOrUpdate(T entity) {
         Session session = getSession();
         session.saveOrUpdate(entity);
-        session.flush();   //TODO: WOW, this shouldn't be here, it's related only to tests,
     }
 
     /**
