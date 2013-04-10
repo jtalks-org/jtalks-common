@@ -23,7 +23,11 @@ public enum ProfilePermission implements JtalksPermission {
     /**
      * The ability of user group or user to edit user profile.
      */
-    EDIT_PROFILE("1111", "EDIT_PROFILE");
+    EDIT_OWN_PROFILE("1111", "EDIT_OWN_PROFILE"),
+    /**
+     * The ability of user group or user to edit profiles of other users.
+     */
+    EDIT_OTHERS_PROFILE("10111", "EDIT_OTHERS_PROFILE");
 
     private final String name;
     private final int mask;
