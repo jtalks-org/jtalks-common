@@ -14,6 +14,7 @@
  */
 package org.jtalks.common.model.dao.hibernate;
 
+import org.hibernate.classic.Session;
 import org.jtalks.common.model.dao.ParentRepository;
 import org.jtalks.common.model.entity.Entity;
 
@@ -28,6 +29,16 @@ public abstract class AbstractHibernateParentRepository<T extends Entity> extend
     implements ParentRepository<T> {
 
     private final String deleteQuery = "delete " + getType().getCanonicalName() + " e where e.id= :id";
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void saveOrUpdate(T entity) {
+        Session session = getSession();
+        session.saveOrUpdate(entity);
+        session.flush();
+    }
 
     /**
      * {@inheritDoc}
