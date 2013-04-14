@@ -17,36 +17,23 @@ package org.jtalks.common.model.dao;
 import org.jtalks.common.model.entity.Entity;
 
 /**
- * Describes a DAO for typical child-type entity. Such an entity may be updated
+ * Describes a DAO for specified type entity. Such an entity may be updated
  * on it's own, but for deletion it should use the following pattern: remove
  * an entity from parent's collection, save parent afterwards.
- * To prevent misuse a dao interface for child repository lacks "delete(...)"
- * methods; these methods are eligible for parent-class entities and 
- * specified by ParentRepositoryDao interface.
  *
- * Example: Topic has a collection of posts. Post is a child entity, 
- * Topic is a parent one. So, PostDao should implement ChildRepository.
- *
+ * @param <T> The type of domain object.
  * @author Pavel Vervenko
  * @author Kirill Afonin
  * @author Alexey Malev
  */
-public interface GeneralDao {
-
-    /**
-     * Update entity.
-     * You should not try to save entity using this method.
-     *
-     * @param entity object to save
-     */
-    <T> void update(T entity);
+public interface GenericDao<T extends Entity> {
 
     /**
      * Save or update entity.
      *
      * @param entity object to save
      */
-    <T> void saveOrUpdate(T entity);
+    void saveOrUpdate(T entity);
 
 
     /**
@@ -54,10 +41,10 @@ public interface GeneralDao {
      * <b>Please note - this method doesn't delete cascaded entities.</b>
      *
      * @param type The entity type.
-     * @param id The entity id.
+     * @param id   The entity id.
      * @return {@code true} if entity deleted successfully
      */
-    <T> boolean delete(Class<T> type, Long id);
+    boolean delete(Class<T> type, Long id);
 
     /**
      * <p>Delete the entity by object reference.</p>
@@ -65,23 +52,23 @@ public interface GeneralDao {
      *
      * @param entity Entity to be deleted.
      */
-    <T> void delete(T entity);
+    void delete(T entity);
 
     /**
      * Get entity by id.
      *
      * @param type The entity type.
-     * @param id the id
-     * @return loaded Persistence instance
+     * @param id   The entity id.
+     * @return Persistent instance.
      */
-    <T> T get(Class<T> type, Long id);
+    T get(Class<T> type, Long id);
 
     /**
      * Check entity existence by id.
      *
      * @param type The entity type.
-     * @param id The entity id.
+     * @param id   The entity id.
      * @return {@code true} if entity exist.
      */
-    <T> boolean isExist(Class<T> type, Long id);
+    boolean isExist(Class<T> type, Long id);
 }

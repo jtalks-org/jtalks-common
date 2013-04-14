@@ -16,11 +16,11 @@ package org.jtalks.common.model.dao.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
-import org.jtalks.common.model.dao.GeneralDao;
+import org.jtalks.common.model.dao.GenericDao;
 import org.jtalks.common.model.entity.Entity;
 
 /**
- * Basic class for access to the {@link Entity} objects.
+ * Basic class for access to the specified {@link Entity} objects.
  * Uses to load objects from database, save, update or delete them.
  * The implementation is based on the Hibernate.
  * Has the implementation of some commonly used methods.
@@ -28,7 +28,7 @@ import org.jtalks.common.model.entity.Entity;
  * @author Pavel Vervenko
  * @author Kirill Afonin
  */
-public abstract class GeneralDaoImpl implements GeneralDao {
+public abstract class GenericDaoImpl<T extends Entity> implements GenericDao<T> {
 
     /**
      * Hibernate SessionFactory
@@ -58,16 +58,7 @@ public abstract class GeneralDaoImpl implements GeneralDao {
      * {@inheritDoc}
      */
     @Override
-    public <T> void update(T entity) {
-        Session session = getSession();
-        session.update(entity);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T> void saveOrUpdate(T entity) {
+    public void saveOrUpdate(T entity) {
         Session session = getSession();
         session.saveOrUpdate(entity);
     }
@@ -76,7 +67,7 @@ public abstract class GeneralDaoImpl implements GeneralDao {
      * {@inheritDoc}
      */
     @Override
-    public <T> boolean delete(Class<T> type, Long id) {
+    public boolean delete(Class<T> type, Long id) {
         String deleteQuery = "delete " + type.getCanonicalName()
                 + " e where e.id= :id";
         return getSession().createQuery(deleteQuery).setCacheable(true).setLong("id", id).executeUpdate() != 0;
@@ -86,7 +77,7 @@ public abstract class GeneralDaoImpl implements GeneralDao {
      * {@inheritDoc}
      */
     @Override
-    public <T> void delete(T entity) {
+    public void delete(T entity) {
         getSession().delete(entity);
     }
 
@@ -95,7 +86,7 @@ public abstract class GeneralDaoImpl implements GeneralDao {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T get(Class<T> type, Long id) {
+    public T get(Class<T> type, Long id) {
         return (T) getSession().get(type, id);
     }
 
@@ -103,7 +94,7 @@ public abstract class GeneralDaoImpl implements GeneralDao {
      * {@inheritDoc}
      */
     @Override
-    public <T> boolean isExist(Class<T> type, Long id) {
+    public boolean isExist(Class<T> type, Long id) {
         return get(type, id) != null;
     }
 }

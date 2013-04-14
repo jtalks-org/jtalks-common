@@ -11,7 +11,7 @@ import java.util.List;
 /**
  *
  */
-public class GroupHibernateDao extends GeneralDaoImpl implements GroupDao<Group> {
+public class GroupHibernateDao extends GenericDaoImpl<Group> implements GroupDao<Group> {
 
     /**
      * {@inheritDoc}
@@ -66,16 +66,11 @@ public class GroupHibernateDao extends GeneralDaoImpl implements GroupDao<Group>
      * {@inheritDoc}
      */
     @Override
-    public <T> void delete(T entity) {
-        if (entity instanceof Group) {
-            Group group = (Group) entity;
-            getSession().update(group);
+    public void delete(Group group) {
+        getSession().update(group);
 
-            group.getUsers().clear();
-            saveOrUpdate(group);
-            super.delete(group);
-        } else {
-            super.delete(entity);
-        }
+        group.getUsers().clear();
+        saveOrUpdate(group);
+        super.delete(group);
     }
 }

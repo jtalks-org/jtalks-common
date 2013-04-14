@@ -14,9 +14,9 @@
  */
 package org.jtalks.common.model.dao;
 
-import java.util.List;
-
 import org.jtalks.common.model.entity.User;
+
+import java.util.List;
 
 /**
  * Data access object for manipulating groups

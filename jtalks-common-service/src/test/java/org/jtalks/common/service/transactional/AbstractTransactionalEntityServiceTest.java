@@ -14,24 +14,19 @@
  */
 package org.jtalks.common.service.transactional;
 
-import org.jtalks.common.model.dao.GeneralDao;
+import org.jtalks.common.model.dao.GenericDao;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.service.exceptions.NotFoundException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.javatalks.utils.datetime.DateTimeUtils;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+import static org.testng.Assert.*;
 
 public class AbstractTransactionalEntityServiceTest {
     private class AbstractTransactionalEntityServiceObject extends AbstractTransactionalEntityService {
-        private AbstractTransactionalEntityServiceObject(GeneralDao dao) {
+        private AbstractTransactionalEntityServiceObject(GenericDao dao) {
             this.dao = dao;
         }
     }
@@ -39,12 +34,12 @@ public class AbstractTransactionalEntityServiceTest {
     private long ID = 1L;
 
     private AbstractTransactionalEntityService abstractTransactionalEntityService;
-    private GeneralDao abstractDao;
+    private GenericDao abstractDao;
     private Entity entity;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        abstractDao = mock(GeneralDao.class);
+        abstractDao = mock(GenericDao.class);
         entity = mock(Entity.class);
         abstractTransactionalEntityService = new AbstractTransactionalEntityServiceObject(abstractDao);
     }
