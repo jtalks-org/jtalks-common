@@ -14,6 +14,8 @@
  */
 package org.jtalks.common.model.dao;
 
+import org.jtalks.common.model.entity.Entity;
+
 /**
  * Describes a DAO for specified type entity. Such an entity may be updated
  * on it's own, but for deletion it should use the following pattern: remove
@@ -24,7 +26,7 @@ package org.jtalks.common.model.dao;
  * @author Kirill Afonin
  * @author Alexey Malev
  */
-public interface GenericDao<T> {
+public interface GenericDao<T extends Entity> {
 
     /**
      * Save or update entity.

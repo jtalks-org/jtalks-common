@@ -11,7 +11,7 @@ import java.util.List;
 /**
  *
  */
-public class GroupHibernateDao extends GenericDaoImpl<Group> implements GroupDao<Group> {
+public class GroupHibernateDao extends GenericDaoImpl<Group> implements GroupDao {
 
     /**
      * {@inheritDoc}

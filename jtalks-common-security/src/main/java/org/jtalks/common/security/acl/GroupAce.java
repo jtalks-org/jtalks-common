@@ -35,7 +35,7 @@ public class GroupAce {
         this.ace = ace;
     }
 
-    public Group getGroup(GroupDao<Group> groupDao) {
+    public Group getGroup(GroupDao groupDao) {
         long groupId = getGroupId();
         Group group = groupDao.get(groupId);
         throwIfNull(groupId, group);

@@ -14,6 +14,7 @@
  */
 package org.jtalks.common.model.dao;
 
+import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.entity.User;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
  *
  * @author Konstantin Akimov
  */
-public interface GroupDao<Group> extends GenericDao<Group> {
+public interface GroupDao extends GenericDao<Group> {
 
     /**
      * Get the list of all groups.

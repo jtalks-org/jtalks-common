@@ -31,7 +31,7 @@ public interface EntityService<T extends Entity> {
      * Get persistent object by id. Method is trying to find persistent object with current primary id and return it.
      *
      * @param id primary id of persistent object to find, id could not be negative.
-     *           If negative id value will be put IllegalAgrumentEception will be thrown.
+     *           If negative id value will be put IllegalArgumentException will be thrown.
      * @return persistent object T or null if row with primary id = id is absent.
      * @throws NotFoundException when entity not found
      */
