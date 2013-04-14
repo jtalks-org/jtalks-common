@@ -35,7 +35,7 @@ public class GroupAce {
         this.ace = ace;
     }
 
-    public Group getGroup(GroupDao groupDao) {
+    public Group getGroup(GroupDao<Group> groupDao) {
         long groupId = getGroupId();
         Group group = groupDao.get(groupId);
         throwIfNull(groupId, group);
@@ -49,15 +49,15 @@ public class GroupAce {
         String groupIdString = ((UserGroupSid) ace.getSid()).getGroupId();
         return Long.parseLong(groupIdString);
     }
-    
+
     public JtalksPermission getPermission() {
-        JtalksPermission permission  = BranchPermission.findByMask(getPermissionMask());
+        JtalksPermission permission = BranchPermission.findByMask(getPermissionMask());
         if (permission == null) {
             permission = GeneralPermission.findByMask(getPermissionMask());
         }
         return permission;
     }
-    
+
     public int getPermissionMask() {
         return ace.getPermission().getMask();
     }

@@ -14,8 +14,6 @@
  */
 package org.jtalks.common.model.dao;
 
-import org.jtalks.common.model.entity.Entity;
-
 /**
  * Describes a DAO for specified type entity. Such an entity may be updated
  * on it's own, but for deletion it should use the following pattern: remove
@@ -26,7 +24,7 @@ import org.jtalks.common.model.entity.Entity;
  * @author Kirill Afonin
  * @author Alexey Malev
  */
-public interface GenericDao<T extends Entity> {
+public interface GenericDao<T> {
 
     /**
      * Save or update entity.
@@ -40,11 +38,10 @@ public interface GenericDao<T extends Entity> {
      * <p>Delete the entity by id.</p>
      * <b>Please note - this method doesn't delete cascaded entities.</b>
      *
-     * @param type The entity type.
-     * @param id   The entity id.
+     * @param id The entity id.
      * @return {@code true} if entity deleted successfully
      */
-    boolean delete(Class<T> type, Long id);
+    boolean delete(Long id);
 
     /**
      * <p>Delete the entity by object reference.</p>
@@ -57,18 +54,16 @@ public interface GenericDao<T extends Entity> {
     /**
      * Get entity by id.
      *
-     * @param type The entity type.
-     * @param id   The entity id.
+     * @param id The entity id.
      * @return Persistent instance.
      */
-    T get(Class<T> type, Long id);
+    T get(Long id);
 
     /**
      * Check entity existence by id.
      *
-     * @param type The entity type.
-     * @param id   The entity id.
+     * @param id The entity id.
      * @return {@code true} if entity exist.
      */
-    boolean isExist(Class<T> type, Long id);
+    boolean isExist(Long id);
 }

@@ -19,6 +19,8 @@ import org.hibernate.classic.Session;
 import org.jtalks.common.model.dao.GenericDao;
 import org.jtalks.common.model.entity.Entity;
 
+import java.lang.reflect.ParameterizedType;
+
 /**
  * Basic class for access to the specified {@link Entity} objects.
  * Uses to load objects from database, save, update or delete them.
@@ -35,6 +37,20 @@ public abstract class GenericDaoImpl<T extends Entity> implements GenericDao<T> 
      */
     private SessionFactory sessionFactory;
 
+    /**
+     * Type of entity
+     */
+    protected final Class<T> type = getType();
+
+    /**
+     * Retrieves parametrized type of entity using reflection.
+     *
+     * @return type of entity
+     */
+    @SuppressWarnings("unchecked")
+    protected Class<T> getType() {
+        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
 
     /**
      * Get current Hibernate session.
@@ -67,7 +83,7 @@ public abstract class GenericDaoImpl<T extends Entity> implements GenericDao<T> 
      * {@inheritDoc}
      */
     @Override
-    public boolean delete(Class<T> type, Long id) {
+    public boolean delete(Long id) {
         String deleteQuery = "delete " + type.getCanonicalName()
                 + " e where e.id= :id";
         return getSession().createQuery(deleteQuery).setCacheable(true).setLong("id", id).executeUpdate() != 0;
@@ -86,7 +102,7 @@ public abstract class GenericDaoImpl<T extends Entity> implements GenericDao<T> 
      */
     @Override
     @SuppressWarnings("unchecked")
-    public T get(Class<T> type, Long id) {
+    public T get(Long id) {
         return (T) getSession().get(type, id);
     }
 
@@ -94,7 +110,9 @@ public abstract class GenericDaoImpl<T extends Entity> implements GenericDao<T> 
      * {@inheritDoc}
      */
     @Override
-    public boolean isExist(Class<T> type, Long id) {
-        return get(type, id) != null;
+    public boolean isExist(Long id) {
+        return get(id) != null;
     }
+
+
 }
