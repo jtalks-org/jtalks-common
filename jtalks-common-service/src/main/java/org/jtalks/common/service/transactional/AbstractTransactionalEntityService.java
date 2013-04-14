@@ -14,7 +14,7 @@
  */
 package org.jtalks.common.service.transactional;
 
-import org.jtalks.common.model.dao.ChildRepository;
+import org.jtalks.common.model.dao.GeneralDao;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.service.EntityService;
 import org.jtalks.common.service.exceptions.NotFoundException;
@@ -30,7 +30,7 @@ import ru.javatalks.utils.datetime.DateTimeUtilsFactory;
  * @author Osadchuck Eugeny
  * @author Kirill Afonin
  */
-public abstract class AbstractTransactionalEntityService<T extends Entity, Y extends ChildRepository<T>>
+public abstract class AbstractTransactionalEntityService<T extends Entity, Y extends GeneralDao<T>>
     implements EntityService<T> {
     /**
      * Dao object implementation.

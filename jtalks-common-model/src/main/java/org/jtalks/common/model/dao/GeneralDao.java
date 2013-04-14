@@ -17,35 +17,47 @@ package org.jtalks.common.model.dao;
 import org.jtalks.common.model.entity.Entity;
 
 /**
- * This interface describes DAO dor entities responsible for their deletion.
- * To get the clue suppose we have entities with parent-child relationships.
+ * Describes a DAO for typical child-type entity. Such an entity may be updated
+ * on it's own, but for deletion it should use the following pattern: remove
+ * an entity from parent's collection, save parent afterwards.
+ * To prevent misuse a dao interface for child repository lacks "delete(...)"
+ * methods; these methods are eligible for parent-class entities and 
+ * specified by ParentRepositoryDao interface.
  *
- * Parent entities are fine to be deleted on their own, like parentDao.delete(parentObject);
- * Child entities, on the other hand, follow different pattern: you should remove child entity
- * from the parent's collection and save the parent. To ensure child entity is not deleted on
- * it's own ChildRepository simple lacks "delete(...)" mehtods, while this implemetation
- * for parent-class entites have them.
+ * Example: Topic has a collection of posts. Post is a child entity, 
+ * Topic is a parent one. So, PostDao should implement ChildRepository.
  *
+ * @author Pavel Vervenko
  * @author Kirill Afonin
  * @author Alexey Malev
  */
-public interface ParentRepository<T extends Entity> extends ChildRepository<T> {
+public interface GeneralDao {
+
+    /**
+     * Update entity.
+     * You should not try to save entity using this method.
+     *
+     * @param entity object to save
+     */
+    <T> void update(T entity);
 
     /**
      * Save or update entity.
      *
      * @param entity object to save
      */
-    void saveOrUpdate(T entity);
+    <T> void saveOrUpdate(T entity);
+
 
     /**
      * <p>Delete the entity by id.</p>
      * <b>Please note - this method doesn't delete cascaded entities.</b>
      *
-     * @param id the id
+     * @param type The entity type.
+     * @param id The entity id.
      * @return {@code true} if entity deleted successfully
      */
-    boolean delete(Long id);
+    <T> boolean delete(Class<T> type, Long id);
 
     /**
      * <p>Delete the entity by object reference.</p>
@@ -53,5 +65,23 @@ public interface ParentRepository<T extends Entity> extends ChildRepository<T> {
      *
      * @param entity Entity to be deleted.
      */
-    void delete(T entity);
+    <T> void delete(T entity);
+
+    /**
+     * Get entity by id.
+     *
+     * @param type The entity type.
+     * @param id the id
+     * @return loaded Persistence instance
+     */
+    <T> T get(Class<T> type, Long id);
+
+    /**
+     * Check entity existence by id.
+     *
+     * @param type The entity type.
+     * @param id The entity id.
+     * @return {@code true} if entity exist.
+     */
+    <T> boolean isExist(Class<T> type, Long id);
 }

@@ -14,7 +14,7 @@
  */
 package org.jtalks.common.service.transactional;
 
-import org.jtalks.common.model.dao.ChildRepository;
+import org.jtalks.common.model.dao.GeneralDao;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.service.exceptions.NotFoundException;
 import org.testng.annotations.BeforeMethod;
@@ -31,7 +31,7 @@ import static org.testng.Assert.assertTrue;
 
 public class AbstractTransactionalEntityServiceTest {
     private class AbstractTransactionalEntityServiceObject extends AbstractTransactionalEntityService {
-        private AbstractTransactionalEntityServiceObject(ChildRepository dao) {
+        private AbstractTransactionalEntityServiceObject(GeneralDao dao) {
             this.dao = dao;
         }
     }
@@ -39,12 +39,12 @@ public class AbstractTransactionalEntityServiceTest {
     private long ID = 1L;
 
     private AbstractTransactionalEntityService abstractTransactionalEntityService;
-    private ChildRepository abstractDao;
+    private GeneralDao abstractDao;
     private Entity entity;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        abstractDao = mock(ChildRepository.class);
+        abstractDao = mock(GeneralDao.class);
         entity = mock(Entity.class);
         abstractTransactionalEntityService = new AbstractTransactionalEntityServiceObject(abstractDao);
     }

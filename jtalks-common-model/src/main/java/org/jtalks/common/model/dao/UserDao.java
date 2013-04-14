@@ -23,7 +23,7 @@ import org.jtalks.common.model.entity.User;
  * @author Kirill Afonin
  * @author Alexey Malev
  */
-public interface UserDao<T extends User> extends ParentRepository<T>{
+public interface UserDao<T extends User> extends GeneralDao {
 
     /**
      * Get {@link User} with corresponding username.

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  *
  */
-public class GroupHibernateDao extends AbstractHibernateParentRepository<Group> implements GroupDao {
+public class GroupHibernateDao extends GeneralDaoImpl implements GroupDao<Group> {
 
     /**
      * {@inheritDoc}
@@ -66,11 +66,16 @@ public class GroupHibernateDao extends AbstractHibernateParentRepository<Group> 
      * {@inheritDoc}
      */
     @Override
-    public void delete(Group group) {
-        getSession().update(group);
+    public <T> void delete(T entity) {
+        if (entity instanceof Group) {
+            Group group = (Group) entity;
+            getSession().update(group);
 
-        group.getUsers().clear();
-        saveOrUpdate(group);
-        super.delete(group);
+            group.getUsers().clear();
+            saveOrUpdate(group);
+            super.delete(group);
+        } else {
+            super.delete(entity);
+        }
     }
 }

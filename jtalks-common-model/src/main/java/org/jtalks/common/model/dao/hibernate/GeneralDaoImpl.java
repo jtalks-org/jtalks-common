@@ -16,10 +16,8 @@ package org.jtalks.common.model.dao.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
-import org.jtalks.common.model.dao.ChildRepository;
+import org.jtalks.common.model.dao.GeneralDao;
 import org.jtalks.common.model.entity.Entity;
-
-import java.lang.reflect.ParameterizedType;
 
 /**
  * Basic class for access to the {@link Entity} objects.
@@ -30,27 +28,12 @@ import java.lang.reflect.ParameterizedType;
  * @author Pavel Vervenko
  * @author Kirill Afonin
  */
-public abstract class AbstractHibernateChildRepository<T extends Entity> implements ChildRepository<T> {
+public abstract class GeneralDaoImpl implements GeneralDao {
 
     /**
      * Hibernate SessionFactory
      */
     private SessionFactory sessionFactory;
-
-    /**
-     * Type of entity
-     */
-    private final Class<T> type = getType();
-
-    /**
-     * Retrieves parametrized type of entity using reflection.
-     *
-     * @return type of entity
-     */
-    @SuppressWarnings("unchecked")
-    protected Class<T> getType() {
-        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-    }
 
 
     /**
@@ -75,10 +58,36 @@ public abstract class AbstractHibernateChildRepository<T extends Entity> impleme
      * {@inheritDoc}
      */
     @Override
-    public void update(T entity) {
+    public <T> void update(T entity) {
+        Session session = getSession();
+        session.update(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> void saveOrUpdate(T entity) {
         Session session = getSession();
         session.saveOrUpdate(entity);
-        session.flush();   //TODO: WOW, this shouldn't be here, it's related only to tests,
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> boolean delete(Class<T> type, Long id) {
+        String deleteQuery = "delete " + type.getCanonicalName()
+                + " e where e.id= :id";
+        return getSession().createQuery(deleteQuery).setCacheable(true).setLong("id", id).executeUpdate() != 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> void delete(T entity) {
+        getSession().delete(entity);
     }
 
     /**
@@ -86,7 +95,7 @@ public abstract class AbstractHibernateChildRepository<T extends Entity> impleme
      */
     @Override
     @SuppressWarnings("unchecked")
-    public T get(Long id) {
+    public <T> T get(Class<T> type, Long id) {
         return (T) getSession().get(type, id);
     }
 
@@ -94,7 +103,7 @@ public abstract class AbstractHibernateChildRepository<T extends Entity> impleme
      * {@inheritDoc}
      */
     @Override
-    public boolean isExist(Long id) {
-        return get(id) != null;
+    public <T> boolean isExist(Class<T> type, Long id) {
+        return get(type, id) != null;
     }
 }

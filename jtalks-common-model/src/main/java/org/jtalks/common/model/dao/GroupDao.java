@@ -16,8 +16,6 @@ package org.jtalks.common.model.dao;
 
 import java.util.List;
 
-import org.jtalks.common.model.dao.ParentRepository;
-import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.entity.User;
 
 /**
@@ -25,7 +23,7 @@ import org.jtalks.common.model.entity.User;
  *
  * @author Konstantin Akimov
  */
-public interface GroupDao extends ParentRepository<Group> {
+public interface GroupDao<Group> {
 
     /**
      * Get the list of all groups.
