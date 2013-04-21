@@ -1,6 +1,7 @@
 package org.jtalks.common.model.dao.hibernate;
 
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.jtalks.common.model.dao.GroupDao;
 import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.entity.User;
@@ -12,6 +13,10 @@ import java.util.List;
  *
  */
 public class GroupHibernateDao extends GenericDao<Group> implements GroupDao {
+
+    public GroupHibernateDao(SessionFactory sessionFactory, Class<Group> type) {
+        super(sessionFactory, type);
+    }
 
     /**
      * {@inheritDoc}
