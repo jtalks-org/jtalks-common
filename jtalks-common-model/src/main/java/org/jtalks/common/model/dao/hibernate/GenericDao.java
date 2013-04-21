@@ -38,6 +38,10 @@ public class GenericDao<T extends Entity> implements Crud<T> {
      */
     private final Class<T> type;
 
+    /**
+     * @param sessionFactory The SessionFactory.
+     * @param type           An entity type.
+     */
     public GenericDao(SessionFactory sessionFactory, Class<T> type) {
         this.sessionFactory = sessionFactory;
         this.type = type;
