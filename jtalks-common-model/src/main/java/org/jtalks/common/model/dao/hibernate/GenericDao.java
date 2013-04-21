@@ -16,40 +16,31 @@ package org.jtalks.common.model.dao.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
-import org.jtalks.common.model.dao.GenericDao;
+import org.jtalks.common.model.dao.Crud;
 import org.jtalks.common.model.entity.Entity;
-
-import java.lang.reflect.ParameterizedType;
 
 /**
  * Basic class for access to the specified {@link Entity} objects.
  * Uses to load objects from database, save, update or delete them.
  * The implementation is based on the Hibernate.
- * Has the implementation of some commonly used methods.
  *
- * @author Pavel Vervenko
- * @author Kirill Afonin
+ * @author Alexandre Teterin
  */
-public abstract class GenericDaoImpl<T extends Entity> implements GenericDao<T> {
+public class GenericDao<T extends Entity> implements Crud<T> {
 
     /**
      * Hibernate SessionFactory
      */
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     /**
      * Type of entity
      */
-    protected final Class<T> type = getType();
+    private final Class<T> type;
 
-    /**
-     * Retrieves parametrized type of entity using reflection.
-     *
-     * @return type of entity
-     */
-    @SuppressWarnings("unchecked")
-    protected Class<T> getType() {
-        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    public GenericDao(SessionFactory sessionFactory, Class<T> type) {
+        this.sessionFactory = sessionFactory;
+        this.type = type;
     }
 
     /**
@@ -57,26 +48,24 @@ public abstract class GenericDaoImpl<T extends Entity> implements GenericDao<T> 
      *
      * @return current Session
      */
-    protected Session getSession() {
+    protected Session session() {
         return sessionFactory.getCurrentSession();
     }
 
-    /**
-     * Setter for Hibernate SessionFactory.
-     *
-     * @param sessionFactory the sessionFactory to set
-     */
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     /**
-     * {@inheritDoc}
+     * Save or update entity.
+     * <p/>
+     * This operation cascades to associated instances if the association
+     * is mapped with cascade="save-update".
+     * This operation will result in INSERT SQL statement (for saving new entity),
+     * or in UPDATE statement for updating existing entity.
+     *
+     * @param entity object to save
      */
     @Override
     public void saveOrUpdate(T entity) {
-        Session session = getSession();
-        session.saveOrUpdate(entity);
+        session().saveOrUpdate(entity);
     }
 
     /**
@@ -84,17 +73,20 @@ public abstract class GenericDaoImpl<T extends Entity> implements GenericDao<T> 
      */
     @Override
     public boolean delete(Long id) {
-        String deleteQuery = "delete " + type.getCanonicalName()
-                + " e where e.id= :id";
-        return getSession().createQuery(deleteQuery).setCacheable(true).setLong("id", id).executeUpdate() != 0;
+        String deleteQuery = "delete " + type.getCanonicalName() + " e where e.id= :id";
+        return session().createQuery(deleteQuery).setLong("id", id).executeUpdate() != 0;
     }
 
     /**
-     * {@inheritDoc}
+     * <p>Delete the entity by object reference.</p>
+     * <p>This method deletes all cascaded references.</p>
+     *
+     * @param entity Entity to be deleted.
+     * @throws {@link org.hibernate.StaleStateException} Throws exception if entity not exist.
      */
     @Override
     public void delete(T entity) {
-        getSession().delete(entity);
+        session().delete(entity);
     }
 
     /**
@@ -103,7 +95,7 @@ public abstract class GenericDaoImpl<T extends Entity> implements GenericDao<T> 
     @Override
     @SuppressWarnings("unchecked")
     public T get(Long id) {
-        return (T) getSession().get(type, id);
+        return (T) session().get(type, id);
     }
 
     /**

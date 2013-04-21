@@ -11,7 +11,7 @@ import java.util.List;
 /**
  *
  */
-public class GroupHibernateDao extends GenericDaoImpl<Group> implements GroupDao {
+public class GroupHibernateDao extends GenericDao<Group> implements GroupDao {
 
     /**
      * {@inheritDoc}
@@ -19,7 +19,7 @@ public class GroupHibernateDao extends GenericDaoImpl<Group> implements GroupDao
     @Override
     @SuppressWarnings("unchecked")
     public List<Group> getAll() {
-        return getSession().createQuery("from Group").list();
+        return session().createQuery("from Group").list();
     }
 
     /**
@@ -30,7 +30,7 @@ public class GroupHibernateDao extends GenericDaoImpl<Group> implements GroupDao
     public List<Group> getMatchedByName(String name) {
         Assert.throwIfNull(name, "name");
 
-        Query query = getSession().createQuery("from Group g where g.name like ?");
+        Query query = session().createQuery("from Group g where g.name like ?");
         query.setString(0, "%" + name + "%");
 
         return query.list();
@@ -43,7 +43,7 @@ public class GroupHibernateDao extends GenericDaoImpl<Group> implements GroupDao
     public List<Group> getGroupsOfUser(User user) {
         Assert.throwIfNull(user, "user");
 
-        Query query = getSession().createQuery("from Group g where g.users contains ?");
+        Query query = session().createQuery("from Group g where g.users contains ?");
         query.setParameter(0, "%" + user + "%");
 
         return query.list();
@@ -56,7 +56,7 @@ public class GroupHibernateDao extends GenericDaoImpl<Group> implements GroupDao
     public Group getGroupByName(String name) {
         Assert.throwIfNull(name, "name");
 
-        Query query = getSession().createQuery("from Group g where g.name = ?");
+        Query query = session().createQuery("from Group g where g.name = ?");
         query.setString(0, name);
 
         return (Group) query.uniqueResult();
@@ -67,7 +67,7 @@ public class GroupHibernateDao extends GenericDaoImpl<Group> implements GroupDao
      */
     @Override
     public void delete(Group group) {
-        getSession().update(group);
+        session().update(group);
 
         group.getUsers().clear();
         saveOrUpdate(group);

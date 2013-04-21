@@ -14,7 +14,7 @@
  */
 package org.jtalks.common.service.transactional;
 
-import org.jtalks.common.model.dao.GenericDao;
+import org.jtalks.common.model.dao.Crud;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.service.exceptions.NotFoundException;
 import org.testng.annotations.BeforeMethod;
@@ -26,7 +26,7 @@ import static org.testng.Assert.*;
 
 public class AbstractTransactionalEntityServiceTest {
     private class AbstractTransactionalEntityServiceObject extends AbstractTransactionalEntityService {
-        private AbstractTransactionalEntityServiceObject(GenericDao dao) {
+        private AbstractTransactionalEntityServiceObject(Crud dao) {
             this.dao = dao;
         }
     }
@@ -34,12 +34,12 @@ public class AbstractTransactionalEntityServiceTest {
     private long ID = 1L;
 
     private AbstractTransactionalEntityService abstractTransactionalEntityService;
-    private GenericDao abstractDao;
+    private Crud abstractDao;
     private Entity entity;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        abstractDao = mock(GenericDao.class);
+        abstractDao = mock(Crud.class);
         entity = mock(Entity.class);
         abstractTransactionalEntityService = new AbstractTransactionalEntityServiceObject(abstractDao);
     }

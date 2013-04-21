@@ -24,7 +24,7 @@ import java.util.List;
  *
  * @author Konstantin Akimov
  */
-public interface GroupDao extends GenericDao<Group> {
+public interface GroupDao extends Crud<Group> {
 
     /**
      * Get the list of all groups.

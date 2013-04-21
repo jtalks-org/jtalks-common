@@ -17,16 +17,14 @@ package org.jtalks.common.model.dao;
 import org.jtalks.common.model.entity.Entity;
 
 /**
- * Describes a DAO for specified type entity. Such an entity may be updated
+ * Interface describing DAO for domain objects. Such an entity may be updated
  * on it's own, but for deletion it should use the following pattern: remove
  * an entity from parent's collection, save parent afterwards.
  *
  * @param <T> The type of domain object.
- * @author Pavel Vervenko
- * @author Kirill Afonin
- * @author Alexey Malev
+ * @author Alexandre Teterin
  */
-public interface GenericDao<T extends Entity> {
+public interface Crud<T extends Entity> {
 
     /**
      * Save or update entity.
