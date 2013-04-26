@@ -95,26 +95,19 @@ public class User extends Entity implements UserDetails {
     public static final int EMAIL_MAX_LENGTH = 50;
 
 
-    @Length(min = USERNAME_FIRSTNAME_MIN_LENGTH, max = USERNAME_FIRSTNAME_MAX_LENGTH, message = USER_FIRST_NAME_ILLEGAL_LENGTH)
+
     private String firstName;
 
-    @Length(min = USERNAME_LASTNAME_MIN_LENGTH, max = USERNAME_LASTNAME_MAX_LENGTH, message = USER_LAST_NAME_ILLEGAL_LENGTH)
     private String lastName;
 
     private String salt;
     private DateTime lastLogin;
     private String banReason;
 
-    @NotNull(message = USER_CANT_BE_NULL)
-    @Length(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH, message = USER_USERNAME_ILLEGAL_LENGTH)
     private String username;
 
-    @Email(message = USER_EMAIL_ILLEGAL_FORMAT)
-    @Length(max = EMAIL_MAX_LENGTH, message = EMAIL_ILLEGAL_LENGTH)
     private String email;
 
-    @NotBlank
-    @Length(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = USER_PASSWORD_ILLEGAL_LENGTH)
     private String password;
     private String role = "ROLE_USER";
     private String encodedUsername;
@@ -167,6 +160,7 @@ public class User extends Entity implements UserDetails {
      *
      * @return the lastName
      */
+    @Length(min = USERNAME_LASTNAME_MIN_LENGTH, max = USERNAME_LASTNAME_MAX_LENGTH, message = USER_LAST_NAME_ILLEGAL_LENGTH)
     public String getLastName() {
         return lastName;
     }
@@ -181,6 +175,7 @@ public class User extends Entity implements UserDetails {
     /**
      * @return the firstName
      */
+    @Length(min = USERNAME_FIRSTNAME_MIN_LENGTH, max = USERNAME_FIRSTNAME_MAX_LENGTH, message = USER_FIRST_NAME_ILLEGAL_LENGTH)
     public String getFirstName() {
         return firstName;
     }
@@ -195,6 +190,8 @@ public class User extends Entity implements UserDetails {
     /**
      * @return the email
      */
+    @Email(message = USER_EMAIL_ILLEGAL_FORMAT)
+    @Length(max = EMAIL_MAX_LENGTH, message = EMAIL_ILLEGAL_LENGTH)
     public String getEmail() {
         return email;
     }
@@ -209,6 +206,8 @@ public class User extends Entity implements UserDetails {
     /**
      * {@inheritDoc}
      */
+    @NotNull(message = USER_CANT_BE_NULL)
+    @Length(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH, message = USER_USERNAME_ILLEGAL_LENGTH)
     @Override
     public String getUsername() {
         return username;
@@ -269,6 +268,8 @@ public class User extends Entity implements UserDetails {
     /**
      * @return password
      */
+    @NotBlank
+    @Length(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = USER_PASSWORD_ILLEGAL_LENGTH)
     @Override
     public String getPassword() {
         return password;

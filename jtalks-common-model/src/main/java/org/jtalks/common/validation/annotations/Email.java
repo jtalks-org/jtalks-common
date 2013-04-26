@@ -11,6 +11,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
  /**
@@ -24,7 +25,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
   * @see EmailValidator
  */
 
-@Target( {FIELD})
+@Target( {METHOD,FIELD})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
