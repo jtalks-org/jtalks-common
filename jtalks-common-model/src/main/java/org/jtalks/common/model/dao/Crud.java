@@ -66,4 +66,12 @@ public interface Crud<T extends Entity> {
      * @return {@code true} if entity exist.
      */
     boolean isExist(Long id);
+
+    /**
+     * Make all changes immediately persistent.
+     */
+    //todo this is workaround due our security solution on service layer,
+    // for further processing it require that entity must be persistent,
+    // after security solution refactoring the next line need to be removed for improving performance.
+    void flush();
 }

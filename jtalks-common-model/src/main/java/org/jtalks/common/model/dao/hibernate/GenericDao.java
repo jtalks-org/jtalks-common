@@ -52,7 +52,7 @@ public class GenericDao<T extends Entity> implements Crud<T> {
      *
      * @return current Session
      */
-    protected Session session() {
+    public Session session() {
         return sessionFactory.getCurrentSession();
     }
 
@@ -70,6 +70,10 @@ public class GenericDao<T extends Entity> implements Crud<T> {
     @Override
     public void saveOrUpdate(T entity) {
         session().saveOrUpdate(entity);
+        //todo this is workaround due our security solution on service layer,
+        // for further processing it require that entity must be persistent,
+        // after security solution refactoring the next line need to be removed for improving performance.
+        session().flush();
     }
 
     /**
@@ -110,5 +114,11 @@ public class GenericDao<T extends Entity> implements Crud<T> {
         return get(id) != null;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void flush() {
+        session().flush();
+    }
 }
