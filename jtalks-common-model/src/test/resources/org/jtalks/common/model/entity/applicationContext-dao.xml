@@ -31,9 +31,11 @@
                      pointcut="execution(* org.jtalks.common.model.dao.Crud+.* (*))"/>
     </aop:config>
 
-    <bean id="genericDaoImpl" abstract="true">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="genericDao" abstract="true" class="org.jtalks.common.model.dao.hibernate.GenericDao">
+        <constructor-arg name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
+  <bean id="groupHibernateDao" class="org.jtalks.common.model.dao.hibernate.GroupHibernateDao" parent="genericDao"/>
 
     <!--Declaration and setting up datasource, sessionFactory and transactionalManager beans -->
 

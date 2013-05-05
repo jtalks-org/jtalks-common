@@ -19,6 +19,8 @@ import org.hibernate.classic.Session;
 import org.jtalks.common.model.dao.Crud;
 import org.jtalks.common.model.entity.Entity;
 
+import java.lang.reflect.ParameterizedType;
+
 /**
  * Basic class for access to the specified {@link Entity} objects.
  * Uses to load objects from database, save, update or delete them.
@@ -40,11 +42,10 @@ public class GenericDao<T extends Entity> implements Crud<T> {
 
     /**
      * @param sessionFactory The SessionFactory.
-     * @param type           An entity type.
      */
-    public GenericDao(SessionFactory sessionFactory, Class<T> type) {
+    public GenericDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        this.type = type;
+        type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     /**

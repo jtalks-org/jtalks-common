@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class GroupHibernateDao extends GenericDao<Group> implements GroupDao {
 
-    public GroupHibernateDao(SessionFactory sessionFactory, Class<Group> type) {
-        super(sessionFactory, type);
+    public GroupHibernateDao(SessionFactory sessionFactory) {
+        super(sessionFactory);
     }
 
     /**
