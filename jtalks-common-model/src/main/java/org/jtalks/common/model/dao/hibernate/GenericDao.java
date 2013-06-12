@@ -99,7 +99,11 @@ public class GenericDao<T extends Entity> implements Crud<T> {
     }
 
     /**
-     * {@inheritDoc}
+     * Return the persistent instance of the parametrised entity class with the given identifier,
+     * or null if there is no such persistent instance. (If the instance is already associated with the session,
+     * return that instance. This method never returns an uninitialized instance.)
+     * @param id The entity id.
+     * @return A persistent instance or null.
      */
     @Override
     @SuppressWarnings("unchecked")
