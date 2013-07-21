@@ -45,8 +45,9 @@ public class User extends Entity implements UserDetails {
     private static final String USER_FIRST_NAME_ILLEGAL_LENGTH = "{user.first_name.illegal_length}";
     private static final String USER_LAST_NAME_ILLEGAL_LENGTH = "{user.last_name.illegal_length}";
     private static final String EMAIL_ILLEGAL_LENGTH = "{user.email.illegal_length}";
-    private static final String USER_ALREADY_EXISTS = "{user.username.already_exists}";
-    private static final String EMAIL_ALREADY_EXISTS = "{user.email.already_exists}";
+
+    public static final String USER_ALREADY_EXISTS = "{user.username.already_exists}";
+    public static final String EMAIL_ALREADY_EXISTS = "{user.email.already_exists}";
 
     /**
      * Minimum length of the username.
