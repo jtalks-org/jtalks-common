@@ -38,13 +38,16 @@ import java.util.List;
  */
 public class User extends Entity implements UserDetails {
 
+    private static final String USER_EMAIL_ILLEGAL_FORMAT = "{validation.invalid_email_format}";
     private static final String USER_PASSWORD_ILLEGAL_LENGTH = "{user.password.length_constraint_violation}";
-    private static final String USER_USERNAME_ILLEGAL_LENGTH = "{validation.username.length}";
-    private static final String USER_CANT_BE_NULL = "{validation.username.notblank}";
-    private static final String USER_FIRST_NAME_ILLEGAL_LENGTH = "{user.first_and_last_name.illegal_length}";
-    private static final String USER_LAST_NAME_ILLEGAL_LENGTH = "{user.first_and_last_name.illegal_length}";
-    private static final String EMAIL_ILLEGAL_LENGTH = "{validation.email.length}";
-    private static final String USER_EMAIL_ILLEGAL_FORMAT = "{validation.email.wrong.format}";
+    private static final String USER_USERNAME_ILLEGAL_LENGTH = "{user.username.length_constraint_violation}";
+    private static final String USER_CANT_BE_NULL = "{user.username.null_constraint_violation}";
+    private static final String USER_FIRST_NAME_ILLEGAL_LENGTH = "{user.first_name.illegal_length}";
+    private static final String USER_LAST_NAME_ILLEGAL_LENGTH = "{user.last_name.illegal_length}";
+    private static final String EMAIL_ILLEGAL_LENGTH = "{user.email.illegal_length}";
+    private static final String USER_ALREADY_EXISTS = "{user.username.already_exists}";
+    private static final String EMAIL_ALREADY_EXISTS = "{user.email.already_exists}";
+
     /**
      * Minimum length of the username.
      */
