@@ -121,6 +121,7 @@ public class User extends Entity implements UserDetails {
     private List<Group> groups = new ArrayList<Group>();
 
     private boolean enabled;
+    private Long version;
 
     /**
      * Only for hibernate usage.
@@ -430,5 +431,19 @@ public class User extends Entity implements UserDetails {
      */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    /**
+     * @return the version number for the optimistic locking purposes
+     */
+    public Long getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version the version number for the optimistic locking purposes
+     */
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
