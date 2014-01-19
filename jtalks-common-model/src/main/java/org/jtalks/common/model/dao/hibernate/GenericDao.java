@@ -15,11 +15,11 @@
 package org.jtalks.common.model.dao.hibernate;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.classic.Session;
 import org.jtalks.common.model.dao.Crud;
 import org.jtalks.common.model.entity.Entity;
 
 import java.lang.reflect.ParameterizedType;
+import org.hibernate.Session;
 
 /**
  * Basic class for access to the specified {@link Entity} objects.

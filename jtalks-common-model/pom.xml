@@ -4,11 +4,11 @@
   <parent>
     <artifactId>jtalks-common</artifactId>
     <groupId>org.jtalks.common</groupId>
-    <version>0.56-SNAPSHOT</version>
+    <version>0.57-SNAPSHOT</version>
   </parent>
 
   <artifactId>jtalks-common-model</artifactId>
-  <version>0.56-SNAPSHOT</version>
+  <version>0.57-SNAPSHOT</version>
   <name>${project.artifactId}</name>
   <url>http://maven.apache.org</url>
 
@@ -85,15 +85,9 @@
       <artifactId>spring-security-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time-hibernate</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
+      <groupId>org.jadira.usertype</groupId>
+      <artifactId>usertype.core</artifactId>
+    </dependency>  
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
