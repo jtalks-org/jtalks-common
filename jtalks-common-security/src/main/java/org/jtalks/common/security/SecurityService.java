@@ -59,6 +59,9 @@ public class SecurityService implements UserDetailsService {
      */
     public String getCurrentUserUsername() {
         Authentication auth = securityContextFacade.getContext().getAuthentication();
+        if (auth == null) {
+            return null;
+        }
         Object principal = auth.getPrincipal();
         String username = extractUsername(principal);
         if (isAnonymous(username)) {
