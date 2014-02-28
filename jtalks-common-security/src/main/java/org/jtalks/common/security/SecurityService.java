@@ -55,7 +55,8 @@ public class SecurityService implements UserDetailsService {
     /**
      * Get current authenticated {@link User} username.
      *
-     * @return current authenticated {@link User} username or {@code null} if there is no authenticated {@link User}.
+     * @return current authenticated {@link User} username or {@code null} if there is no {@link User} authenticated 
+     * or if no authentication information is available (request not went through spring security filters). 
      */
     public String getCurrentUserUsername() {
         Authentication auth = securityContextFacade.getContext().getAuthentication();
