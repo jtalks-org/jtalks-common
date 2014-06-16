@@ -89,6 +89,11 @@ public class UserSid extends PrincipalSid implements UniversalSid {
         return SID_PREFIX + UniversalSid.SID_NAME_SEPARATOR + userId;
     }
 
+    @Override
+    public boolean isPrincipal() {
+        return true;
+    }
+
     /**
      * {@inheritDoc}
      */

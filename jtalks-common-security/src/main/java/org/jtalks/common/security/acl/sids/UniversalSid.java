@@ -23,6 +23,10 @@ import org.springframework.security.acls.model.Sid;
  * @author stanislav bashkirtsev
  */
 public interface UniversalSid extends Sid {
+
+    boolean isPrincipal();
+
+    public String getSidId();
     /**
      * All the custom Sids, when they implement the {@link UniversalSid} should obey some pattern since they are
      * saved as string to the DB. This pattern usually will be: some string identifier of the Sid implementation + ":" +

@@ -17,10 +17,8 @@ package org.jtalks.common.security.acl.sids;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.entity.User;
-import org.springframework.security.acls.domain.DefaultSidFactory;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.PrincipalSid;
-import org.springframework.security.acls.domain.SidFactory;
 import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -68,7 +66,11 @@ public class JtalksSidFactory implements SidFactory {
      */
     @Override
     public List<? extends Sid> createGrantedAuthorities(Collection<? extends GrantedAuthority> grantedAuthorities) {
-        return new DefaultSidFactory().createGrantedAuthorities(grantedAuthorities);
+        List<Sid> sids = new ArrayList<Sid>();
+        for (GrantedAuthority authority : grantedAuthorities) {
+            sids.add(new GrantedAuthoritySid(authority));
+        }
+        return sids;
     }
 
     /**
