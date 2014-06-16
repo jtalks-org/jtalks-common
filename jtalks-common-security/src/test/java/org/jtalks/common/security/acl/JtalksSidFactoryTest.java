@@ -69,8 +69,8 @@ public class JtalksSidFactoryTest {
         user.setId(2L);
         List<Entity> receivers = Arrays.asList(group, user);
         List<Sid> sids = sidFactory.create(receivers);
-        assertEquals(sids.get(0).getSidId(), "usergroup:1");
-        assertEquals(sids.get(1).getSidId(), "user:2");
+        assertEquals(((UniversalSid)sids.get(0)).getSidId(), "usergroup:1");
+        assertEquals(((UniversalSid)sids.get(1)).getSidId(), "user:2");
     }
 
     @Test
