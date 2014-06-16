@@ -50,8 +50,10 @@
         <constructor-arg ref="aclService"/>
     </bean>
 
+    <bean id="sidFactory" class="org.jtalks.common.security.acl.sids.JtalksSidFactory"/>
+
     <!-- Retrieves, modifies and strores access control lists -->
-    <bean id="aclService" class="org.springframework.security.acls.jdbc.JdbcMutableAclService">
+    <bean id="aclService" class="org.jtalks.common.security.acl.JtalksMutableAcService">
         <constructor-arg ref="dataSource"/>
         <constructor-arg ref="lookupStrategy"/>
         <constructor-arg ref="aclCache"/>
@@ -61,7 +63,7 @@
 
     <bean id="dtoMapper" class="org.jtalks.common.service.security.DtoMapper"/>
 
-    <bean id="baseLookupStrategy" class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
+    <bean id="baseLookupStrategy" class="org.jtalks.common.security.acl.JtalksLookupStrategy">
         <constructor-arg ref="dataSource"/>
         <constructor-arg ref="aclCache"/>
         <constructor-arg ref="aclAuthorizationStrategy"/>
@@ -69,6 +71,7 @@
             <bean class="org.springframework.security.acls.domain.ConsoleAuditLogger"/>
         </constructor-arg>
         <property name="permissionFactory" ref="permissionFactory"/>
+        <property name="sidFactory" ref="sidFactory"/>
     </bean>
 
     <!-- Responsible for efficient retrieval of ACLs from database -->
@@ -93,7 +96,7 @@
     </bean>
 
     <!-- Authorization for ACLs administration setup -->
-    <bean id="aclAuthorizationStrategy" class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
+    <bean id="aclAuthorizationStrategy" class="org.jtalks.common.security.acl.JtalksAclAuthorizationStrategy">
         <constructor-arg>
             <list>
                 <bean class="org.springframework.security.core.authority.GrantedAuthorityImpl">
@@ -107,6 +110,7 @@
                 </bean>
             </list>
         </constructor-arg>
+        <property name="sidFactory" ref="sidFactory"/>
     </bean>
 
     <!-- http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs/org/springframework/security/access/hierarchicalroles/RoleHierarchyImpl.html -->
