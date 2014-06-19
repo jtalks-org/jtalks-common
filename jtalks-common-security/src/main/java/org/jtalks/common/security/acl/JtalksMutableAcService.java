@@ -14,24 +14,58 @@
  */
 package org.jtalks.common.security.acl;
 
+import org.jtalks.common.security.acl.sids.SidFactory;
 import org.jtalks.common.security.acl.sids.UniversalSid;
 import org.springframework.security.acls.jdbc.JdbcMutableAclService;
 import org.springframework.security.acls.jdbc.LookupStrategy;
-import org.springframework.security.acls.model.AclCache;
-import org.springframework.security.acls.model.Sid;
+import org.springframework.security.acls.model.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
 
 /**
+ * Gives possibility to implement custom Sid
  * @author Mikhail Stryzhonok
+ * @see org.springframework.security.acls.model.Sid
+ * @see org.jtalks.common.security.acl.sids.UniversalSid
  */
 public class JtalksMutableAcService extends JdbcMutableAclService {
+
+    private SidFactory sidFactory;
 
     public JtalksMutableAcService(DataSource dataSource, LookupStrategy lookupStrategy, AclCache aclCache) {
         super(dataSource, lookupStrategy, aclCache);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MutableAcl createAcl(ObjectIdentity objectIdentity) throws AlreadyExistsException {
+        Assert.notNull(objectIdentity, "Object Identity required");
+
+        // Check this object identity hasn't already been persisted
+        if (retrieveObjectIdentityPrimaryKey(objectIdentity) != null) {
+            throw new AlreadyExistsException("Object identity '" + objectIdentity + "' already exists");
+        }
+
+        // Need to retrieve the current principal, in order to know who "owns" this ACL (can be changed later on)
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Sid sid = sidFactory.createPrincipal(auth);
+        createObjectIdentity(objectIdentity, sid);
+
+        // Retrieve the ACL via superclass (ensures cache registration, proper retrieval etc)
+        Acl acl = readAclById(objectIdentity);
+        Assert.isInstanceOf(MutableAcl.class, acl, "MutableAcl should be been returned");
+
+        return (MutableAcl) acl;
+    }
+
+    /**
+     *{@inheritDoc}
+     */
     @Override
     protected Long createOrRetrieveSidPrimaryKey(Sid sid, boolean allowCreate) {
         Assert.notNull(sid, "Sid required");
@@ -42,10 +76,21 @@ public class JtalksMutableAcService extends JdbcMutableAclService {
         return createOrRetrieveSidPrimaryKey(sidId, isPrinciple, allowCreate);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getSidId(Sid sid) {
         Assert.notNull(sid, "Sid required");
         Assert.isInstanceOf(UniversalSid.class, sid, "Unsupported sid implementation");
         return ((UniversalSid) sid).getSidId();
+    }
+
+    public SidFactory getSidFactory() {
+        return sidFactory;
+    }
+
+    public void setSidFactory(SidFactory sidFactory) {
+        this.sidFactory = sidFactory;
     }
 }

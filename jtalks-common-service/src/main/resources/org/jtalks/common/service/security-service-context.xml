@@ -59,6 +59,7 @@
         <constructor-arg ref="aclCache"/>
         <property name="classIdentityQuery" value="SELECT @@IDENTITY"/>
         <property name="sidIdentityQuery" value="SELECT @@IDENTITY"/>
+        <property name="sidFactory" ref="sidFactory"/>
     </bean>
 
     <bean id="dtoMapper" class="org.jtalks.common.service.security.DtoMapper"/>

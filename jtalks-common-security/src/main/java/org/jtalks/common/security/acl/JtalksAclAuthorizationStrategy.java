@@ -18,18 +18,18 @@ import org.jtalks.common.security.acl.sids.SidFactory;
 import org.springframework.security.acls.domain.AclAuthorizationStrategyImpl;
 import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 
 /**
+ * Gives possibility to create custom Sid.
+ * @see org.springframework.security.acls.model.Sid
  * @author Mikhail Stryzhonok
  */
 public class JtalksAclAuthorizationStrategy extends AclAuthorizationStrategyImpl {
     private SidFactory sidFactory;
 
-    public JtalksAclAuthorizationStrategy(GrantedAuthority... auths) {
-        super(auths);
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Sid createCurrentUser(Authentication authentication) {
         return sidFactory.createPrincipal(authentication);
