@@ -25,6 +25,7 @@ public abstract class Entity {
     private long id;
 
     private String uuid = java.util.UUID.randomUUID().toString();
+    private Boolean deleted;
 
     /**
      * Get the primary id of the persistent object.
@@ -95,5 +96,21 @@ public abstract class Entity {
     @Override
     public int hashCode() {
         return getUuid().hashCode();
+    }
+
+    /**
+     * Get a sign of delete
+     * @return true if entity has been deleted
+     */
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    /**
+     * Set a sign of delete
+     * @param deleted
+     */
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
