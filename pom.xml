@@ -357,8 +357,8 @@
       </plugin>
       <plugin>
         <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-maven3-plugin</artifactId>
-        <version>4.5.1</version>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>4.5.4</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
