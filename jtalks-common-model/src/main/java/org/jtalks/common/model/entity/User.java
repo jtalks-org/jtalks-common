@@ -118,7 +118,19 @@ public class User extends Entity implements UserDetails {
 
     private byte[] avatar = new byte[0];
 
-    private List<Group> groups = new ArrayList<Group>();
+    /**
+     *  The {@link org.jtalks.common.model.entity.User} uses serialization for saving own state between
+     *  Tomcat' session restarts. But there is not urgent needs to save state of
+     *  the {@link org.jtalks.common.model.entity.Group}, and moreover serialization of this one
+     *  will pull serialization of even more classes which is undesirable.
+     *
+     *  While we won't serialize full {@link org.jtalks.common.model.entity.Group} entity
+     *  we mark {@link org.jtalks.common.model.entity.User#groups} as transient to avoid the problems
+     *  during serialization of the {@link org.jtalks.common.model.entity.User} and his successors.
+     *
+     *  See more information at <a href="jira.jtalks.org/browse/POULPE-528">JIRA</a>
+     */
+    private transient List<Group> groups = new ArrayList<Group>();
 
     private boolean enabled;
     private Long version;
