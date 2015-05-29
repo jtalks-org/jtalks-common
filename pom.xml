@@ -21,17 +21,17 @@
       <dependency>
         <groupId>org.jtalks.common</groupId>
         <artifactId>jtalks-common-model</artifactId>
-        <version>${project_version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jtalks.common</groupId>
         <artifactId>jtalks-common-service</artifactId>
-        <version>${project_version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jtalks.common</groupId>
         <artifactId>jtalks-common-view</artifactId>
-        <version>${project_version}</version>
+        <version>${project.version}</version>
       </dependency>
 
       <!-- Hibernate -->
@@ -439,7 +439,6 @@
   </distributionManagement>
   <properties>
     <copyrightDir>${basedir}</copyrightDir>
-    <project_version>${project.version}</project_version>
     <hibernateVersion>3.6.10.Final</hibernateVersion>
     <springVersion>3.0.5.RELEASE</springVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
