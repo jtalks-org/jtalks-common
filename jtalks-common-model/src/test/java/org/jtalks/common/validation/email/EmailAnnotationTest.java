@@ -87,7 +87,10 @@ public class EmailAnnotationTest {
                 "seaman_sells_sea_shells@onTheSea.shore",
                 "MaIl+mAiL*MaiL+25=&-@twit.oRg.Br",
                 "~DArK_L0Rd_of_D3strUctI0N~@noNeed.of.mail.box",
-                "Frue_in_der_Frische_fischer@Fritz.fischt.frische.Fische"
+                "Frue_in_der_Frische_fischer@Fritz.fischt.frische.Fische",
+                "less.luter@email.PHOTOGRAPHY",
+                "itIsNormalEmail@withLong.DomainName",
+                "itIsNormalEmail@withLong.DomainNameVeeeeeryyyyyLooongDoooomaaaainNaaameee"
         }}};
     }
 
