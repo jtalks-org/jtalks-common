@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.jtalks.common</groupId>
     <artifactId>jtalks-common</artifactId>
-    <version>0.64-SNAPSHOT</version>
+    <version>0.60-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -12,7 +12,7 @@
   </properties>
 
   <artifactId>jtalks-common-security</artifactId>
-  <version>0.64-SNAPSHOT</version>
+  <version>0.60-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>org.jtalks.common</groupId>
