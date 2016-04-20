@@ -4,7 +4,7 @@
   <parent>
     <artifactId>jtalks-common</artifactId>
     <groupId>org.jtalks.common</groupId>
-    <version>0.60</version>
+    <version>0.61-SNAPSHOT</version>
   </parent>
   <groupId>org.jtalks.common</groupId>
   <artifactId>jtalks-common-service</artifactId>
