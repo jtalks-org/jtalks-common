@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>jtalks-common-model</artifactId>
-  <version>0.60</version>
+  <version>0.60-SNAPSHOT</version>
   <name>${project.artifactId}</name>
   <url>http://maven.apache.org</url>
 
