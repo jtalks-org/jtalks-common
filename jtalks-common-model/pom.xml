@@ -4,7 +4,7 @@
   <parent>
     <artifactId>jtalks-common</artifactId>
     <groupId>org.jtalks.common</groupId>
-    <version>0.60-SNAPSHiOT</version>
+    <version>0.60-SNAPSHOT</version>
   </parent>
 
   <artifactId>jtalks-common-model</artifactId>
