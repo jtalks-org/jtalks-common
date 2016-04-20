@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.jtalks.common</groupId>
   <artifactId>jtalks-common-service</artifactId>
-  <version>0.60</version>
+  <version>0.60-SNAPSHOT</version>
   <name>jtalks-common-service</name>
   <url>http://maven.apache.org</url>
   <properties>
