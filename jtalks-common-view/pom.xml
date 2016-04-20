@@ -10,7 +10,7 @@
   <groupId>org.jtalks.common</groupId>
   <artifactId>jtalks-common-view</artifactId>
   <packaging>pom</packaging>
-  <version>0.60</version>
+  <version>0.60-SNAPSHOT</version>
   <properties>
     <copyrightDir>${basedir}/..</copyrightDir>
   </properties>
