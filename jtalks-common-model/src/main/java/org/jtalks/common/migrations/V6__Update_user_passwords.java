@@ -14,12 +14,12 @@
  */
 package org.jtalks.common.migrations;
 
-import com.googlecode.flyway.core.migration.java.JavaMigration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
+import org.flywaydb.core.api.migration.spring.SpringJdbcMigration;
 import org.jtalks.common.util.SaltGenerator;
 
 import java.sql.ResultSet;
@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author Masich Ivan
  */
-public class V6__Update_user_passwords implements JavaMigration {
+public class V6__Update_user_passwords implements SpringJdbcMigration {
 
     private ApplicationContext context;
 
