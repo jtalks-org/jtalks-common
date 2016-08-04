@@ -197,9 +197,9 @@
       </dependency>
       
       <dependency>
-        <groupId>com.googlecode.flyway</groupId>
+        <groupId>org.flywaydb</groupId>
         <artifactId>flyway-core</artifactId>
-        <version>1.4.2</version>
+        <version>4.0.3</version>
       </dependency>
       
       <!-- TestNG & Mockito -->
