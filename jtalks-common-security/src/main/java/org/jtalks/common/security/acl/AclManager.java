@@ -20,6 +20,7 @@ import org.jtalks.common.model.entity.Branch;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.entity.Group;
 import org.jtalks.common.model.entity.User;
+import org.jtalks.common.model.permissions.JtalksPermission;
 import org.jtalks.common.security.acl.sids.UserGroupSid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,11 +76,29 @@ public class AclManager {
         return getGroupPermissions(branchAcl);
     }
 
+    public List<GroupAce> getGroupPermissionsFilteredByPermissionOn(@Nonnull ObjectIdentity entity, JtalksPermission permission) {
+        MutableAcl branchAcl = aclUtil.getAclFor(entity);
+        return getGroupPermissionsFilteredByPermission(branchAcl, permission);
+    }
+
     private List<GroupAce> getGroupPermissions(MutableAcl branchAcl) {
         List<AccessControlEntry> originalAces = branchAcl.getEntries();
         List<GroupAce> resultingAces = new ArrayList<GroupAce>(originalAces.size());
         for (AccessControlEntry originalAce : originalAces) {
             if (originalAce.getSid() instanceof UserGroupSid) {
+                resultingAces.add(new GroupAce(originalAce));
+            }
+        }
+        return resultingAces;
+    }
+
+    private List<GroupAce> getGroupPermissionsFilteredByPermission(MutableAcl branchAcl, JtalksPermission permission) {
+        List<AccessControlEntry> originalAces = branchAcl.getEntries();
+        List<GroupAce> resultingAces = new ArrayList<GroupAce>(originalAces.size());
+        int permissionMask = permission.getMask();
+        for (AccessControlEntry originalAce : originalAces) {
+            if (originalAce.getSid() instanceof UserGroupSid
+                    && originalAce.getPermission().getMask() == permissionMask) {
                 resultingAces.add(new GroupAce(originalAce));
             }
         }

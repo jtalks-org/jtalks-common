@@ -16,6 +16,7 @@ package org.jtalks.common.security.acl;
 
 import org.jtalks.common.model.entity.Branch;
 import org.jtalks.common.model.entity.Entity;
+import org.jtalks.common.model.permissions.JtalksPermission;
 import org.jtalks.common.security.acl.sids.UserGroupSid;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -27,6 +28,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 
@@ -61,6 +63,15 @@ public class AclManagerTest {
                 assertNull(findWithOriginalAce(branchPermissions, entry));
             }
         }
+    }
+
+    @Test(dataProviderClass = AclDataProvider.class, dataProvider = "provideAclAndRandomPermission")
+    public void filteredAclContainsOnlyPermissionsWeAskFor(ExtendedMutableAcl acl, JtalksPermission permission) throws Exception {
+        ObjectIdentity branch = new ObjectIdentityImpl(Branch.class, 0);
+        when(mockAclUtil.getAclFor(branch)).thenReturn(acl);
+        List<GroupAce> filteredGroupPermissions = manager.getGroupPermissionsFilteredByPermissionOn(branch, permission);
+        assertEquals(filteredGroupPermissions.size(), 1);
+        assertSame(filteredGroupPermissions.get(0).getPermission(), permission);
     }
 
     private GroupAce findWithOriginalAce(List<GroupAce> groupAces, AccessControlEntry originalAce) {

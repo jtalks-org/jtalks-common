@@ -18,6 +18,7 @@ import com.google.common.collect.Lists;
 import org.jtalks.common.model.entity.Entity;
 import org.jtalks.common.model.permissions.BranchPermission;
 import org.jtalks.common.model.permissions.GeneralPermission;
+import org.jtalks.common.model.permissions.JtalksPermission;
 import org.jtalks.common.security.acl.sids.UserGroupSid;
 import org.jtalks.common.security.acl.sids.UserSid;
 import org.springframework.security.acls.domain.AccessControlEntryImpl;
@@ -29,6 +30,7 @@ import org.testng.annotations.DataProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -87,6 +89,20 @@ public class AclDataProvider {
         aces.add(new AccessControlEntryImpl(2L, acl, new UserSid(2L), BranchPermission.VIEW_TOPICS, false, true, true));
         aces.add(new AccessControlEntryImpl(3L, acl, new UserGroupSid(3L), GeneralPermission.WRITE, true, true, true));
         return new Object[][]{{acl}};
+    }
+
+    @DataProvider()
+    public static Object[][] provideAclAndRandomPermission(){
+        List<AccessControlEntry> aces = new ArrayList<AccessControlEntry>();
+        ExtendedMutableAcl acl = mock(ExtendedMutableAcl.class);
+        when(acl.getEntries()).thenReturn(aces);
+        aces.add(new AccessControlEntryImpl(1L, acl, new UserGroupSid(1L), BranchPermission.VIEW_TOPICS, false, true, true));
+        aces.add(new AccessControlEntryImpl(2L, acl, new UserGroupSid(2L), BranchPermission.CLOSE_TOPICS, false, true, true));
+        aces.add(new AccessControlEntryImpl(3L, acl, new UserGroupSid(3L), BranchPermission.CREATE_POSTS, false, true, true));
+        aces.add(new AccessControlEntryImpl(4L, acl, new UserGroupSid(4L), BranchPermission.EDIT_OTHERS_POSTS, false, true, true));
+        aces.add(new AccessControlEntryImpl(5L, acl, new UserGroupSid(5L), BranchPermission.MOVE_TOPICS, false, true, true));
+        JtalksPermission permission = (JtalksPermission) aces.get(new Random().nextInt(aces.size())).getPermission();
+        return new Object[][]{{acl,permission}};
     }
 
     public static List<AccessControlEntry> createEntries(MutableAcl acl, List<Sid> sids,
