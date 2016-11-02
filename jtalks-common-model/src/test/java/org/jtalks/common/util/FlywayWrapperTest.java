@@ -14,13 +14,12 @@
  */
 package org.jtalks.common.util;
 
-import org.flywaydb.core.Flyway;
-import org.flywaydb.core.api.FlywayException;
+import com.googlecode.flyway.core.Flyway;
+import com.googlecode.flyway.core.exception.FlywayException;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import javax.sql.DataSource;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -109,7 +108,7 @@ public class FlywayWrapperTest {
             sut.smartInit();
 
             verify(dataSource, times(1)).getConnection();
-            verify((Flyway) sut, times(0)).baseline();
+            verify((Flyway) sut, times(0)).init();
         } catch (SQLException e) {
             throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
         }
@@ -132,7 +131,7 @@ public class FlywayWrapperTest {
             sut.setEnabled(true);
 
             sut.smartInit();
-            verify((Flyway) sut, times(1)).baseline();
+            verify((Flyway) sut, times(1)).init();
         } catch (SQLException e) {
             throw new IllegalStateException("SQLExcepton shouldn't be thrown here.", e);
         }

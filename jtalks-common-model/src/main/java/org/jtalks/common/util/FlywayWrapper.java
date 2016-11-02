@@ -14,13 +14,13 @@
  */
 package org.jtalks.common.util;
 
+import com.googlecode.flyway.core.Flyway;
+import com.googlecode.flyway.core.exception.FlywayException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.flywaydb.core.Flyway;
-import org.flywaydb.core.api.FlywayException;
 
 /**
  * Wrapper that allows disabling flyway migrations, schema cleanup and initialization.
@@ -53,7 +53,7 @@ public class FlywayWrapper extends Flyway {
     }
 
     /**
-     * <p>This method performs {@link Flyway#baseline()} if there is no metadata table in the specified schema and if
+     * <p>This method performs {@link Flyway#init()} if there is no metadata table in the specified schema and if
      * <code>smartInit()</code> is enabled.</p>
      * <p><b>It is strongly recommended to disable this in production usage.</b></p>
      *
@@ -71,7 +71,7 @@ public class FlywayWrapper extends Flyway {
                         ResultSet fetchedTableNames = checkTableExistenceStatement.executeQuery();
                         try {
                             if (!fetchedTableNames.next()) {
-                                super.baseline();
+                                super.init();
                             }
                         } finally {
                             fetchedTableNames.close();

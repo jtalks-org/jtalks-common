@@ -114,7 +114,7 @@
     </dependency>
 
     <dependency>
-      <groupId>org.flywaydb</groupId>
+      <groupId>com.googlecode.flyway</groupId>
       <artifactId>flyway-core</artifactId>
     </dependency>
 
