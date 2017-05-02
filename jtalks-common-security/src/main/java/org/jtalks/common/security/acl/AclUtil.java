@@ -14,6 +14,7 @@
  */
 package org.jtalks.common.security.acl;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import org.jtalks.common.model.entity.Entity;
 import org.springframework.security.acls.model.*;
@@ -35,6 +36,7 @@ import static org.jtalks.common.security.acl.TypeConvertingObjectIdentityGenerat
 public class AclUtil {
     private TypeConvertingObjectIdentityGenerator objectIdentityGenerator = createDefaultGenerator();
     private final MutableAclService mutableAclService;
+    private static final String MUTABLE_ACL_SERVICE_IS_NULL = "mutableAclService is null";
 
     /**
      * Use this constructor if you need a full blown ACL utilities.
@@ -68,6 +70,7 @@ public class AclUtil {
      * {@inheritDoc}
      */
     public ExtendedMutableAcl getAclFor(ObjectIdentity oid) {
+        Preconditions.checkNotNull(mutableAclService, MUTABLE_ACL_SERVICE_IS_NULL);
         try {
             return ExtendedMutableAcl.castAndCreate(mutableAclService.readAclById(oid));
         } catch (NotFoundException nfe) {
@@ -107,6 +110,7 @@ public class AclUtil {
      * {@inheritDoc}
      */
     public ExtendedMutableAcl delete(List<? extends Sid> sids, List<Permission> permissions, Entity target) {
+        Preconditions.checkNotNull(mutableAclService, MUTABLE_ACL_SERVICE_IS_NULL);
         ObjectIdentity oid = createIdentityFor(target);
         ExtendedMutableAcl acl = ExtendedMutableAcl.castAndCreate(mutableAclService.readAclById(oid));
         deletePermissionsFromAcl(acl, sids, permissions);
