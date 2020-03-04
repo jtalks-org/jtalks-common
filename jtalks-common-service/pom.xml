@@ -46,9 +46,5 @@
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
     </dependency>
-    <dependency>
-      <groupId>ru.javatalks.utils</groupId>
-      <artifactId>core-utils</artifactId>
-    </dependency>
   </dependencies>
 </project>

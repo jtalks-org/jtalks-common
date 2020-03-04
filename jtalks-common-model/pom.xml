@@ -20,11 +20,6 @@
   </properties>
 
   <dependencies>
-    <!--javatalks dependencies -->
-    <dependency>
-      <groupId>ru.javatalks.utils</groupId>
-      <artifactId>core-utils</artifactId>
-    </dependency>
     <!--spring -->
     <dependency>
       <groupId>org.springframework</groupId>
