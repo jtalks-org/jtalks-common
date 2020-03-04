@@ -288,6 +288,14 @@
         <artifactId>guava</artifactId>
         <version>10.0.1</version>
       </dependency>
+<!--      <dependency>-->
+<!--        <groupId>org.springframework.security</groupId>-->
+<!--        <artifactId>spring-security-acl</artifactId>-->
+<!--        <version>3.1.1.JAVATALKS-PATCH3.RELEASE</version>-->
+<!--        <scope>system</scope>-->
+<!--        <systemPath>${project.basedir}/libs/spring-security-acl-3.1.1.CI-SNAPSHOT.jar</systemPath>-->
+<!--        &lt;!&ndash;        <systemPath>/Users/stas/projects/jtalks-common/libs/spring-security-acl-3.1.1.CI-SNAPSHOT.jar</systemPath>&ndash;&gt;-->
+<!--      </dependency>-->
     </dependencies>
   </dependencyManagement>
 
@@ -440,7 +448,7 @@
   <properties>
     <copyrightDir>${basedir}</copyrightDir>
     <hibernateVersion>3.6.10.Final</hibernateVersion>
-    <springVersion>3.0.5.RELEASE</springVersion>
+    <springVersion>5.2.2.RELEASE</springVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
   </properties>
